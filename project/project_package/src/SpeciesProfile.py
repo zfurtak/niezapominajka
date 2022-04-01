@@ -1,12 +1,11 @@
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from kivy.uix.image import Image
-from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatButton
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.button import MDFillRoundFlatButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDToolbar
 
-class PlantProfile(MDApp):
+class SpeciesProfile(MDApp):
     def flip(self):
         print("working...")
 
@@ -99,4 +98,4 @@ class PlantProfile(MDApp):
 
 
 if __name__ == '__main__':
-    PlantProfile().run()
+    SpeciesProfile().run()
