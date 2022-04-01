@@ -31,7 +31,7 @@ class PlantProfile(MDApp):
             ))
 
         self.label = MDLabel(
-            text="Name:",
+            text="Nazwa:",
             halign="center",
             pos_hint = {"center_x": 0.3, "center_y": 0.5},
             theme_text_color = "Secondary"
