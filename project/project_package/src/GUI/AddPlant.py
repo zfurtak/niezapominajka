@@ -13,7 +13,7 @@ class SpeciesProfile(MDApp):
     def add(self, args):
         print("Plant saved")
 
-    def change(self):
+    def change(self, args):
         print("Change from basic to basic")
 
     def build(self):
@@ -39,7 +39,7 @@ class SpeciesProfile(MDApp):
         #     pos_hint={"center_x": 0.75, "center_y": 0.4},
         #     on_press=self.change()
         # ))
-        iconBtn = MDIconButton(icon="camera", pos_hint={"center_x": 0.75, "center_y": 0.4})
+        iconBtn = MDIconButton(icon="camera", pos_hint={"center_x": 0.75, "center_y": 0.4}, on_press=self.change)
 
         screen.add_widget(iconBtn)
 

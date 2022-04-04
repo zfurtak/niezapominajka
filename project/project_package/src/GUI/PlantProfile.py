@@ -15,7 +15,7 @@ class PlantProfile(MDApp):
     def build(self):
         screen = MDScreen()
 
-        self.toolbar = MDToolbar(title = "Profil rośliny")
+        self.toolbar = MDToolbar(title="Profil rośliny")
         self.toolbar.pos_hint = {"top": 1}
         self.toolbar.right_action_items = [
             ["format-list-bulleted", lambda x: self.flip()]]
@@ -32,16 +32,16 @@ class PlantProfile(MDApp):
         self.label = MDLabel(
             text="Nazwa:",
             halign="center",
-            pos_hint = {"center_x": 0.3, "center_y": 0.5},
-            theme_text_color = "Secondary"
+            pos_hint={"center_x": 0.3, "center_y": 0.5},
+            theme_text_color="Secondary"
         )
 
         self.myname = MDLabel(
             text="I AM GROOT!",
             halign="center",
-            pos_hint = {"center_x": 0.5, "center_y": 0.5},
-            theme_text_color = "Primary",
-            font_style = "H5"
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+            theme_text_color="Primary",
+            font_style="H5"
         )
 
         screen.add_widget(self.label)
@@ -49,9 +49,9 @@ class PlantProfile(MDApp):
 
         screen.add_widget(MDFillRoundFlatButton(
             text="Podlej mnie!",
-            font_size = 17,
-            pos_hint = {"center_x": 0.5, "center_y": 0.15},
-            on_press = self.water
+            font_size=17,
+            pos_hint={"center_x": 0.5, "center_y": 0.15},
+            on_press=self.water
         ))
 
         self.species = MDLabel(
@@ -145,7 +145,6 @@ class PlantProfile(MDApp):
         screen.add_widget(self.nextwater)
         screen.add_widget(self.mynextwater)
 
-        # screen.add_widget()
 
         return screen
 
