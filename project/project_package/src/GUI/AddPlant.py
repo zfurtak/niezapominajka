@@ -5,6 +5,7 @@ from kivymd.uix.button import MDFillRoundFlatButton, MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.toolbar import MDToolbar
+from project.project_package.src import Plant
 
 class SpeciesProfile(MDApp):
     def flip(self):
@@ -12,6 +13,7 @@ class SpeciesProfile(MDApp):
 
     def add(self, args):
         print("Plant saved")
+
 
     def change(self, args):
         print("Change from basic to basic")
