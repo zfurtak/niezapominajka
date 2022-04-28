@@ -7,7 +7,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDToolbar
 
 
-class Settings(MDApp):
+class SettingsApp(MDApp):
     def flip(self):
         print("working...")
 
@@ -65,4 +65,4 @@ class Settings(MDApp):
 
 
 if __name__ == '__main__':
-    Settings().run()
+    SettingsApp().run()

@@ -1,0 +1,42 @@
+<ItemDrawer>:
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        text_color: root.text_color
+
+
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+
+    ScrollView:
+        DrawerList:
+            id: md_list
+
+
+<TestScreen>:
+    MDScreen:
+        MDNavigationLayout:
+            ScreenManager:
+                MDScreen:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        MDToolbar:
+                            title: "Your profile"
+                            elevation: 10
+                            left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                            specific_text_color: app.theme_cls.accent_color
+                        FitImage:
+                            source: 'images/test.jpg'
+                            size_hint_y: .35
+                            pos_hint: {"top": 0.5}
+                            radius: [36, 36, 36, 36, ]
+
+
+
+
+            MDNavigationDrawer:
+                id: nav_drawer
+
+                ContentNavigationDrawer:
+                    id: content_drawer

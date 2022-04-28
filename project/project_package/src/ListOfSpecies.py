@@ -28,7 +28,6 @@ class DayInterface(MDApp):
     def build(self):
         screen = Builder.load_string(KV)
 
-
         return screen
 
     def on_start(self):
