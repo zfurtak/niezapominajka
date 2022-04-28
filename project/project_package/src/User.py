@@ -13,6 +13,7 @@ class User:
         self.listOfAchievements = []
         self.listOfPlants = []
         self.daysWithApp = 0
+        self.daysWithoutDeadPlant = 0
 
     def addAchievement(self, achievement):
         self.level.addAchievement(achievement)
@@ -23,4 +24,11 @@ class User:
 
     def updateDays(self):
         self.daysWithApp += 1
+
+    def deadPlant(self):
+        self.daysWithoutDeadPlant = 0
+
+    def updateDaysWithoutDeadPlant(self):
+        self.daysWithoutDeadPlant += 1
+
 
