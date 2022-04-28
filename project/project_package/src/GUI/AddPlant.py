@@ -11,6 +11,7 @@ class SpeciesProfile(MDApp):
     def flip(self):
         print("working...")
 
+
     def add(self, args):
         print("Plant saved")
 
@@ -53,7 +54,9 @@ class SpeciesProfile(MDApp):
         )
 
         self.myname = MDTextField(
-            text="Roślinka nr x",
+            hint_text="Wpisz ime dla roslinki",
+            required=True,
+            max_text_length=30,
             halign="center",
             pos_hint={"center_x": 0.4, "center_y": 0.8},
             size_hint = (0.3, 1)
@@ -132,7 +135,7 @@ class SpeciesProfile(MDApp):
         )
 
         self.myroom = MDTextField(
-            text="pokój x",
+            hint_text="Jeśli chcesz wprowadź pokój",
             halign="center",
             pos_hint={"center_x": 0.4, "center_y": 0.6},
             size_hint = (0.3, 1)

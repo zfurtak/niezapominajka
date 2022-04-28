@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 
 class Plant:
-
     def __init__(self, name, species, firstWater=datetime.today(), colour='red', room=None,
                  notes="Brak", lastWater=datetime.today(), picture=None):
         self.name = name
