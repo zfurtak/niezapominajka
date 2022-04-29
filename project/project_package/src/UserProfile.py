@@ -1,4 +1,4 @@
-from kivy.lang import Builder
+from kivy.core.window import Window
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
@@ -7,7 +7,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import OneLineIconListItem, MDList
 
 
-class TestScreen(Screen):
+class UserScreen(Screen):
     pass
 
 
@@ -25,14 +25,17 @@ class DrawerList(ThemableBehavior, MDList):
 
 
 class UserProfileApp(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Window.size = (340, 630) #340, 630
+
     def build(self):
         self.theme_cls.primary_palette = "Green"    # ogarnąc kolory (biale napisy)
-        return TestScreen()
+        return UserScreen()
 
     def on_start(self):
         icons_item = {
             "calendar-blank": "Start",
-            "face": "Your profile",
             "flower-tulip": "My plants",
             "flower-tulip-outline": "Plant catalog",
             "tools": "Settings",

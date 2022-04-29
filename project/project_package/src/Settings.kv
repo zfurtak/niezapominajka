@@ -1,0 +1,80 @@
+<ItemDrawer>:
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        text_color: root.text_color
+
+
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+
+    ScrollView:
+        DrawerList:
+            id: md_list
+
+
+<SettingsScreen>:
+    MDScreen:
+        MDNavigationLayout:
+            ScreenManager:
+                MDScreen:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+
+                        MDToolbar:
+                            title: "Settings"
+                            elevation: 10
+                            left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                            specific_text_color: app.theme_cls.accent_color
+
+
+                        MDLabel:
+                            id: lvl
+                            text: "Customize the app to suit you"
+                            halign: "center"
+                            pos_hint: {"center_x": 0.5, "center_y": 0.1}
+                            theme_text_color: "Custom"
+                            text_color: 0, 0, 1, 1
+                            size_hint: (0.8, 0.3)
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            padding: 20
+                            spacing: "50dp"
+
+
+                            MDFillRoundFlatIconButton:
+                                icon: "clock-time-eight-outline"
+                                text: "Choose time for reminder"
+                                pos_hint: {'center_x': .5}
+                                size_hint: (.7, 0.03)
+                                on_release: app.show_time_picker()
+
+                            MDFillRoundFlatIconButton:
+                                icon: "more"
+                                text: "Tips"
+                                size_hint: (.3, 0.03)
+                                pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+                            MDFillRoundFlatIconButton:
+                                icon: "help-circle"
+                                text: "Support"
+                                size_hint: (.4, 0.03)
+                                pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+                            MDFillRoundFlatIconButton:
+                                icon: "trash-can-outline"
+                                text: "Clean the app"
+                                size_hint: (.5, 0.03)
+                                pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+
+
+
+
+            MDNavigationDrawer:
+                id: nav_drawer
+
+                ContentNavigationDrawer:
+                    id: content_drawer

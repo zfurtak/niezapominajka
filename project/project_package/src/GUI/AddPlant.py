@@ -5,15 +5,18 @@ from kivymd.uix.button import MDFillRoundFlatButton, MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.toolbar import MDToolbar
+from project.project_package.src import Plant
 
 class SpeciesProfile(MDApp):
     def flip(self):
         print("working...")
 
+
     def add(self, args):
         print("Plant saved")
 
-    def change(self):
+
+    def change(self, args):
         print("Change from basic to basic")
 
     def build(self):
@@ -39,7 +42,7 @@ class SpeciesProfile(MDApp):
         #     pos_hint={"center_x": 0.75, "center_y": 0.4},
         #     on_press=self.change()
         # ))
-        iconBtn = MDIconButton(icon="camera", pos_hint={"center_x": 0.75, "center_y": 0.4})
+        iconBtn = MDIconButton(icon="camera", pos_hint={"center_x": 0.75, "center_y": 0.4}, on_press=self.change)
 
         screen.add_widget(iconBtn)
 
@@ -51,7 +54,9 @@ class SpeciesProfile(MDApp):
         )
 
         self.myname = MDTextField(
-            text="Roślinka nr x",
+            hint_text="Wpisz ime dla roslinki",
+            required=True,
+            max_text_length=30,
             halign="center",
             pos_hint={"center_x": 0.4, "center_y": 0.8},
             size_hint = (0.3, 1)
@@ -130,7 +135,7 @@ class SpeciesProfile(MDApp):
         )
 
         self.myroom = MDTextField(
-            text="pokój x",
+            hint_text="Jeśli chcesz wprowadź pokój",
             halign="center",
             pos_hint={"center_x": 0.4, "center_y": 0.6},
             size_hint = (0.3, 1)

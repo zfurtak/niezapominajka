@@ -1,67 +1,61 @@
+from kivymd.uix.picker import MDTimePicker
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
-from kivy.uix.image import Image
-from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatButton
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.label import MDLabel
-from kivymd.uix.toolbar import MDToolbar
+from kivy.core.window import Window
+from kivy.properties import StringProperty, ListProperty
+from kivy.uix.screenmanager import Screen
+from kivymd.app import MDApp
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.list import OneLineIconListItem, MDList
+
+
+class SettingsScreen(Screen):
+    pass
+
+
+class ContentNavigationDrawer(MDBoxLayout):
+    pass
+
+
+class ItemDrawer(OneLineIconListItem):
+    icon = StringProperty()
+    text_color = ListProperty((0, 0, 0, 1))
+
+
+class DrawerList(ThemableBehavior, MDList):
+    pass
 
 
 class SettingsApp(MDApp):
-    def flip(self):
-        print("working...")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Window.size = (340, 630)
 
     def build(self):
-        screen = MDScreen()
+        return SettingsScreen()
 
-        self.toolbar = MDToolbar(title="Ustawienia")
-        self.toolbar.pos_hint = {"top": 1}
-        self.toolbar.right_action_items = [
-            ["format-list-bulleted", lambda x: self.flip()]]
-        self.toolbar.left_action_items = [
-            ["keyboard-backspace", lambda x: self.flip()]]
+    def show_time_picker(self):
+        time_dialog = MDTimePicker()
+        time_dialog.bind(time=self.get_time)
+        time_dialog.open()
 
-        screen.add_widget(self.toolbar)
+    def get_time(self, instance, time):
+        print(time)
+        return time
 
-
-        self.reminderTime = MDLabel(
-                        text="Godzina przypominajki: ",
-                        halign="center",
-                        pos_hint={"center_x": 0.5, "center_y": 0.7}
-        )
-        self.sound = MDLabel(
-            text="Dźwięk: ",
-            halign="center",
-            pos_hint={"center_x": 0.5, "center_y": 0.6}
-        )
-        self.silentMode = MDLabel(
-            text="Tryb cichy: OFF",
-            halign="center",
-            pos_hint={"center_x": 0.5, "center_y": 0.5}
-        )
-        self.tips = MDFillRoundFlatIconButton(
-            icon="more",
-            text="Tips",
-            pos_hint={"center_x": 0.5, "center_y": 0.4}
-        )
-        self.support = MDFillRoundFlatIconButton(
-            icon="help-circle",
-            text="Support",
-            pos_hint={"center_x": 0.5, "center_y": 0.3}
-        )
-        self.zero = MDFillRoundFlatIconButton(
-            icon="trash-can-outline",
-            text="Clear the app",
-            pos_hint={"center_x": 0.5, "center_y": 0.2}
-        )
-        screen.add_widget(self.reminderTime)
-        screen.add_widget(self.sound)
-        screen.add_widget(self.silentMode)
-        screen.add_widget(self.support)
-        screen.add_widget(self.tips)
-        screen.add_widget(self.zero)
-
-        return screen
+    def on_start(self):
+        icons_item = {
+            "calendar-blank": "Start",
+            "face": "Your profile",
+            "flower-tulip": "My plants",
+            "flower-tulip-outline": "Plant catalog"
+        }
+        for icon_name in icons_item.keys():
+            self.root.ids.content_drawer.ids.md_list.add_widget(
+                ItemDrawer(icon=icon_name, text=icons_item[icon_name])
+            )
 
 
 if __name__ == '__main__':

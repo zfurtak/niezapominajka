@@ -1,0 +1,59 @@
+
+
+<ItemDrawer>:
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        text_color: root.text_color
+
+
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+
+    ScrollView:
+        DrawerList:
+            id: md_list
+            ItemDrawer:
+                icon: "calendar-blank"
+                text: "Start"
+                on_press: root.switch_screen("start")
+            ItemDrawer:
+                icon: "face"
+                text: "Your profile"
+            ItemDrawer:
+                icon: "flower-tulip"
+                text: "My plants"
+            ItemDrawer:
+                icon: "flower-tulip-outline"
+                text: "Plant catalog"
+            ItemDrawer:
+                icon: "tools"
+                text: "Settings"
+
+
+<DayScreen>:
+    id: single_day
+    MDScreen:
+        MDNavigationLayout:
+            ScreenManager:
+                MDScreen:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        MDToolbar:
+                            title: "Flowers to water"
+                            elevation: 10
+                            left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                            specific_text_color: app.theme_cls.accent_color
+
+                        ScrollView:
+                            MDList:
+                                id:flower_list
+
+
+
+
+            MDNavigationDrawer:
+                id: nav_drawer
+
+                ContentNavigationDrawer:
+                    id: content_drawer

@@ -1,0 +1,13 @@
+#:import utils kivy.utils
+
+<HomeScreen>:
+    FloatLayout:
+        MDToolbar:
+            title: "Where are you going today?"
+            md_bg_color: app.theme_cls.primary_light
+            pos_hint: {"left": 1, "top": 1}
+            size_hint: 1, .1
+
+        Button:
+            on_press:
+                root.screen_manager.current = "second_screen"
