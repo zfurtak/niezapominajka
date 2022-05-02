@@ -1,0 +1,89 @@
+#: include KV/Settings.kv
+#: include KV/UserScreen.kv
+#: include KV/MainScreen.kv
+#: include KV/DayScreen.kv
+
+<ItemDrawer>:
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        text_color: root.text_color
+
+<Content>:
+    ScrollView:
+        MDList:
+            ItemDrawer:
+                icon: "calendar-blank"
+                text: "Start"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.manager.current = "MainScreen"
+                    root.toolbar.title = "Start"
+            ItemDrawer:
+                icon: "face"
+                text: "Your profile"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.manager.current = "UserScreen"
+                    root.toolbar.title = "Your profile"
+            ItemDrawer:
+                icon: "flower-tulip"
+                text: "My plants"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.toolbar.title = "My plants"
+
+            ItemDrawer:
+                icon: "flower-tulip-outline"
+                text: "Plants catalog"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.toolbar.title = "Plants catalog"
+
+            ItemDrawer:
+                icon: "tools"
+                text: "Settings"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.manager.current = "SettingsScreen"
+                    root.toolbar.title = "Settings"
+
+<MyScreenManager>:
+    Screen:
+        MDToolbar:
+            id: toolbar
+            pos_hint: {"top": 1}
+            title: "Start"
+            elevation: 8
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            Content:
+                manager: screen_manager
+                nav_drawer: nav_drawer
+                toolbar: toolbar
+
+        MDNavigationLayout:
+            ScreenManager:
+                id: screen_manager
+
+                MainScreen:
+                    name: "MainScreen"
+                    id: main_screen
+
+                DayScreen:
+                    name: "DayScreen"
+                    id: day_screen
+
+                SettingsScreen:
+                    name: "SettingsScreen"
+                    id: settings_screen
+
+                UserScreen:
+                    name: "UserScreen"
+                    id: user_screen
+
+
+
+
