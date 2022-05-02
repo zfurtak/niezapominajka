@@ -2,6 +2,11 @@
 #: include KV/UserScreen.kv
 #: include KV/MainScreen.kv
 #: include KV/DayScreen.kv
+#: include KV/AddPlantScreen.kv
+#: include KV/PlantScreen.kv
+#: include KV/MyPlantsScreen.kv
+#: include KV/SpeciesCatalogScreen.kv
+#: include KV/SpeciesScreen.kv
 
 <ItemDrawer>:
     IconLeftWidget:
@@ -31,6 +36,7 @@
                 text: "My plants"
                 on_press:
                     root.nav_drawer.set_state("close")
+                    root.manager.current = "MyPlantsScreen"
                     root.toolbar.title = "My plants"
 
             ItemDrawer:
@@ -38,6 +44,7 @@
                 text: "Plants catalog"
                 on_press:
                     root.nav_drawer.set_state("close")
+                    root.manager.current = "SpeciesCatalogScreen"
                     root.toolbar.title = "Plants catalog"
 
             ItemDrawer:
@@ -83,6 +90,22 @@
                 UserScreen:
                     name: "UserScreen"
                     id: user_screen
+
+                MyPlantsScreen:
+                    name: "MyPlantsScreen"
+                    id: my_plans_screen
+
+                SpeciesScreen:
+                    name: "SpeciesScreen"
+                    id: species_screen
+
+                AddPlantScreen:
+                    name: "AddPlantScreen"
+                    id: add_plant_screen
+
+                SpeciesCatalogScreen:
+                    name: "SpeciesCatalogScreen"
+                    id: species_catalog_screen
 
 
 

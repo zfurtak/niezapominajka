@@ -24,6 +24,26 @@ class DayScreen(Screen):
     pass
 
 
+class SpeciesScreen(Screen):
+    pass
+
+
+class SpeciesCatalogScreen(Screen):
+    pass
+
+
+class PlantScreen(Screen):
+    pass
+
+
+class MyPlantsScreen(Screen):
+    pass
+
+
+class AddPlantScreen(Screen):
+    pass
+
+
 class MainScreen(Screen):
     pass
 
