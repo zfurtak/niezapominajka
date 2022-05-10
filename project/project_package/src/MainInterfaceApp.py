@@ -5,8 +5,10 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.list import OneLineIconListItem, MDList
+from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem
 from kivymd.uix.picker import MDTimePicker
+from project.project_package.src.package.User import User
+from project.project_package.src.package.Species import Species
 
 Window.size = (340, 630)
 
@@ -56,16 +58,19 @@ class SettingsScreen(Screen):
     pass
 
 
-class Content(BoxLayout):
-    manager = ObjectProperty()
-    nav_drawer = ObjectProperty()
-    toolbar = ObjectProperty()
+# class Content(BoxLayout):
+#     manager = ObjectProperty()
+#     nav_drawer = ObjectProperty()
+#     toolbar = ObjectProperty()
 
 
 class MainApp(MDApp):
     def build(self):
+        self.user = User("Stokrotka")
+        self.species = [Species("GROOT species", "NO SOY LATINA!", 3, "Dużo wody, słońca i miłości <3", "GUI/images/grootspecies.jpg", True)]
         Builder.load_file("KV/MainInterface.kv")
         return MyScreenManager()
+
 
     def show_time_picker(self):
         time_dialog = MDTimePicker()
@@ -74,6 +79,8 @@ class MainApp(MDApp):
 
     def get_time(self, instance, time):
         return time
+
+
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from datetime import datetime
 from .Level import Level
 from .Achievement import Achievement
