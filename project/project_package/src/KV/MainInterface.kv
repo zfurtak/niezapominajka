@@ -73,27 +73,30 @@
                             text: "Start"
                             on_press:
                                 screen_manager.current= "MainScreen"
-#                                screen_manager.toolbar.text = "Start"
+                                app.root.ids.toolbar.title = "Start"
                         ItemDrawer:
                             icon: "face"
                             text: "Your profile"
                             on_press:
                                 screen_manager.current=  "UserScreen"
-#                                screen_manager.toolbar.text = "Profil"
+                                app.root.ids.toolbar.title = "Profil"
                         ItemDrawer:
                             icon: "flower-tulip"
                             text: "My plants"
                             on_press:
                                 screen_manager.current = "MyPlantsScreen"
+                                app.root.ids.toolbar.title = "Moje roślinki"
 
                         ItemDrawer:
                             icon: "flower-tulip-outline"
                             text: "Plants catalog"
                             on_press:
                                 screen_manager.current = "SpeciesCatalogScreen"
+                                app.root.ids.toolbar.title = "Gatunki roślinek"
 
                         ItemDrawer:
                             icon: "tools"
                             text: "Settings"
                             on_press:
                                 screen_manager.current = "SettingsScreen"
+                                app.root.ids.toolbar.title = "Ustawienia"
