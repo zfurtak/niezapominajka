@@ -1,1 +1,150 @@
 <AddPlantScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDLabel:
+            text: " "
+            halign: "center"
+            size_hint: (1, 0.4)
+
+        Image:
+            id: plant_photo
+            source:"GUI/images/basic.png"
+            pos_hint:{"center_x": 0.5, "top_y": 0.1}
+            size_hint:(1, 1)
+
+        MDIconButton:
+            icon: "camera"
+            pos_hint:{"center_x": 0.5, "center_y": 0.5}
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: name
+                text: "Imie"
+                halign: "center"
+#                pos_hint: {"center_x": 0.1, "center_y": 0.8}
+                theme_text_color:"Secondary"
+                size_hint: (0.3, 1)
+
+
+
+            MDTextField:
+                id: name_field
+                hint_text:"Wpisz imię"
+                required: True
+                max_text_length: 20
+                halign:"center"
+#                pos_hint:{"center_x": 0.4, "center_y": 0.8}
+                size_hint: (0.6, 1)
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.1, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: species
+                text:"Gatunek:"
+                halign:"center"
+#                pos_hint:{"center_x": 0.1, "center_y": 0.75}
+                theme_text_color:"Secondary"
+                size_hint: (0.3, 1)
+
+            MDLabel:
+                id: species_name
+                text:"Gatunek Y"
+                halign:"center"
+#                pos_hint:{"center_x": 0.4, "center_y": 0.75}
+                theme_text_color:"Primary"
+                font_style:"H5"
+                size_hint: (0.6, 1)
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.1, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: first_water_label
+                text:"Pierwsze podlewanie:"
+                halign:"center"
+#                pos_hint:{"center_x": 0.1, "center_y": 0.7}
+                theme_text_color:"Secondary"
+                size_hint: (0.3, 1)
+
+            MDLabel:
+                id: first_water_date
+                text:"1.04.2022"
+                halign:"center"
+#                pos_hint:{"center_x": 0.4, "center_y": 0.7}
+                theme_text_color:"Primary"
+                font_style:"H5"
+                size_hint: (0.6, 1)
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.1, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: colour_label
+                text:"Mój kolor:"
+                halign:"center"
+#                pos_hint:{"center_x": 0.1, "center_y": 0.7}
+                theme_text_color:"Secondary"
+                size_hint: (0.3, 1)
+
+            MDLabel:
+                id: colour
+                text:"ZIELONY!!!"
+                halign:"center"
+#                pos_hint:{"center_x": 0.4, "center_y": 0.7}
+                theme_text_color:"Primary"
+                font_style:"H5"
+                size_hint: (0.6, 1)
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.1, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: room_label
+                text:"Pokój:"
+                halign:"center"
+    #            pos_hint={"center_x": 0.1, "center_y": 0.6}
+                theme_text_color:"Secondary"
+                size_hint: (0.3, 1)
+            MDTextField:
+                hint_text:"Wprowadź pokój"
+                halign:"center"
+    #            pos_hint={"center_x": 0.4, "center_y": 0.6}
+                size_hint: (0.6, 1)
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.1, 1)
+
+        MDIconButton:
+            id: save_plant
+            icon: "check-bold"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint:{"center_x": 0.5, "center_y": 0.15}
+            on_release: print("Dodano!")
+
+        MDLabel:
+
+            text: " "
+            halign: "center"
+            size_hint: (0.1, 0.1)
+
