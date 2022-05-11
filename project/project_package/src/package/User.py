@@ -9,27 +9,31 @@ class User:
 
     def __init__(self, nickname):
         self.nickname = nickname
-        self.joinDate = datetime.today()
+        self.join_date = datetime.today()
         self.level = Level()
-        self.listOfAchievements = []
-        self.listOfPlants = []
-        self.daysWithApp = 0
-        self.daysWithoutDeadPlant = 0
+        self.list_of_achievements = []
+        self.list_of_plants = []
+        self.days_with_app = 0
+        self.days_without_dead_plant = 0
+        self.reminder_time = None
+
+    def set_reminder_time(self, time):
+        self.reminder_time = time
 
     def addAchievement(self, achievement):
         self.level.addAchievement(achievement)
-        self.listOfAchievements.append(achievement.name)
+        self.list_of_achievements.append(achievement.name)
 
     def addPlant(self, plant):
-        self.listOfPlants.append(plant)
+        self.list_of_plants.append(plant)
 
     def updateDays(self):
-        self.daysWithApp += 1
+        self.days_with_app += 1
 
     def deadPlant(self):
-        self.daysWithoutDeadPlant = 0
+        self.days_without_dead_plant = 0
 
     def updateDaysWithoutDeadPlant(self):
-        self.daysWithoutDeadPlant += 1
+        self.days_without_dead_plant += 1
 
 

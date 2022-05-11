@@ -1,4 +1,4 @@
-####: include KV/Settings.kv
+#: include KV/Settings.kv
 #: include KV/UserScreen.kv
 #: include KV/MainScreen.kv
 #: include KV/DayScreen.kv
@@ -48,7 +48,7 @@
 
                 MyPlantsScreen:
                     name: "MyPlantsScreen"
-                    id: my_plans_screen
+                    id: my_plants_screen
 
                 SpeciesScreen:
                     name: "SpeciesScreen"
@@ -67,25 +67,27 @@
                 id: nav_drawer
                 ScrollView:
                     MDList:
-
                         ItemDrawer:
                             icon: "calendar-blank"
                             text: "Start"
                             on_press:
                                 screen_manager.current= "MainScreen"
                                 app.root.ids.toolbar.title = "Start"
+                                nav_drawer.set_state("close")
                         ItemDrawer:
                             icon: "face"
                             text: "Your profile"
                             on_press:
-                                screen_manager.current=  "UserScreen"
+                                screen_manager.current =  "UserScreen"
                                 app.root.ids.toolbar.title = "Profil"
+                                nav_drawer.set_state("close")
                         ItemDrawer:
                             icon: "flower-tulip"
                             text: "My plants"
                             on_press:
                                 screen_manager.current = "MyPlantsScreen"
                                 app.root.ids.toolbar.title = "Moje roślinki"
+                                nav_drawer.set_state("close")
 
                         ItemDrawer:
                             icon: "flower-tulip-outline"
@@ -93,6 +95,7 @@
                             on_press:
                                 screen_manager.current = "SpeciesCatalogScreen"
                                 app.root.ids.toolbar.title = "Gatunki roślinek"
+                                nav_drawer.set_state("close")
 
                         ItemDrawer:
                             icon: "tools"
@@ -100,3 +103,4 @@
                             on_press:
                                 screen_manager.current = "SettingsScreen"
                                 app.root.ids.toolbar.title = "Ustawienia"
+                                nav_drawer.set_state("close")

@@ -1,15 +1,5 @@
 <SpeciesCatalogScreen>:
     ScrollView:
-        pos_hint:{"top": 0.92}
+        pos_hint:{"top": 0.9}
         MDList:
-            OneLineAvatarIconListItem:
-                on_release: print("Click!")
-
-                IconLeftWidget:
-                    icon: "github"
-
-            OneLineAvatarIconListItem:
-                on_release: print("Click 2!")
-
-                IconLeftWidget:
-                    icon: "gitlab"
+            id:species_list

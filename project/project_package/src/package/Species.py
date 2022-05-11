@@ -1,5 +1,3 @@
-import project_package
-
 
 class Species:
 

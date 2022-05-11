@@ -12,37 +12,40 @@
             text: "Customize the app to suit you"
             halign: "center"
             pos_hint: {"center_x": 0.5, "center_y": 0.1}
-            theme_text_color: "Custom"
-            text_color: 0, 0, 1, 1
-            size_hint: (0.8, 0.3)
+            size_hint: (0.8, 0.2)
 
         MDBoxLayout:
             orientation: 'vertical'
-            padding: 20
+            padding: 50
             spacing: "50dp"
+            valign: "top"
+            size_hint: (1, 0.8)
 
-
-            MDFillRoundFlatIconButton:
+            MDRoundFlatIconButton:
                 icon: "clock-time-eight-outline"
                 text: "Choose time for reminder"
-                pos_hint: {'center_x': .5}
-                size_hint: (.7, 0.03)
-                on_release: app.show_time_picker()
+                pos_hint: {'center_x': .5, "center_y": 0.3}
+                on_press:
+                    app.show_time_picker()
 
-            MDFillRoundFlatIconButton:
+
+            MDRoundFlatIconButton:
                 icon: "more"
                 text: "Tips"
-                size_hint: (.3, 0.03)
                 pos_hint: {"center_x": 0.5, "center_y": 0.4}
+                on_press:
+                    app.show_alert_dialog("Tip of the day: to have live plants, water them")
 
-            MDFillRoundFlatIconButton:
+            MDRoundFlatIconButton:
                 icon: "help-circle"
                 text: "Support"
-                size_hint: (.4, 0.03)
                 pos_hint: {"center_x": 0.5, "center_y": 0.6}
+                on_press:
+                    app.show_alert_dialog("All your questions and doubts forward to wedont@care.com")
 
-            MDFillRoundFlatIconButton:
+            MDRoundFlatIconButton:
                 icon: "trash-can-outline"
                 text: "Clean the app"
-                size_hint: (.5, 0.03)
                 pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+
