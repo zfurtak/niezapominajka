@@ -1,1 +1,169 @@
 <PlantScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        MDLabel:
+            text: " "
+            halign: "center"
+            size_hint: (1, 0.4)
+
+        Image:
+            id: plant_photo
+            source:"GUI/images/groot.jpg"
+            pos_hint:{"center_x": 0.5, "top_y": 0.1}
+            size_hint:(1, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: plant_name_label
+                text:"Nazwa:"
+                halign:"center"
+                pos_hint:{"right": 1}
+                size_hint:(0.3, 1)
+                theme_text_color:"Secondary"
+
+            MDLabel:
+                id: plant_name
+                text:"I AM GROOT!"
+                halign:"center"
+                pos_hint:{"left": 1}
+                size_hint:(0.45, 1)
+                theme_text_color:"Primary"
+                font_style:"H5"
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.25, 1)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: plant_species_label
+                text:"Gatunek:"
+                halign:"center"
+                pos_hint:{"right": 1}
+                size_hint:(0.3, 1)
+                theme_text_color:"Secondary"
+
+            MDLabel:
+                id: species_name
+                text:"Groot to Groot!"
+                halign:"center"
+                pos_hint:{"left": 1}
+                size_hint:(0.45, 1)
+                theme_text_color:"Primary"
+                font_style:"H5"
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.25, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: first_water_label
+                text:"Pierwsze podlewanie:"
+                halign:"center"
+                pos_hint:{"right": 1}
+                size_hint:(0.3, 1)
+                theme_text_color:"Secondary"
+
+            MDLabel:
+                id: first_water
+                text:"1.04.2022"
+                halign:"center"
+                pos_hint:{"left": 1}
+                size_hint:(0.45, 1)
+                theme_text_color:"Primary"
+                font_style:"H5"
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.25, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: colour_label
+                text:"Mój kolor:"
+                halign:"center"
+                pos_hint:{"right": 1}
+                size_hint:(0.3, 1)
+                theme_text_color:"Secondary"
+
+            MDLabel:
+                id: colour
+                text:"ZIELONY!!!"
+                halign:"center"
+                pos_hint:{"left": 1}
+                size_hint:(0.45, 1)
+                theme_text_color:"Primary"
+                font_style:"H5"
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.25, 1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: colour_label
+                text:"Pokój:"
+                halign:"center"
+                pos_hint:{"right": 1}
+                size_hint:(0.3, 1)
+                theme_text_color:"Secondary"
+
+            MDLabel:
+                id: colour
+                text:"Doniczka"
+                halign:"center"
+                pos_hint:{"left": 1}
+                size_hint:(0.45, 1)
+                theme_text_color:"Primary"
+                font_style:"H5"
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.25, 1)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:(1, 0.3)
+            MDLabel:
+                id: next_water_label
+                text:"Następne podlewane:"
+                halign:"center"
+                pos_hint:{"right": 1}
+                size_hint:(0.3, 1)
+                theme_text_color:"Secondary"
+
+            MDLabel:
+                id: next_water
+                text:"Teraz?"
+                halign:"center"
+                pos_hint:{"left": 1}
+                size_hint:(0.45, 1)
+                theme_text_color:"Primary"
+                font_style:"H5"
+            MDLabel:
+                text: " "
+                halign: "center"
+                size_hint: (0.25, 1)
+
+
+        MDIconButton:
+            id: water_button
+            icon: "watering-can"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint:{"center_x": 0.5, "center_y": 0.15}
+            on_release: print("Podlany!")
+
+        MDLabel:
+
+            text: " "
+            halign: "center"
+            size_hint: (0.1, 0.1)
