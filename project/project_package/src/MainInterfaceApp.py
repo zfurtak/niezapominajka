@@ -1,14 +1,10 @@
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.scrollview import ScrollView
 from kivymd.app import MDApp
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem
+from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem, OneLineAvatarListItem
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
@@ -20,24 +16,36 @@ class MyScreenManager(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # tutaj mozna podpiąć baze
-        contacts = ["Paula", "John", "Kate", "Vlad"]
-        for c in contacts:
+        self.species = None
+        self.user = User("Ala")
+        rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
+                                "GUI/images/grootspecies.jpg", True)
+        tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
+                                "GUI/images/groot.jpg", True)
+        species = [tulip, rose]
+        for s in species:
             self.ids.species_catalog_screen.ids.species_list.add_widget(
                 OneLineListItem(
-                    text=c
+                    text=s.name,
+
                 )
             )
 
         my_plants = ["stokrotka basia", "tulipan staszek", "róża rozalia", "kaktus kajtek"]
+
         for plant in my_plants:
             self.ids.my_plants_screen.ids.plants_list.add_widget(
                 OneLineListItem(
-                    text=plant
-
+                    text=plant,
                 )
             )
 
-
+        self.ids.user_screen.ids.user_photo.source = self.user.photo
+        self.ids.user_screen.ids.user_name.text = self.user.nickname
+        self.ids.user_screen.ids.lvl.text = "Your level:"+str(self.user.level.value)
+        self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
+        self.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant)\
+                                                       +" days without killing plants"
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -79,12 +87,6 @@ class UserScreen(Screen):
 
 class SettingsScreen(Screen):
     pass
-
-
-# class Content(BoxLayout):
-#     manager = ObjectProperty()
-#     nav_drawer = ObjectProperty()
-#     toolbar = ObjectProperty()
 
 
 class MainApp(MDApp):

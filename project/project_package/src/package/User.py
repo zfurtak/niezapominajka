@@ -16,6 +16,7 @@ class User:
         self.days_with_app = 0
         self.days_without_dead_plant = 0
         self.reminder_time = None
+        self.photo = "GUI/images/test.jpg"
 
     def set_reminder_time(self, time):
         self.reminder_time = time
