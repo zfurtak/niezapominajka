@@ -86,6 +86,12 @@ class SpeciesProfileDialog(FloatLayout):
         self.ids.species_name.text = species_name
 
 
+class AddPlantDialog(FloatLayout):
+    def __init__(self, species_name, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.species_name.text = species_name
+
+
 class PlantProfileDialog(FloatLayout):
     def __init__(self, plant_name, **kwargs):
         super().__init__(**kwargs)
@@ -108,8 +114,8 @@ class SinglePlant(OneLineListItem):
 
 class MainApp(MDApp):
     dialog = None
-    which_species = None
-    which_plant = None
+    add_plant_dialog = None
+
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -190,7 +196,6 @@ class MainApp(MDApp):
                 content_cls=SpeciesProfileDialog(species_name))
 
         self.dialog.open()
-        self.dialog = None
 
     def show_plant_profile_dialog(self, plant_name):
         if not self.dialog:
@@ -199,6 +204,22 @@ class MainApp(MDApp):
                 content_cls=PlantProfileDialog(plant_name))
         self.dialog.open()
         self.dialog = None
+
+    def show_add_plant_dialog(self, species_name):
+        self.add_plant_dialog = MDDialog(
+            type="custom",
+            content_cls=AddPlantDialog(species_name))
+        self.add_plant_dialog.open()
+
+    def close_dialog(self):
+        self.dialog.dismiss()
+
+    def close_add_plant_dialog(self):
+        self.add_plant_dialog.dismiss()
+
+    def add_plant(self, plant_name, species_name):
+        db.create_plant("zuz", plant_name, species_name, "06-07-2001", "pink", "kitchen", "hello", "06-05-2022", "GUI/images/test.jpg")
+        self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
 
     def db_insert_user(self, user_name, password, photo):
         db.create_user(user_name, password, photo)

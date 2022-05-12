@@ -11,6 +11,7 @@ class Plant:
         self.room = room
         self.notes = notes
         self.lastWater = lastWater
+        self.picture = picture
         # if picture is not None:
         #     self.picture = picture
         # else:

@@ -55,4 +55,29 @@
         id: add
         text: "Add a new plant"
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_press: app.show_add_plant_dialog(species_name.text), app.close_dialog()
+
+
+<AddPlantDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 500)
+
+    MDTextField:
+        id: plant_name
+        hint_text: "Plant name"
+        pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+    MDLabel:
+        id: species_name
+        text: ""
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+    MDRaisedButton:
+        id: add
+        text: "Add a new plant"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_press: app.add_plant(plant_name.text, species_name.text), app.close_add_plant_dialog()
+
+
 
