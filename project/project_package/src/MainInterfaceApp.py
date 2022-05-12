@@ -12,7 +12,9 @@ from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, On
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
+from project.project_package.src.database.database import Database
 
+db = Database()
 Window.size = (340, 630)
 
 
@@ -31,7 +33,6 @@ class MyScreenManager(ScreenManager):
             self.ids.species_catalog_screen.ids.species_list.add_widget(
                 OneLineListItem(
                     text=s.name,
-
                 )
             )
 
@@ -49,6 +50,8 @@ class MyScreenManager(ScreenManager):
         self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
         self.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant)\
                                                        +" days without killing plants"
+
+
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -145,7 +148,11 @@ class MainApp(MDApp):
                 type="custom",
                 content_cls=SignUpDialog())
         self.dialog.open()
+        print(self.dialog.ids.email.text)
         self.dialog = None
+
+    def db_insert_user(self, user_name, password, photo):
+        db.create_user(user_name, password, photo)
 
     def change_screen(self, screen_name, title, direction = 'None', mode=""):
         screen_manager = self.root.ids.screen_manager
