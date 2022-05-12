@@ -39,13 +39,13 @@ class MyScreenManager(ScreenManager):
                     text=plant,
                 )
             )
-
         self.ids.user_screen.ids.user_photo.source = self.user.photo
         self.ids.user_screen.ids.user_name.text = self.user.nickname
         self.ids.user_screen.ids.lvl.text = "Your level:"+str(self.user.level.value)
         self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
         self.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant)\
                                                        +" days without killing plants"
+
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -87,6 +87,12 @@ class UserScreen(Screen):
 
 class SettingsScreen(Screen):
     pass
+
+
+class LoginDialog(MDDialog):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 
 
 class MainApp(MDApp):
