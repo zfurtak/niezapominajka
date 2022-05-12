@@ -22,18 +22,17 @@ class MyScreenManager(ScreenManager):
         # tutaj mozna podpiąć baze
         self.species = None
         self.user = User("Ala")
-        rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
-                                "GUI/images/grootspecies.jpg", True)
-        tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
-                                "GUI/images/groot.jpg", True)
-        species = [tulip, rose]
-        for s in species:
-            self.ids.species_catalog_screen.ids.species_list.add_widget(
-                OneLineListItem(
-                    text=s.name,
-
-                )
-            )
+        # rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
+        #                         "GUI/images/grootspecies.jpg", True)
+        # tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
+        #                         "GUI/images/groot.jpg", True)
+        # species = [tulip, rose]
+        # for s in species:
+        #     self.ids.species_catalog_screen.ids.species_list.add_widget(
+        #         OneLineListItem(
+        #             text=s.name,
+        #         )
+        #     )
 
         my_plants = ["stokrotka basia", "tulipan staszek", "róża rozalia", "kaktus kajtek"]
 
@@ -99,6 +98,9 @@ class LoginDialog(FloatLayout):
 class SignUpDialog(FloatLayout):
     pass
 
+class PlantDialog(FloatLayout):
+    pass
+
 
 class MainApp(MDApp):
     dialog = None
@@ -109,11 +111,23 @@ class MainApp(MDApp):
         self.species = [Species("GROOT species", "NO SOY LATINA!", 3, "Dużo wody, słońca i miłości <3",
                                 "GUI/images/grootspecies.jpg", True)]
 
+
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
         Builder.load_file("KV/MainInterface.kv")
 
         return MyScreenManager()
+
+    def on_start(self):
+        for s in self.species:
+            self.root.ids.species_catalog_screen.ids.species_list.add_widget(
+                OneLineListItem(
+                    text=s.name,
+                    on_release=self.show_plant_dialog
+                    # on_release=self.show_login_dialog()
+                )
+            )
+
 
     def show_time_picker(self):
         time_dialog = MDTimePicker()
@@ -146,6 +160,15 @@ class MainApp(MDApp):
                 content_cls=SignUpDialog())
         self.dialog.open()
         self.dialog = None
+
+    def show_plant_dialog(self, onelinelistitem):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                type="custom",
+                content_cls=PlantDialog())
+        self.dialog.open()
+        self.dialog = None
+
 
     def change_screen(self, screen_name, title, direction = 'None', mode=""):
         screen_manager = self.root.ids.screen_manager
