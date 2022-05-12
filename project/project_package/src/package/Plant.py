@@ -1,21 +1,20 @@
 from datetime import datetime, timedelta
 
 
-
 class Plant:
-    def __init__(self, name, species, firstWater=datetime.today(), colour='red', room=None,
+    def __init__(self, name, species, firstWater=datetime.today(), color='red', room=None,
                  notes="Brak", lastWater=datetime.today(), picture=None):
         self.name = name
         self.species = species
         self.firstWater = firstWater
-        self.colour = colour
+        self.color = color
         self.room = room
         self.notes = notes
         self.lastWater = lastWater
-        if picture is not None:
-            self.picture = picture
-        else:
-            self.picture = self.species.getPicture()
+        # if picture is not None:
+        #     self.picture = picture
+        # else:
+        #     self.picture = self.species.getPicture()
 
 
     def daysEndured(self):

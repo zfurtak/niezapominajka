@@ -1,0 +1,44 @@
+<SinglePlant>:
+    id: single_plant
+    on_press:
+        app.show_plant_profile_dialog(single_plant.text)
+
+
+<PlantProfileDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 300)
+
+    Image:
+        id: plant_photo
+        source: "GUI/images/basic.png"
+        pos_hint: {"center_x": 0.8, "center_y": 0.9}
+        size_hint_x: 0.4
+        size_hint_y: 0.4
+
+    MDLabel:
+        id: plant_name
+        text: "Plant name"
+        pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
+    MDLabel:
+        id: species
+        text: "Species"
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+
+    MDLabel:
+        id: room
+        text: "Room"
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+    MDLabel:
+        id: last_water
+        text: "Last water"
+        pos_hint: {"center_x": 0.5, "center_y": 0.3}
+
+    MDLabel:
+        id: notes
+        text: "Notes"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+
+

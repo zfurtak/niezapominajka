@@ -1,18 +1,15 @@
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
-from kivy.properties import ObjectProperty, StringProperty, ListProperty
-from kivymd.uix.boxlayout import MDBoxLayout
+from kivy.properties import  StringProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem, OneLineAvatarListItem, \
-    TwoLineListItem
+from kivymd.uix.list import OneLineIconListItem, OneLineListItem
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
+from project.project_package.src.package.Plant import Plant
 from project.project_package.src.database.database import Database
 
 db = Database()
@@ -84,11 +81,35 @@ class SignUpDialog(FloatLayout):
 
 
 class SpeciesProfileDialog(FloatLayout):
+    def __init__(self, species_name, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.species_name.text = species_name
+
+
+class PlantProfileDialog(FloatLayout):
+    def __init__(self, plant_name, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.plant_name.text = plant_name
+        plant = db.get_plant(plant_name, "zuz")
+        self.ids.species.text = plant[2]
+        self.ids.room.text = plant[5]
+        self.ids.notes.text = plant[6]
+        self.ids.last_water.text = plant[7]
+        self.ids.plant_photo.source = plant[8]
+
+
+class SingleSpecies(OneLineListItem):
+    pass
+
+
+class SinglePlant(OneLineListItem):
     pass
 
 
 class MainApp(MDApp):
     dialog = None
+    which_species = None
+    which_plant = None
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -100,10 +121,14 @@ class MainApp(MDApp):
                                 "GUI/images/grootspecies.jpg", True)
 
         species_ = [tulip, rose, groot]
-        self.plants = ["stokrotka basia", "tulipan tadek", "roza rozalia", "slonecznik seba"]
-        self.user = User("Stokrotka")
         self.species = species_
-        self.specie = None
+        plants_ = db.get_plants()
+        self.plants = []
+        for x in plants_:
+            self.plants.append(Plant(x[1], x[2]))
+
+        self.user = User("Stokrotka")
+
 
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
@@ -114,18 +139,15 @@ class MainApp(MDApp):
     def on_start(self):
         for s in self.species:
             self.root.ids.species_catalog_screen.ids.species_list.add_widget(
-                OneLineListItem(
+                SingleSpecies(
                     text=s.name,
-                    on_press=self.show_species_profile_dialog,
                 )
             )
 
         for p in self.plants:
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(
-                OneLineListItem(
-                    text=p,
-                    # to dziala tylko bez nawiasow ale nie umiem przekazac gatunku
-                    on_press=self.show_species_profile_dialog
+                SinglePlant(
+                    text=p.name,
                 )
             )
 
@@ -161,11 +183,20 @@ class MainApp(MDApp):
         self.dialog.open()
         self.dialog = None
 
-    def show_species_profile_dialog(self, sth, specie):
+    def show_species_profile_dialog(self, species_name):
         if not self.dialog:
             self.dialog = MDDialog(
                 type="custom",
-                content_cls=SpeciesProfileDialog())
+                content_cls=SpeciesProfileDialog(species_name))
+
+        self.dialog.open()
+        self.dialog = None
+
+    def show_plant_profile_dialog(self, plant_name):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                type="custom",
+                content_cls=PlantProfileDialog(plant_name))
         self.dialog.open()
         self.dialog = None
 
@@ -186,4 +217,10 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
+
+    # db.create_plant("zuz", "Zuzia", "tulip", "01-01-2020", "pink", "bedroom", "lubi ciepelko", "10-05-2022", "GUI/images/basic.png")
+    # db.delete_plants(3)
+    print(db.get_plants())
+
     MainApp().run()
+

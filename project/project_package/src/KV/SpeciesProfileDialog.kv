@@ -1,22 +1,28 @@
+<SingleSpecies>:
+    id: single_species
+    on_press:
+        app.show_species_profile_dialog(single_species.text)
+
+
 <SpeciesProfileDialog>:
     spacing: "12dp"
     size_hint_y: None
     size: (200, 500)
 
     Image:
-        id: plant_photo
+        id: species_photo
         source: "GUI/images/basic.png"
         pos_hint: {"center_x": 0.5, "center_y": 0.95}
         size_hint_x: 0.4
         size_hint_y: 0.4
 
     MDLabel:
-        id: plant_name
+        id: species_name
         text: "Species name"
         pos_hint: {"center_x": 0.5, "center_y": 0.8}
 
     MDLabel:
-        id: latin_plant_name
+        id: latin_species_name
         text: "Species latin name"
         pos_hint: {"center_x": 0.5, "center_y": 0.7}
 
@@ -44,12 +50,6 @@
         id: sun
         text: "Sun"
         pos_hint: {"center_x": 0.5, "center_y": 0.2}
-
-
-
-
-
-
 
     MDRaisedButton:
         id: add
