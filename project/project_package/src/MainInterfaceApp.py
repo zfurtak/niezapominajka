@@ -8,7 +8,8 @@ from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem, OneLineAvatarListItem
+from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem, OneLineAvatarListItem, \
+    TwoLineListItem
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
@@ -24,34 +25,13 @@ class MyScreenManager(ScreenManager):
         # tutaj mozna podpiąć baze
         self.species = None
         self.user = User("Ala")
-        # rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
-        #                         "GUI/images/grootspecies.jpg", True)
-        # tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
-        #                         "GUI/images/groot.jpg", True)
-        # species = [tulip, rose]
-        # for s in species:
-        #     self.ids.species_catalog_screen.ids.species_list.add_widget(
-        #         OneLineListItem(
-        #             text=s.name,
-        #         )
-        #     )
 
-        my_plants = ["stokrotka basia", "tulipan staszek", "róża rozalia", "kaktus kajtek"]
-
-        for plant in my_plants:
-            self.ids.my_plants_screen.ids.plants_list.add_widget(
-                OneLineListItem(
-                    text=plant,
-                )
-            )
         self.ids.user_screen.ids.user_photo.source = self.user.photo
         self.ids.user_screen.ids.user_name.text = self.user.nickname
         self.ids.user_screen.ids.lvl.text = "Your level:"+str(self.user.level.value)
         self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
         self.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant)\
                                                        +" days without killing plants"
-
-
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -102,7 +82,8 @@ class LoginDialog(FloatLayout):
 class SignUpDialog(FloatLayout):
     pass
 
-class PlantDialog(FloatLayout):
+
+class SpeciesProfileDialog(FloatLayout):
     pass
 
 
@@ -111,10 +92,18 @@ class MainApp(MDApp):
 
     def __init__(self, **kwargs):
         super().__init__()
-        self.user = User("Stokrotka")
-        self.species = [Species("GROOT species", "NO SOY LATINA!", 3, "Dużo wody, słońca i miłości <3",
-                                "GUI/images/grootspecies.jpg", True)]
+        rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
+                                "GUI/images/grootspecies.jpg", True)
+        tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
+                                "GUI/images/groot.jpg", True)
+        groot = Species("GROOT species", "NO SOY LATINA!", 3, "Dużo wody, słońca i miłości <3",
+                                "GUI/images/grootspecies.jpg", True)
 
+        species_ = [tulip, rose, groot]
+        self.plants = ["stokrotka basia", "tulipan tadek", "roza rozalia", "slonecznik seba"]
+        self.user = User("Stokrotka")
+        self.species = species_
+        self.specie = None
 
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
@@ -127,11 +116,18 @@ class MainApp(MDApp):
             self.root.ids.species_catalog_screen.ids.species_list.add_widget(
                 OneLineListItem(
                     text=s.name,
-                    on_release=self.show_plant_dialog
-                    # on_release=self.show_login_dialog()
+                    on_press=self.show_species_profile_dialog,
                 )
             )
 
+        for p in self.plants:
+            self.root.ids.my_plants_screen.ids.plants_list.add_widget(
+                OneLineListItem(
+                    text=p,
+                    # to dziala tylko bez nawiasow ale nie umiem przekazac gatunku
+                    on_press=self.show_species_profile_dialog
+                )
+            )
 
     def show_time_picker(self):
         time_dialog = MDTimePicker()
@@ -163,22 +159,20 @@ class MainApp(MDApp):
                 type="custom",
                 content_cls=SignUpDialog())
         self.dialog.open()
-        print(self.dialog.ids.email.text)
         self.dialog = None
 
-    def show_plant_dialog(self, onelinelistitem):
+    def show_species_profile_dialog(self, sth, specie):
         if not self.dialog:
             self.dialog = MDDialog(
                 type="custom",
-                content_cls=PlantDialog())
+                content_cls=SpeciesProfileDialog())
         self.dialog.open()
         self.dialog = None
-
 
     def db_insert_user(self, user_name, password, photo):
         db.create_user(user_name, password, photo)
 
-    def change_screen(self, screen_name, title, direction = 'None', mode=""):
+    def change_screen(self, screen_name, title, direction='None', mode=""):
         screen_manager = self.root.ids.screen_manager
         self.root.ids.toolbar.title = title
 

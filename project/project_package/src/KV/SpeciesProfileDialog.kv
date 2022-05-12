@@ -1,0 +1,58 @@
+<SpeciesProfileDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 500)
+
+    Image:
+        id: plant_photo
+        source: "GUI/images/basic.png"
+        pos_hint: {"center_x": 0.5, "center_y": 0.95}
+        size_hint_x: 0.4
+        size_hint_y: 0.4
+
+    MDLabel:
+        id: plant_name
+        text: "Species name"
+        pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+    MDLabel:
+        id: latin_plant_name
+        text: "Species latin name"
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+
+    MDLabel:
+        id: watering_days
+        text: "Days between watering"
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+    MDLabel:
+        id: care_tips
+        text: "Care tips"
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+    MDLabel:
+        id: notes
+        text: "Notes"
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+    MDLabel:
+        id: origin
+        text: "Origin"
+        pos_hint: {"center_x": 0.5, "center_y": 0.3}
+
+    MDLabel:
+        id: sun
+        text: "Sun"
+        pos_hint: {"center_x": 0.5, "center_y": 0.2}
+
+
+
+
+
+
+
+    MDRaisedButton:
+        id: add
+        text: "Add a new plant"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+

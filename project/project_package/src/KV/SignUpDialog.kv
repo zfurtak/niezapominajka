@@ -1,2 +1,39 @@
+<SignUpDialog>:
+    id:sign_up_dialog
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 300)
+
+    MDLabel:
+        text: "You want to sign up?"
+        pos_hint: {"center_x": 0.5, "center_y": 1}
+        helper_text_mode: "persistent"
+
+    MDTextField:
+        id:email
+        icon_right: "email"
+        hint_text: "email"
+        pos_hint: {"center_x": 0.5, "center_y": 0.8}
+        helper_text_mode: "persistent"
+
+    MDTextField:
+        id:password
+        icon_right: "key-variant"
+        hint_text: "password"
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        helper_text_mode: "persistent"
+        password: True
+
+    MDTextField:
+        id:photo
+        icon_right: "camera"
+        hint_text: "photo source"
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+        helper_text_mode: "persistent"
+
+    MDRaisedButton:
+        id: signup
+        text: "Sign Up"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
 
 
