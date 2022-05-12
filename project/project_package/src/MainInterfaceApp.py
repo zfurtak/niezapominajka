@@ -2,7 +2,7 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -146,6 +146,18 @@ class MainApp(MDApp):
                 content_cls=SignUpDialog())
         self.dialog.open()
         self.dialog = None
+
+    def change_screen(self, screen_name, title, direction = 'None', mode=""):
+        screen_manager = self.root.ids.screen_manager
+        self.root.ids.toolbar.title = title
+
+        if direction == 'None':
+            screen_manager.transition = NoTransition()
+            screen_manager.current = screen_name
+            return
+
+        screen_manager.transition = CardTransition(direction=direction, mode=mode)
+        screen_manager.current = screen_name
 
 
 if __name__ == '__main__':
