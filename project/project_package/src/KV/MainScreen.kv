@@ -1,5 +1,7 @@
 <MainScreen>:
     BoxLayout:
         orientation: 'vertical'
-        MDLabel:
-            text: "main"
+        MDFlatButton:
+            text: "ALERT DIALOG"
+            pos_hint: {'center_x': .5, 'center_y': 1}
+            on_release: app.show_login_dialog()

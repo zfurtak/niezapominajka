@@ -1,0 +1,27 @@
+<SignUpDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 300)
+
+    MDLabel:
+        text: "You want to sign up?"
+        pos_hint: {"center_x": 0.5, "center_y": 1}
+
+    MDTextField:
+        hint_text: "email"
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+
+    MDTextField:
+        hint_text: "password"
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+
+    MDTextField:
+        hint_text: "password"
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+    MDRaisedButton:
+        id: signup
+        text: "Sign Up"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+

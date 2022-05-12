@@ -1,9 +1,13 @@
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import OneLineIconListItem, MDList, TwoLineIconListItem, OneLineListItem, OneLineAvatarListItem
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
@@ -47,7 +51,6 @@ class MyScreenManager(ScreenManager):
                                                        +" days without killing plants"
 
 
-
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
     text_color = ListProperty((0, 0, 0, 1))
@@ -89,10 +92,12 @@ class SettingsScreen(Screen):
     pass
 
 
-class LoginDialog(MDDialog):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+class LoginDialog(FloatLayout):
+    pass
 
+
+class SignUpDialog(FloatLayout):
+    pass
 
 
 class MainApp(MDApp):
@@ -125,6 +130,22 @@ class MainApp(MDApp):
             )
             self.dialog.open()
             self.dialog = None
+
+    def show_login_dialog(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                type="custom",
+                content_cls=LoginDialog())
+        self.dialog.open()
+        self.dialog = None
+
+    def show_sign_up_dialog(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                type="custom",
+                content_cls=SignUpDialog())
+        self.dialog.open()
+        self.dialog = None
 
 
 if __name__ == '__main__':

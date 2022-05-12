@@ -1,0 +1,26 @@
+<LoginDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 200)
+
+    MDLabel:
+        text: "You want to log in?"
+        pos_hint: {"center_x": 0.5, "center_y": 1}
+
+    MDTextField:
+        hint_text: "email"
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+
+    MDTextField:
+        hint_text: "password"
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+    MDRaisedButton:
+        id: login
+        text: "Log in"
+        pos_hint: {"center_x": 0.4, "center_y": 0.1}
+
+    MDRaisedButton:
+        text: "Sign in"
+        pos_hint: {"center_x": 0.8, "center_y": 0.1}
+        on_release: app.show_sign_up_dialog()
