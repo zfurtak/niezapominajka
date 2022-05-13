@@ -26,7 +26,7 @@ class MyScreenManager(ScreenManager):
         self.ids.user_screen.ids.user_photo.source = self.user.photo
         self.ids.user_screen.ids.user_name.text = self.user.nickname
         self.ids.user_screen.ids.lvl.text = "Your level:"+str(self.user.level.value)
-        self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
+        # self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
         self.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant)\
                                                        +" days without killing plants"
 
@@ -66,7 +66,8 @@ class MainScreen(Screen):
 
 class UserScreen(Screen):
     pass
-
+    # def __init__(self, **kwargs):
+    #     self.ids.
 
 class SettingsScreen(Screen):
     pass
@@ -95,12 +96,12 @@ class AddPlantDialog(FloatLayout):
 class PlantProfileDialog(FloatLayout):
     def __init__(self, plant_name, **kwargs):
         super().__init__(**kwargs)
-        self.ids.plant_name.text = plant_name
+        self.ids.plant_name.text = f'Jestem {plant_name}'
         plant = db.get_plant(plant_name, "zuz")
-        self.ids.species.text = plant[2]
-        self.ids.room.text = plant[5]
-        self.ids.notes.text = plant[6]
-        self.ids.last_water.text = plant[7]
+        self.ids.species.text = f'Gatunek: {plant[1]}'
+        self.ids.room.text = f'Moje lokum: {plant[5]}'
+        self.ids.notes.text = f'Coś o mine: {plant[6]}'
+        self.ids.last_water.text = f'Nie piję od: {plant[7]}'
         self.ids.plant_photo.source = plant[8]
 
 
@@ -133,7 +134,8 @@ class MainApp(MDApp):
         for x in plants_:
             self.plants.append(Plant(x[1], x[2]))
 
-        self.user = User("Stokrotka")
+
+        # self.user = User("Stokrotka")
 
 
     def build(self):
@@ -143,6 +145,10 @@ class MainApp(MDApp):
         return MyScreenManager()
 
     def on_start(self):
+        plantstext = "You have: " + str(len(self.plants)) + " plant"
+        if len(self.plants) > 1:
+            plantstext += "s"
+        self.root.ids.user_screen.ids.plants_no.text = plantstext
         for s in self.species:
             self.root.ids.species_catalog_screen.ids.species_list.add_widget(
                 SingleSpecies(
