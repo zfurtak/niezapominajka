@@ -1,7 +1,12 @@
 <MainScreen>:
     FloatLayout:
         orientation: 'vertical'
-        MDFlatButton:
-            text: "DIALOG"
-            pos_hint: {'center_x': .5, 'center_y': 0.5}
-            on_release: app.show_login_dialog()
+        ScrollView:
+            pos_hint:{"top": 0.9}
+            MDList:
+                id:plants_to_water
+#        MDFlatButton:
+#            text: "DIALOG"
+#            pos_hint: {'center_x': .5, 'center_y': 0.5}
+#            on_release: app.show_login_dialog()
+

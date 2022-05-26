@@ -34,6 +34,8 @@ class Database:
 
     def get_plant(self, name_, email):
         plant = self.cursor.execute("SELECT id, plant_name, species, first_water, color, room, notes, last_water, picture FROM plants WHERE plant_name=? AND email=?", (name_, email)).fetchall()
+        if len(plant) == 0:
+            return None
         return plant[-1]
 
     def get_plants(self):
@@ -64,3 +66,7 @@ class Database:
 
     def close_db_connection(self):
         self.con.close()
+
+    def water_plant(self, plant_name, newData):
+        update = self.cursor.execute("UPDATE plants SET last_water = ? WHERE plant_name = ?", (newData, plant_name))
+        self.con.commit()

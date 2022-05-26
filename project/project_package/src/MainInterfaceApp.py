@@ -1,3 +1,4 @@
+from kivy.core.text import LabelBase
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
@@ -6,10 +7,11 @@ from kivymd.app import MDApp
 from kivy.properties import  StringProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineIconListItem, OneLineListItem
+from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
-from project.project_package.src.package.Plant import Plant
+from project.project_package.src.package.Plant import Plant, loadPlant
 from project.project_package.src.database.database import Database
 
 db = Database()
@@ -90,7 +92,12 @@ class SpeciesProfileDialog(FloatLayout):
 class AddPlantDialog(FloatLayout):
     def __init__(self, species_name, **kwargs):
         super().__init__(**kwargs)
-        self.ids.species_name.text = species_name
+        self.ids.species_name.text = f'Gatunek: {species_name}'
+
+
+
+
+
 
 
 class PlantProfileDialog(FloatLayout):
@@ -98,7 +105,10 @@ class PlantProfileDialog(FloatLayout):
         super().__init__(**kwargs)
         self.ids.plant_name.text = f'Jestem {plant_name}'
         plant = db.get_plant(plant_name, "zuz")
-        self.ids.species.text = f'Gatunek: {plant[1]}'
+        if 'Gatunek: ' in plant[2]:
+            self.ids.species.text = f'{plant[2]}'
+        else:
+            self.ids.species.text = f'Gatunek: {plant[2]}'
         self.ids.room.text = f'Moje lokum: {plant[5]}'
         self.ids.notes.text = f'Coś o mine: {plant[6]}'
         self.ids.last_water.text = f'Nie piję od: {plant[7]}'
@@ -110,6 +120,9 @@ class SingleSpecies(OneLineListItem):
 
 
 class SinglePlant(OneLineListItem):
+    pass
+
+class SinglePlantToWater(OneLineListItem):
     pass
 
 
@@ -132,7 +145,14 @@ class MainApp(MDApp):
         plants_ = db.get_plants()
         self.plants = []
         for x in plants_:
-            self.plants.append(Plant(x[1], x[2]))
+            print(x)
+            self.plants.append(loadPlant(x, self.species))
+
+        if len(self.plants) > 1:
+            self.plants[0].plantsToWater(self.plants)
+
+        for p in self.plants:
+            print(p.nextWatering())
 
 
         # self.user = User("Stokrotka")
@@ -160,6 +180,15 @@ class MainApp(MDApp):
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(
                 SinglePlant(
                     text=p.name,
+                )
+            )
+        plantsToWater = []
+        if len(self.plants) > 0:
+            plantsToWater = self.plants[0].plantsToWaterOnDay(5, self.plants)
+        for p in plantsToWater:
+            self.root.ids.main_screen.ids.plants_to_water.add_widget(
+                SinglePlantToWater(
+                    text=p.name
                 )
             )
 
@@ -224,8 +253,25 @@ class MainApp(MDApp):
         self.add_plant_dialog.dismiss()
 
     def add_plant(self, plant_name, species_name):
-        db.create_plant("zuz", plant_name, species_name, "06-07-2001", "pink", "kitchen", "hello", "06-05-2022", "GUI/images/test.jpg")
-        self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
+        if db.get_plant(plant_name, "zuz") is None:
+            db.create_plant("zuz", plant_name, species_name[9:], "06-07-2001", "pink", "kitchen", "hello", "06-05-2022", "GUI/images/test.jpg")
+            self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
+            self.close_add_plant_dialog()
+
+        # else:
+        #     self.add_plant_dialog.ids.warning_name.text = "Juz masz takiego przyjaciela"
+    def water_plant(self, plant_name):
+        print("jestem")
+        plant_name = plant_name[7:]
+        for p in self.plants:
+            print(p.name, plant_name, p.name == plant_name)
+            if p.name == plant_name:
+                p.waterNow()
+                data = datetime.today().strftime('%d/%m/%y')
+                db.water_plant(plant_name, data)
+                print("sukces!")
+
+
 
     def db_insert_user(self, user_name, password, photo):
         db.create_user(user_name, password, photo)
@@ -248,6 +294,13 @@ if __name__ == '__main__':
     # db.create_plant("zuz", "Zuzia", "tulip", "01-01-2020", "pink", "bedroom", "lubi ciepelko", "10-05-2022", "GUI/images/basic.png")
     # db.delete_plants(3)
     print(db.get_plants())
+    LabelBase.register(name='flowerFont',
+                       fn_regular='KV/font/flowerFont.ttf')
 
     MainApp().run()
 
+
+    data = datetime.today().strftime('%d/%m/%y')
+    print(data)
+    # db.water_plant("Groot", data)
+    # print("sukces!")

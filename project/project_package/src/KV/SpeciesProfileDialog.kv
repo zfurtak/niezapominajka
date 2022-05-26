@@ -57,29 +57,49 @@
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
         on_press: app.show_add_plant_dialog(species_name.text), app.close_dialog()
 
+<MDMenuItem>:
+    on_release:
+        app.root.ids.mainbutton.text = self.text
+        app.root.change_variable(self.text)
 
 <AddPlantDialog>:
+    id: add_plant_dialog
     spacing: "12dp"
     size_hint_y: None
     size: (200, 500)
 
-    MDTextField:
+
+    MDTextFieldRound:
         id: plant_name
+        icon_left: 'rename.box'
+        color_active: 0, 1, 0, 1
         hint_text: "Plant name"
         required: True
         max_text_length: 15
         pos_hint: {"center_x": 0.5, "center_y": 0.8}
 
     MDLabel:
+        id: warning_name
+        text: ""
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+    MDLabel:
         id: species_name
         text: ""
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+
+    MDRaisedButton:
+        id: choose_room
         pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        text: 'No room'
+
 
     MDRaisedButton:
         id: add
         text: "Add a new plant"
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
-        on_press: app.add_plant(plant_name.text, species_name.text), app.close_add_plant_dialog()
+        on_press: app.add_plant(plant_name.text, species_name.text)
 
 
 
