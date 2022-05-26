@@ -1,8 +1,14 @@
 <MainScreen>:
     FloatLayout:
         orientation: 'vertical'
-        ScrollView:
+        MDToolbar:
+            id: main_screen_toolbar
+            title: ""
             pos_hint:{"top": 0.9}
+            right_action_items:[["arrow-right-bold", lambda x: app.otherday(1)]]
+            left_action_items:[["arrow-left-bold", lambda x: app.otherday(-1)]]
+        ScrollView:
+            pos_hint:{"top": 0.8}
             MDList:
                 id:plants_to_water
 #        MDFlatButton:

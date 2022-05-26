@@ -45,7 +45,7 @@ class Plant:
         self.room = room
 
     def nextWatering(self): #dałam tu str bo nie dzialalo inaczej
-        print(self.lastWater, "+", timedelta(days=self.species.getDaysBetweenWatering()))
+        # print(self.lastWater, "+", timedelta(days=self.species.getDaysBetweenWatering()))
         return self.lastWater + timedelta(days=self.species.getDaysBetweenWatering())
 
     def changeColour(self, colour):
@@ -61,9 +61,9 @@ class Plant:
         return self.lastWater.strftime('%Y-%m-%d')
 
     def tillNextWater(self):
-        print("sth")
+        # print("sth")
         nextW = self.nextWatering()
-        print("->", nextW, "-", datetime.today())
+        # print("->", nextW, "-", datetime.today())
         return (nextW - datetime.today()).days
 
     def plantsToWater(self, plantlist):
@@ -73,11 +73,11 @@ class Plant:
         return plantlist
 
     def plantsToWaterOnDay(self, day, plant_list):
-        print("START")
+        # print("START")
         plantsTowater = []
         for p in plant_list:
-            print("*", p.tillNextWater())
-            if p.tillNextWater() == day:
+            # print("*", p.tillNextWater())
+            if p.tillNextWater() == day % p.species.daysBetweenWatering:
                 plantsTowater.append(p)
         return plantsTowater
 

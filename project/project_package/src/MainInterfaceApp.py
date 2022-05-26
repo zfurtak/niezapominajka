@@ -139,7 +139,7 @@ class MainApp(MDApp):
                                 "GUI/images/groot.jpg", True)
         groot = Species("GROOT species", "NO SOY LATINA!", 3, "Dużo wody, słońca i miłości <3",
                                 "GUI/images/grootspecies.jpg", True)
-
+        self.day = 0
         species_ = [tulip, rose, groot]
         self.species = species_
         plants_ = db.get_plants()
@@ -182,9 +182,19 @@ class MainApp(MDApp):
                     text=p.name,
                 )
             )
+
+        self.prepere_list_of_plants_to_water(self.day)
+
+    def prepere_list_of_plants_to_water(self, days):
+        if (days < 0):
+            days = 0
+        data = (datetime.today() + timedelta(days=days)).strftime('%d/%m/%y')
+        print('->', data)
+        self.root.ids.main_screen.ids.main_screen_toolbar.title = f'{data}'
         plantsToWater = []
         if len(self.plants) > 0:
-            plantsToWater = self.plants[0].plantsToWaterOnDay(5, self.plants)
+            plantsToWater = self.plants[0].plantsToWaterOnDay(days, self.plants)
+        self.root.ids.main_screen.ids.plants_to_water.clear_widgets()
         for p in plantsToWater:
             self.root.ids.main_screen.ids.plants_to_water.add_widget(
                 SinglePlantToWater(
@@ -258,20 +268,25 @@ class MainApp(MDApp):
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
 
-        # else:
-        #     self.add_plant_dialog.ids.warning_name.text = "Juz masz takiego przyjaciela"
     def water_plant(self, plant_name):
-        print("jestem")
+        # print("jestem")
         plant_name = plant_name[7:]
         for p in self.plants:
-            print(p.name, plant_name, p.name == plant_name)
+            # print(p.name, plant_name, p.name == plant_name)
             if p.name == plant_name:
                 p.waterNow()
                 data = datetime.today().strftime('%d/%m/%y')
                 db.water_plant(plant_name, data)
-                print("sukces!")
+                # print("sukces!")
 
+    def otherday(self, way):
+        self.day += way
+        if self.day < 0:
+            self.day = 0
+        if self.day > 25:
+            self.day = 25
 
+        self.prepere_list_of_plants_to_water(self.day)
 
     def db_insert_user(self, user_name, password, photo):
         db.create_user(user_name, password, photo)
