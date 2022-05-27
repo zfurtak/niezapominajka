@@ -5,8 +5,12 @@ def loadPlant(plantData, species):
     sp = species[0]
 
     for s in species:
-        if s.name == plantData[2]:
+        name = plantData[2]
+        if "Gatunek: " in plantData[2]:
+            name = name[9:]
+        if s.name == name:
             sp = s
+
     firstWater = datetime.strptime(plantData[3][:2] + '/' + plantData[3][3:5] + '/' + plantData[3][6:8], '%d/%m/%y')
     lastWater = datetime.strptime(plantData[7][:2] + '/' + plantData[7][3:5] + '/' + plantData[7][6:8], '%d/%m/%y')
     return Plant(plantData[1], sp, firstWater, plantData[4], plantData[5], plantData[6], lastWater, plantData[8])
@@ -76,7 +80,7 @@ class Plant:
         # print("START")
         plantsTowater = []
         for p in plant_list:
-            # print("*", p.tillNextWater())
+            print("*", p.tillNextWater())
             if p.tillNextWater() == day % p.species.daysBetweenWatering:
                 plantsTowater.append(p)
         return plantsTowater
