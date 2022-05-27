@@ -69,14 +69,17 @@
     size: (200, 500)
 
 
-    MDTextFieldRound:
+    MDTextField:
         id: plant_name
-        icon_left: 'rename.box'
+        mode: 'rectangle'
+        icon_left: 'flower'
         color_active: 0, 1, 0, 1
-        hint_text: "Plant name"
+        hint_text: "Imie"
         required: True
         max_text_length: 15
         pos_hint: {"center_x": 0.5, "center_y": 0.8}
+#        helper_text: "Muszęm mieć ładne imie!"
+#        helper_text_mode: "on_error"
 
     MDLabel:
         id: warning_name
@@ -89,17 +92,32 @@
         text: ""
         pos_hint: {"center_x": 0.5, "center_y": 0.7}
 
-    MDRaisedButton:
+#    MDRaisedButton:
+    MDTextFieldRound:
         id: choose_room
         pos_hint: {"center_x": 0.5, "center_y": 0.6}
-        text: 'No room'
+        icon_left: 'window-open-variant'
+        color_active: 0, 1, 0, 1
+        hint_text: "Room"
+        required: True
+        max_text_length: 15
+
+    MDTextFieldRound:
+        id: about_me
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        icon_left: 'flower-outline'
+        color_active: 0, 1, 0, 1
+        hint_text: "O mnie"
+        required: True
+        max_text_length: 150
+
 
 
     MDRaisedButton:
         id: add
         text: "Add a new plant"
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
-        on_press: app.add_plant(plant_name.text, species_name.text)
+        on_press: app.add_plant(plant_name.text, species_name.text, choose_room.text, about_me.text)
 
 
 

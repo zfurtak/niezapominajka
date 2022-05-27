@@ -133,7 +133,7 @@ class MainApp(MDApp):
 
     def __init__(self, **kwargs):
         super().__init__()
-        rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
+        rose = Species("rose", "rositina", 5, "Dużo wody, słońca i miłości <3",
                                 "GUI/images/grootspecies.jpg", True)
         tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
                                 "GUI/images/groot.jpg", True)
@@ -189,7 +189,7 @@ class MainApp(MDApp):
         if (days < 0):
             days = 0
         data = (datetime.today() + timedelta(days=days)).strftime('%d/%m/%y')
-        print('->', data)
+        # print('->', data)
         self.root.ids.main_screen.ids.main_screen_toolbar.title = f'{data}'
         plantsToWater = []
         if len(self.plants) > 0:
@@ -262,9 +262,15 @@ class MainApp(MDApp):
     def close_add_plant_dialog(self):
         self.add_plant_dialog.dismiss()
 
-    def add_plant(self, plant_name, species_name):
-        if db.get_plant(plant_name, "zuz") is None:
-            db.create_plant("zuz", plant_name, species_name[9:], "06-07-2001", "pink", "kitchen", "hello", "06-05-2022", "GUI/images/test.jpg")
+    def add_plant(self, plant_name, species_name, room, about_me):
+        # if species_name != '' or len(species_name) > 15:
+        #     print("ble")
+
+        if db.get_plant(plant_name, "zuz") is None and species_name != '' and len(species_name) <= 15 and len(room) <= 15:
+            if room == '':
+                room = 'no room'
+            data = datetime.today().strftime('%d/%m/%y')
+            db.create_plant("zuz", plant_name, species_name[9:], data, "pink", room, about_me, data, "GUI/images/test.jpg")
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
 
@@ -315,7 +321,7 @@ if __name__ == '__main__':
     MainApp().run()
 
 
-    data = datetime.today().strftime('%d/%m/%y')
-    print(data)
+    # data = datetime.today().strftime('%d/%m/%y')
+    # print(data)
     # db.water_plant("Groot", data)
     # print("sukces!")

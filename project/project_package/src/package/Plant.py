@@ -80,7 +80,7 @@ class Plant:
         # print("START")
         plantsTowater = []
         for p in plant_list:
-            print("*", p.tillNextWater())
+            # print("*", p.tillNextWater())
             if p.tillNextWater() == day % p.species.daysBetweenWatering:
                 plantsTowater.append(p)
         return plantsTowater
