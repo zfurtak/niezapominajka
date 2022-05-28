@@ -264,14 +264,10 @@ class MainApp(MDApp):
         self.add_plant_dialog.dismiss()
 
     def add_plant(self, plant_name, species_name, room, about_me):
-        # if db.get_plant(plant_name, "zuz") != None:
-        #     print("ble")
-
 
         if db.get_plant(plant_name, "zuz") is None and plant_name != '' and len(plant_name) <= 15 and len(room) <= 15:
             if room == '':
                 room = 'no room'
-            # print("saved")
             data = datetime.today().strftime('%d/%m/%y')
             db.create_plant("zuz", plant_name, species_name[9:], data, "pink", room, about_me, data, "GUI/images/test.jpg")
             x = db.get_plant(plant_name, "zuz")
@@ -309,6 +305,14 @@ class MainApp(MDApp):
     def db_insert_user(self, user_name, password, photo):
         db.create_user(user_name, password, photo)
 
+    def login(self, login_name, password):
+        print(login_name, db.get_usernames(), login_name in db.get_usernames())
+        if (login_name,) in db.get_usernames():
+            print("mamy uzytkownika")
+            if db.get_users_password(login_name) == (password,):
+                print("mamy haslo")
+                self.change_screen("MainScreen", "Start")
+
     def change_screen(self, screen_name, title, direction='None', mode=""):
         screen_manager = self.root.ids.screen_manager
         self.root.ids.toolbar.title = title
@@ -324,16 +328,7 @@ class MainApp(MDApp):
 
 if __name__ == '__main__':
 
-    # db.create_plant("zuz", "Zuzia", "tulip", "01-01-2020", "pink", "bedroom", "lubi ciepelko", "10-05-2022", "GUI/images/basic.png")
-    # db.delete_plants(3)
-    print(db.get_plants())
-    LabelBase.register(name='flowerFont',
-                       fn_regular='KV/font/flowerFont.ttf')
-
+    # LabelBase.register(name='flowerFont',
+    #                    fn_regular='KV/font/flowerFont.ttf')
+    #
     MainApp().run()
-
-
-    # data = datetime.today().strftime('%d/%m/%y')
-    # print(data)
-    # db.water_plant("Groot", data)
-    # print("sukces!")
