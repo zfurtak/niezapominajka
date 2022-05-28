@@ -376,9 +376,14 @@ class MainApp(MDApp):
             screen_manager.current = screen_name
             return
 
-
         screen_manager.transition = CardTransition(direction=direction, mode=mode)
         screen_manager.current = screen_name
+
+    def change_mode(self, instance, value):
+        if value:
+            self.theme_cls.theme_style = "Dark"
+        else:
+            self.theme_cls.theme_style = "Light"
 
 
 if __name__ == '__main__':
