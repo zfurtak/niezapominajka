@@ -43,9 +43,7 @@ class Database:
         return plant
 
     def get_users_plants(self, email):
-        plants = self.cursor.execute(
-            "SELECT id, plant_name, species, first_water, color, room, notes, last_water, picture FROM plants WHERE email=?",
-            (email, )).fetchall()
+        plants = self.cursor.execute("SELECT id, plant_name, species, first_water, color, room, notes, last_water, picture FROM plants WHERE email=?", (email, )).fetchall()
         return plants
 
     def delete_plants(self, id):

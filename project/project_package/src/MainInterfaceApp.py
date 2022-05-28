@@ -88,6 +88,10 @@ class WelcomeScreen(Screen):
     def warning(self, text):
         self.ids.welcome_screen_warning.text = text
 
+    def clean(self):
+        self.ids.user_name_text_field.text = ""
+        self.ids.password_field.text = ""
+
 
 
 class CreateAccountScreen(Screen):
@@ -134,14 +138,15 @@ class AddPlantDialog(FloatLayout):
 
 
 class PlantProfileDialog(FloatLayout):
-    def __init__(self, plant_name, **kwargs):
+    def __init__(self, plant_name, username, **kwargs):
         super().__init__(**kwargs)
         self.ids.plant_name.text = f'Jestem {plant_name}'
-        plant = db.get_plant(plant_name, "zuz")
+        plant = db.get_plant(plant_name, username)
         if 'Gatunek: ' in plant[2]:
             self.ids.species.text = f'{plant[2]}'
         else:
             self.ids.species.text = f'Gatunek: {plant[2]}'
+        print(plant)
         self.ids.room.text = f'Moje lokum: {plant[5]}'
         self.ids.notes.text = f'Coś o mine: {plant[6]}'
         self.ids.last_water.text = f'Nie piję od: {plant[7]}'
@@ -199,10 +204,9 @@ class MainApp(MDApp):
 
 
     def prepere_app_for_user(self):
-        plants_ = db.get_plants()
+        plants_ = db.get_users_plants(self.user.nickname)
         self.plants = []
         for x in plants_:
-            print(x)
             self.plants.append(loadPlant(x, self.species))
 
         if len(self.plants) > 1:
@@ -212,6 +216,8 @@ class MainApp(MDApp):
         if len(self.plants) > 1:
             plantstext += "s"
         self.root.ids.user_screen.ids.plants_no.text = plantstext
+
+        self.root.ids.my_plants_screen.ids.plants_list.clear_widgets()
 
         for p in self.plants:
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(
@@ -286,7 +292,7 @@ class MainApp(MDApp):
         if not self.dialog:
             self.dialog = MDDialog(
                 type="custom",
-                content_cls=PlantProfileDialog(plant_name))
+                content_cls=PlantProfileDialog(plant_name, self.user.nickname))
         self.dialog.open()
         self.dialog = None
 
@@ -304,21 +310,21 @@ class MainApp(MDApp):
 
     def add_plant(self, plant_name, species_name, room, about_me):
 
-        if db.get_plant(plant_name, "zuz") is None and plant_name != '' and len(plant_name) <= 15 and len(room) <= 15:
+        if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 and len(room) <= 15:
             if room == '':
                 room = 'no room'
             data = datetime.today().strftime('%d/%m/%y')
-            db.create_plant("zuz", plant_name, species_name[9:], data, "pink", room, about_me, data, "GUI/images/test.jpg")
-            x = db.get_plant(plant_name, "zuz")
+            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, "pink", room, about_me, data, "GUI/images/test.jpg")
+            x = db.get_plant(plant_name, self.user.nickname)
             p = loadPlant(x, self.species)
             self.plants.append(p)
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
-            self.root.ids.my_plants_screen.ids.plants_list.add_widget(
-                SinglePlant(
-                    text=p.name,
-                )
-            )
+            # self.root.ids.my_plants_screen.ids.plants_list.add_widget(
+            #     SinglePlant(
+            #         text=p.name,
+            #     )
+            # )
 
 
     def water_plant(self, plant_name):
@@ -347,9 +353,18 @@ class MainApp(MDApp):
     def login(self, username, password):
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
-            self.user.nickname = "username"
+            self.user.nickname = username
             self.prepere_app_for_user()
             self.change_screen("MainScreen", "Start")
+
+    def logout(self):
+        self.plants = []
+        self.day = 0
+        self.root.ids.welcome_screen.clean()
+        self.root.ids.nav_drawer.swipe_edge_width = 0
+        self.user.nickname = ""
+        self.prepere_app_for_user()
+        self.change_screen("WelcomeScreen", "Start")
 
     def create_account(self, username, password, confirm_password):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
