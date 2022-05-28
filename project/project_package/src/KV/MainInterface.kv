@@ -10,6 +10,8 @@
 #: include KV/SignUpDialog.kv
 #: include KV/SpeciesProfileDialog.kv
 #: include KV/PlantProfileDialog.kv
+#: include KV/WelcomeScreen.kv
+
 
 
 <ItemDrawer>:
@@ -32,6 +34,10 @@
         MDNavigationLayout:
             ScreenManager:
                 id: screen_manager
+
+                WelcomeScreen:
+                    name: "WelcomeScreen"
+                    id: welcome_screen
 
                 MainScreen:
                     name: "MainScreen"

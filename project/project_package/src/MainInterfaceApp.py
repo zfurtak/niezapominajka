@@ -4,7 +4,7 @@ from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
-from kivy.properties import  StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineIconListItem, OneLineListItem
 from datetime import datetime, timedelta
@@ -74,6 +74,9 @@ class UserScreen(Screen):
 class SettingsScreen(Screen):
     pass
 
+class WelcomeScreen(Screen):
+    pass
+
 
 class LoginDialog(FloatLayout):
     pass
@@ -92,12 +95,8 @@ class SpeciesProfileDialog(FloatLayout):
 class AddPlantDialog(FloatLayout):
     def __init__(self, species_name, **kwargs):
         super().__init__(**kwargs)
+        # print(species_name)
         self.ids.species_name.text = f'Gatunek: {species_name}'
-
-
-
-
-
 
 
 class PlantProfileDialog(FloatLayout):
@@ -145,17 +144,17 @@ class MainApp(MDApp):
         plants_ = db.get_plants()
         self.plants = []
         for x in plants_:
-            print(x)
+            # print(x)
             self.plants.append(loadPlant(x, self.species))
 
         if len(self.plants) > 1:
             self.plants[0].plantsToWater(self.plants)
 
-        for p in self.plants:
-            print(p.nextWatering())
+        # for p in self.plants:
+        #     print(p.nextWatering())
 
 
-        # self.user = User("Stokrotka")
+        self.user = User("Stokrotka")
 
 
     def build(self):
@@ -192,10 +191,12 @@ class MainApp(MDApp):
         # print('->', data)
         self.root.ids.main_screen.ids.main_screen_toolbar.title = f'{data}'
         plantsToWater = []
+        # print(len(self.plants))
         if len(self.plants) > 0:
             plantsToWater = self.plants[0].plantsToWaterOnDay(days, self.plants)
         self.root.ids.main_screen.ids.plants_to_water.clear_widgets()
         for p in plantsToWater:
+            # print(p.name)
             self.root.ids.main_screen.ids.plants_to_water.add_widget(
                 SinglePlantToWater(
                     text=p.name
@@ -263,16 +264,27 @@ class MainApp(MDApp):
         self.add_plant_dialog.dismiss()
 
     def add_plant(self, plant_name, species_name, room, about_me):
-        # if species_name != '' or len(species_name) > 15:
+        # if db.get_plant(plant_name, "zuz") != None:
         #     print("ble")
 
-        if db.get_plant(plant_name, "zuz") is None and species_name != '' and len(species_name) <= 15 and len(room) <= 15:
+
+        if db.get_plant(plant_name, "zuz") is None and plant_name != '' and len(plant_name) <= 15 and len(room) <= 15:
             if room == '':
                 room = 'no room'
+            # print("saved")
             data = datetime.today().strftime('%d/%m/%y')
             db.create_plant("zuz", plant_name, species_name[9:], data, "pink", room, about_me, data, "GUI/images/test.jpg")
+            x = db.get_plant(plant_name, "zuz")
+            p = loadPlant(x, self.species)
+            self.plants.append(p)
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
+            self.root.ids.my_plants_screen.ids.plants_list.add_widget(
+                SinglePlant(
+                    text=p.name,
+                )
+            )
+
 
     def water_plant(self, plant_name):
         # print("jestem")
