@@ -175,20 +175,11 @@ class MainApp(MDApp):
         self.day = 0
         species_ = [tulip, rose, groot]
         self.species = species_
-        plants_ = db.get_plants()
+        self.user = User("")
         self.plants = []
-        for x in plants_:
-            # print(x)
-            self.plants.append(loadPlant(x, self.species))
-
-        if len(self.plants) > 1:
-            self.plants[0].plantsToWater(self.plants)
-
-        # for p in self.plants:
-        #     print(p.nextWatering())
 
 
-        self.user = User("Stokrotka")
+        # self.user = User("Stokrotka")
 
 
     def build(self):
@@ -198,16 +189,29 @@ class MainApp(MDApp):
         return MyScreenManager()
 
     def on_start(self):
-        plantstext = "You have: " + str(len(self.plants)) + " plant"
-        if len(self.plants) > 1:
-            plantstext += "s"
-        self.root.ids.user_screen.ids.plants_no.text = plantstext
         for s in self.species:
             self.root.ids.species_catalog_screen.ids.species_list.add_widget(
                 SingleSpecies(
                     text=s.name,
                 )
             )
+
+
+
+    def prepere_app_for_user(self):
+        plants_ = db.get_plants()
+        self.plants = []
+        for x in plants_:
+            print(x)
+            self.plants.append(loadPlant(x, self.species))
+
+        if len(self.plants) > 1:
+            self.plants[0].plantsToWater(self.plants)
+
+        plantstext = "You have: " + str(len(self.plants)) + " plant"
+        if len(self.plants) > 1:
+            plantstext += "s"
+        self.root.ids.user_screen.ids.plants_no.text = plantstext
 
         for p in self.plants:
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(
@@ -217,6 +221,7 @@ class MainApp(MDApp):
             )
 
         self.prepere_list_of_plants_to_water(self.day)
+
 
     def prepere_list_of_plants_to_water(self, days):
         if (days < 0):
@@ -341,6 +346,9 @@ class MainApp(MDApp):
 
     def login(self, username, password):
         if self.root.ids.welcome_screen.login(username, password):
+            self.root.ids.nav_drawer.swipe_edge_width = 1
+            self.user.nickname = "username"
+            self.prepere_app_for_user()
             self.change_screen("MainScreen", "Start")
 
     def create_account(self, username, password, confirm_password):
@@ -362,9 +370,4 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
-
-    # LabelBase.register(name='flowerFont',
-    #                    fn_regular='KV/font/flowerFont.ttf')
-    #
     MainApp().run()
-    # print(db.get_users())

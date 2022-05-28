@@ -15,7 +15,7 @@
             pos_hint: {"center_x": 0.5, "center_y": 0.1}
             size_hint: (0.8, 0.2)
 
-        MDBoxLayout:
+        MDFloatLayout:
             orientation: 'vertical'
             padding: 50
             spacing: "50dp"
@@ -25,7 +25,7 @@
             MDRoundFlatIconButton:
                 icon: "clock-time-eight-outline"
                 text: "Choose time for reminder"
-                pos_hint: {'center_x': .5, "y": 0.3}
+                pos_hint: {'center_x': .5, "y": 0.2}
                 on_press:
                     app.show_time_picker()
 
@@ -45,9 +45,10 @@
                     app.show_alert_dialog("All your questions and doubts forward to wedont@care.com")
 
             MDRoundFlatIconButton:
-                icon: "trash-can-outline"
-                text: "Clean the app"
+                icon: "logout"
+                text: "LOGOUT"
                 pos_hint: {"center_x": 0.5, "center_y": 0.8}
+                on_press: app.change_screen("WelcomeScreen", "Start")
 
 
 

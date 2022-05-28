@@ -28,7 +28,7 @@
             pos_hint: {"top": 1}
             title: "Start"
             elevation: 8
-            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("open") if (app.user.nickname != "") else nav_drawer.set_state("close")]]
 
 
         MDNavigationLayout:
@@ -75,6 +75,7 @@
 
             MDNavigationDrawer:
                 id: nav_drawer
+                swipe_edge_width: 0
                 ScrollView:
                     MDList:
                         ItemDrawer:

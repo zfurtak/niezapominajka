@@ -42,6 +42,12 @@ class Database:
         plant = self.cursor.execute("SELECT id, plant_name, species, first_water, color, room, notes, last_water, picture FROM plants").fetchall()
         return plant
 
+    def get_users_plants(self, email):
+        plants = self.cursor.execute(
+            "SELECT id, plant_name, species, first_water, color, room, notes, last_water, picture FROM plants WHERE email=?",
+            (email, )).fetchall()
+        return plants
+
     def delete_plants(self, id):
         self.cursor.execute("DELETE FROM plants WHERE id=?", (id,))
         self.con.commit()
