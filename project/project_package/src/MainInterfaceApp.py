@@ -184,9 +184,6 @@ class MainApp(MDApp):
         self.plants = []
 
 
-        # self.user = User("Stokrotka")
-
-
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
         Builder.load_file("KV/MainInterface.kv")
@@ -320,11 +317,6 @@ class MainApp(MDApp):
             self.plants.append(p)
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
-            # self.root.ids.my_plants_screen.ids.plants_list.add_widget(
-            #     SinglePlant(
-            #         text=p.name,
-            #     )
-            # )
 
 
     def water_plant(self, plant_name):
@@ -375,10 +367,15 @@ class MainApp(MDApp):
         screen_manager = self.root.ids.screen_manager
         self.root.ids.toolbar.title = title
 
+        if screen_name == 'MainScreen':
+            self.day = 0
+            self.prepere_list_of_plants_to_water(0)
+
         if direction == 'None':
             screen_manager.transition = NoTransition()
             screen_manager.current = screen_name
             return
+
 
         screen_manager.transition = CardTransition(direction=direction, mode=mode)
         screen_manager.current = screen_name

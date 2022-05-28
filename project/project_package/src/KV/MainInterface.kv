@@ -82,36 +82,31 @@
                             icon: "calendar-blank"
                             text: "Start"
                             on_press:
-                                screen_manager.current= "MainScreen"
-                                app.root.ids.toolbar.title = "Start"
+                                app.change_screen("MainScreen", "Start")
                                 nav_drawer.set_state("close")
                         ItemDrawer:
                             icon: "face"
                             text: "Your profile"
                             on_press:
-                                screen_manager.current =  "UserScreen"
-                                app.root.ids.toolbar.title = "Profil"
+                                app.change_screen("UserScreen", "Profil")
                                 nav_drawer.set_state("close")
                         ItemDrawer:
                             icon: "flower-tulip"
                             text: "My plants"
                             on_press:
-                                screen_manager.current = "MyPlantsScreen"
-                                app.root.ids.toolbar.title = "Moje roślinki"
+                                app.change_screen("MyPlantsScreen", "Moje roślinki")
                                 nav_drawer.set_state("close")
 
                         ItemDrawer:
                             icon: "flower-tulip-outline"
                             text: "Plants catalog"
                             on_press:
-                                screen_manager.current = "SpeciesCatalogScreen"
-                                app.root.ids.toolbar.title = "Gatunki roślinek"
+                                app.change_screen("SpeciesCatalogScreen", "Gatunki roślinek")
                                 nav_drawer.set_state("close")
 
                         ItemDrawer:
                             icon: "tools"
                             text: "Settings"
                             on_press:
-                                screen_manager.current = "SettingsScreen"
-                                app.root.ids.toolbar.title = "Ustawienia"
+                                app.change_screen("SettingsScreen", "Ustawienia")
                                 nav_drawer.set_state("close")
