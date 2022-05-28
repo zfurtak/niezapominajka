@@ -1,0 +1,54 @@
+<CreateAccountScreen>
+    FloatLayout:
+        FitImage:
+#            size_hint_y: 1
+            source: 'GUI/images/background.jpg'
+        MDTextField:
+            id: create_user_name_text_field
+            mode: 'rectangle'
+            icon_left: 'account'
+            size_hint: 0.5, None
+            hint_text: "Nazwa użytkownika"
+            required: True
+            helper_text_mode: "persistent"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        MDTextField:
+            id: create_password_field
+            mode: 'rectangle'
+            icon_left: "key-variant"
+            hint_text: "Hasło"
+            size_hint: 0.5, None
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            helper_text_mode: "persistent"
+            required: True
+            password: True
+
+        MDTextField:
+            id: confirm_password_field
+            mode: 'rectangle'
+            icon_left: "key-variant"
+            hint_text: "Potwierdź hasło"
+            size_hint: 0.5, None
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            helper_text_mode: "persistent"
+            required: True
+            password: True
+
+        MDRoundFlatIconButton:
+            id: add_account_button
+            icon: "account-plus"
+            text: "STWÓRZ KONTO"
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            focus: True
+            md_bg_color: app.theme_cls.primary_color
+            on_release: app.create_account(create_user_name_text_field.text, create_password_field.text, confirm_password_field.text)
+
+
+        MDRoundFlatIconButton:
+            id: comeback_to_login_button
+            icon: "account-heart"
+            text: "WRÓĆ DO LOGOWANIA"
+            pos_hint: {"center_x": 0.5, "center_y": 0.1}
+            md_bg_color: app.theme_cls.primary_color
+            on_release: app.change_screen("WelcomeScreen", "Start")

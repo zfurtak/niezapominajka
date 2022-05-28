@@ -13,6 +13,7 @@ from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
 from project.project_package.src.package.Plant import Plant, loadPlant
 from project.project_package.src.database.database import Database
+from project.project_package.src.package.functions import without_whitespace
 
 db = Database()
 Window.size = (340, 630)
@@ -75,6 +76,9 @@ class SettingsScreen(Screen):
     pass
 
 class WelcomeScreen(Screen):
+    pass
+
+class CreateAccountScreen(Screen):
     pass
 
 
@@ -313,6 +317,15 @@ class MainApp(MDApp):
                 print("mamy haslo")
                 self.change_screen("MainScreen", "Start")
 
+    def create_account(self, username, password, confirm_password):
+        if (username,) not in db.get_usernames():
+            if without_whitespace(username) and password == confirm_password:
+                print(db.create_user(username, password, "GUI/images/test.jpg"))
+                self.change_screen("WelcomeScreen", "Start")
+        else:
+            print("już mamy", username)
+
+
     def change_screen(self, screen_name, title, direction='None', mode=""):
         screen_manager = self.root.ids.screen_manager
         self.root.ids.toolbar.title = title
@@ -332,3 +345,4 @@ if __name__ == '__main__':
     #                    fn_regular='KV/font/flowerFont.ttf')
     #
     MainApp().run()
+    # print(db.get_users())
