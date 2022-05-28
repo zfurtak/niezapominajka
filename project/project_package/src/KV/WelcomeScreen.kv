@@ -1,0 +1,37 @@
+<WelcomeScreen>
+    FloatLayout:
+        FitImage:
+#            size_hint_y: 1
+            source: 'GUI/images/background.jpg'
+        MDTextField:
+            id: user_name_text_field
+            mode: 'rectangle'
+            icon_left: 'account'
+            size_hint: 0.5, None
+            hint_text: "Nazwa użytkownika"
+            required: True
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+
+        MDTextField:
+            id: password_field
+            mode: 'rectangle'
+            icon_left: "key-variant"
+            hint_text: "Hasło"
+            size_hint: 0.5, None
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            helper_text_mode: "persistent"
+            required: True
+            password: True
+
+        MDIconButton:
+            id: login_button
+            icon: "login"
+            pos_hint: {"center_x": 0.75, "center_y": 0.1}
+            on_release: app.login(user_name_text_field.text, password_field.text)
+
+        MDIconButton:
+            id: login_button
+            icon: "login"
+            pos_hint: {"center_x": 0.25, "center_y": 0.1}
+            on_release: app.login(user_name_text_field.text, password_field.text)
+
