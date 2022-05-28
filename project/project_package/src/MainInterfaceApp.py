@@ -79,7 +79,8 @@ class WelcomeScreen(Screen):
     pass
 
 class CreateAccountScreen(Screen):
-    pass
+    def warning(self, text):
+        self.ids.welcome_screen_warning.text = text
 
 
 class LoginDialog(FloatLayout):
@@ -319,11 +320,16 @@ class MainApp(MDApp):
 
     def create_account(self, username, password, confirm_password):
         if (username,) not in db.get_usernames():
-            if without_whitespace(username) and password == confirm_password:
-                print(db.create_user(username, password, "GUI/images/test.jpg"))
-                self.change_screen("WelcomeScreen", "Start")
+            if without_whitespace(username) or without_whitespace(password):
+                if password == confirm_password:
+                    print(db.create_user(username, password, "GUI/images/test.jpg"))
+                    self.change_screen("WelcomeScreen", "Start")
+                else:
+                    self.root.ids.create_account_screen.warning("Hasła nie są takie same")
+            else:
+                self.root.ids.create_account_screen.warning("Pozbądź się białych znaków")
         else:
-            print("już mamy", username)
+            self.root.ids.create_account_screen.warning("Użytkownik " + username + " istnieje")
 
 
     def change_screen(self, screen_name, title, direction='None', mode=""):

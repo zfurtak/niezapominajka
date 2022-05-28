@@ -3,6 +3,13 @@
         FitImage:
 #            size_hint_y: 1
             source: 'GUI/images/background.jpg'
+        MDLabel:
+            id: welcome_screen_warning
+            text: ""
+            pos_hint: {"center_x": 0.5, "center_y": 0.05}
+            theme_text_color: "Error"
+            halign: "center"
+
         MDTextField:
             id: create_user_name_text_field
             mode: 'rectangle'
