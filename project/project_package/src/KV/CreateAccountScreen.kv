@@ -4,7 +4,7 @@
 #            size_hint_y: 1
             source: 'GUI/images/background.jpg'
         MDLabel:
-            id: welcome_screen_warning
+            id: create_account_screen_warning
             text: ""
             pos_hint: {"center_x": 0.5, "center_y": 0.05}
             theme_text_color: "Error"
@@ -49,8 +49,8 @@
             pos_hint: {"center_x": 0.5, "center_y": 0.2}
             focus: True
             md_bg_color: app.theme_cls.primary_color
-            on_release: app.create_account(create_user_name_text_field.text, create_password_field.text, confirm_password_field.text)
-
+            on_release: app.root.ids.create_account_screen.create_account(create_user_name_text_field.text, create_password_field.text, confirm_password_field.text)
+            on_release: app.root.ids.create_account_screen.warning("Użytkownik " + create_user_name_text_field.text + " istnieje")
 
         MDRoundFlatIconButton:
             id: comeback_to_login_button

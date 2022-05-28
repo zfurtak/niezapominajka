@@ -76,11 +76,40 @@ class SettingsScreen(Screen):
     pass
 
 class WelcomeScreen(Screen):
-    pass
+    def login(self, username, password):
+        if (username,) in db.get_usernames():
+            if db.get_users_password(username) == (password,):
+                return True
+            else:
+                self.warning("Nieprawidłowe hasło")
+        else:
+            self.warning("Brak użytkownika " + username)
 
-class CreateAccountScreen(Screen):
     def warning(self, text):
         self.ids.welcome_screen_warning.text = text
+
+
+
+class CreateAccountScreen(Screen):
+    def create_account(self, username, password, confirm_password):
+        print((username,), db.get_usernames(), (username,) in db.get_usernames())
+        if (username,) not in db.get_usernames():
+            if without_whitespace(username) and without_whitespace(password):
+                if password == confirm_password:
+                    print("ok")
+                    # print(db.create_user(username, password, "GUI/images/test.jpg"))
+                    self.warning("")
+                    return True
+                else:
+                    self.warning("Hasła nie są takie same")
+            else:
+                self.warning("Pozbądź się białych znaków")
+        else:
+            self.warning("Użytkownik " + username + " istnieje")
+        return False
+
+    def warning(self, text):
+        self.ids.create_account_screen_warning.text = text
 
 
 class LoginDialog(FloatLayout):
@@ -310,26 +339,13 @@ class MainApp(MDApp):
     def db_insert_user(self, user_name, password, photo):
         db.create_user(user_name, password, photo)
 
-    def login(self, login_name, password):
-        print(login_name, db.get_usernames(), login_name in db.get_usernames())
-        if (login_name,) in db.get_usernames():
-            print("mamy uzytkownika")
-            if db.get_users_password(login_name) == (password,):
-                print("mamy haslo")
-                self.change_screen("MainScreen", "Start")
+    def login(self, username, password):
+        if self.root.ids.welcome_screen.login(username, password):
+            self.change_screen("MainScreen", "Start")
 
     def create_account(self, username, password, confirm_password):
-        if (username,) not in db.get_usernames():
-            if without_whitespace(username) or without_whitespace(password):
-                if password == confirm_password:
-                    print(db.create_user(username, password, "GUI/images/test.jpg"))
-                    self.change_screen("WelcomeScreen", "Start")
-                else:
-                    self.root.ids.create_account_screen.warning("Hasła nie są takie same")
-            else:
-                self.root.ids.create_account_screen.warning("Pozbądź się białych znaków")
-        else:
-            self.root.ids.create_account_screen.warning("Użytkownik " + username + " istnieje")
+        if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
+            self.change_screen("WelcomeScreen", "Start")
 
 
     def change_screen(self, screen_name, title, direction='None', mode=""):

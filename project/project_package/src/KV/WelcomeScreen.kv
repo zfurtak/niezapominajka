@@ -3,6 +3,8 @@
         FitImage:
 #            size_hint_y: 1
             source: 'GUI/images/background.jpg'
+
+
         MDTextField:
             id: user_name_text_field
             mode: 'rectangle'
@@ -40,5 +42,11 @@
             md_bg_color: app.theme_cls.primary_color
             on_release: app.change_screen("CreateAccountScreen", "Stwórz profil")
 
+        MDLabel:
+            id: welcome_screen_warning
+            text: ""
+            pos_hint: {"center_x": 0.5, "center_y": 0.05}
+            theme_text_color: "Error"
+            halign: "center"
 
 
