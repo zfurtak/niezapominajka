@@ -3,7 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
-from kivy.properties import  StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineIconListItem, OneLineListItem
 from kivymd.uix.picker import MDTimePicker
@@ -22,13 +22,9 @@ class MyScreenManager(ScreenManager):
         # tutaj mozna podpiąć baze
         self.species = None
         self.user = User("Ala")
-
-        self.ids.user_screen.ids.user_photo.source = self.user.photo
-        self.ids.user_screen.ids.user_name.text = self.user.nickname
-        self.ids.user_screen.ids.lvl.text = "Your level:"+str(self.user.level.value)
         # self.ids.user_screen.ids.plants_no.text = "You have: "+str(len(self.user.list_of_plants))+" plants"
-        self.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant)\
-                                                       +" days without killing plants"
+
+
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -68,6 +64,7 @@ class UserScreen(Screen):
     pass
     # def __init__(self, **kwargs):
     #     self.ids.
+
 
 class SettingsScreen(Screen):
     pass
@@ -117,15 +114,16 @@ class MainApp(MDApp):
     dialog = None
     add_plant_dialog = None
 
-
     def __init__(self, **kwargs):
         super().__init__()
         rose = Species("rose", "rositina", 3, "Dużo wody, słońca i miłości <3",
-                                "GUI/images/grootspecies.jpg", True)
+                       "GUI/images/grootspecies.jpg", True)
         tulip = Species("tulip", "tulipina", 7, "Dużo miłości <3",
-                                "GUI/images/groot.jpg", True)
+                        "GUI/images/groot.jpg", True)
         groot = Species("GROOT species", "NO SOY LATINA!", 3, "Dużo wody, słońca i miłości <3",
-                                "GUI/images/grootspecies.jpg", True)
+                        "GUI/images/grootspecies.jpg", True)
+
+
 
         species_ = [tulip, rose, groot]
         self.species = species_
@@ -145,10 +143,16 @@ class MainApp(MDApp):
         return MyScreenManager()
 
     def on_start(self):
-        plantstext = "You have: " + str(len(self.plants)) + " plant"
+        self.root.ids.user_screen.ids.user_photo.source = self.user.photo
+        self.root.ids.user_screen.ids.user_name.text = self.user.nickname
+        self.root.ids.user_screen.ids.lvl.text = "Your level:" + str(self.user.level.value)
+        self.root.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant) \
+                                                       + " days without killing plants"
+        plants_text = "You have: " + str(len(self.plants)) + " plant"
+
         if len(self.plants) > 1:
-            plantstext += "s"
-        self.root.ids.user_screen.ids.plants_no.text = plantstext
+            plants_text += "s"
+        self.root.ids.user_screen.ids.plants_no.text = plants_text
         for s in self.species:
             self.root.ids.species_catalog_screen.ids.species_list.add_widget(
                 SingleSpecies(
@@ -224,7 +228,8 @@ class MainApp(MDApp):
         self.add_plant_dialog.dismiss()
 
     def add_plant(self, plant_name, species_name):
-        db.create_plant("zuz", plant_name, species_name, "06-07-2001", "pink", "kitchen", "hello", "06-05-2022", "GUI/images/test.jpg")
+        db.create_plant("zuz", plant_name, species_name, "06-07-2001", "pink", "kitchen", "hello", "06-05-2022",
+                        "GUI/images/test.jpg")
         self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
 
     def db_insert_user(self, user_name, password, photo):
@@ -244,10 +249,7 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
-
     # db.create_plant("zuz", "Zuzia", "tulip", "01-01-2020", "pink", "bedroom", "lubi ciepelko", "10-05-2022", "GUI/images/basic.png")
-    # db.delete_plants(3)
     print(db.get_plants())
 
     MainApp().run()
-
