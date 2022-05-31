@@ -9,6 +9,36 @@
         app.show_plant_profile_dialog(single_plant_to_water.text)
 
 
+<DeletePlantDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 350)
+
+    MDLabel:
+        id: plant_name
+        text: "O nie!!\nCo się stało?"
+        pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
+    MDRaisedButton:
+        id: delete1
+        text: "Nowy dom"
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        on_press: app.delete_plant()
+
+    MDRaisedButton:
+        id: delete2
+        text: "Zarcik"
+        pos_hint: {"center_x": 0.5, "center_y": 0.3}
+        on_press: app.delete_plant()
+
+    MDRaisedButton:
+        id: delete3
+        text: "Umarła"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_press: app.delete_plant()
+
+
+
 <PlantProfileDialog>:
     spacing: "12dp"
     size_hint_y: None
@@ -51,4 +81,10 @@
         icon: "watering-can"
         pos_hint: {"center_x": 0.9, "center_y": 0.1}
         on_release: app.water_plant(plant_name.text)
+
+    MDIconButton:
+        id: delete_button
+        icon: "trash-can-outline"
+        pos_hint: {"center_x": 0.9, "center_y": 0.3}
+        on_release: app.show_delete_plant_dialog(plant_name.text)
 

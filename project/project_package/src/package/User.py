@@ -11,7 +11,7 @@ class User:
         self.nickname = nickname
         self.join_date = datetime.today()
         self.level = Level()
-        self.dark_mode = False
+        self.dark_mode = 0
         self.list_of_achievements = []
         self.list_of_plants = []
         self.days_with_app = 0
