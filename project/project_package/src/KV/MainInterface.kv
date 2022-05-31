@@ -2,7 +2,6 @@
 #: include KV/UserScreen.kv
 #: include KV/MainScreen.kv
 #: include KV/DayScreen.kv
-#: include KV/AddPlantScreen.kv
 #: include KV/PlantScreen.kv
 #: include KV/MyPlantsScreen.kv
 #: include KV/SpeciesCatalogScreen.kv
@@ -11,6 +10,8 @@
 #: include KV/SignUpDialog.kv
 #: include KV/SpeciesProfileDialog.kv
 #: include KV/PlantProfileDialog.kv
+#: include KV/WelcomeScreen.kv
+#: include KV/CreateAccountScreen.kv
 
 
 <ItemDrawer>:
@@ -27,12 +28,20 @@
             pos_hint: {"top": 1}
             title: "Start"
             elevation: 8
-            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("open") if (app.user.nickname != "") else nav_drawer.set_state("close")]]
 
 
         MDNavigationLayout:
             ScreenManager:
                 id: screen_manager
+
+                WelcomeScreen:
+                    name: "WelcomeScreen"
+                    id: welcome_screen
+
+                CreateAccountScreen:
+                    name: "CreateAccountScreen"
+                    id: create_account_screen
 
                 MainScreen:
                     name: "MainScreen"
@@ -58,9 +67,6 @@
                     name: "SpeciesScreen"
                     id: species_screen
 
-                AddPlantScreen:
-                    name: "AddPlantScreen"
-                    id: add_plant_screen
 
                 SpeciesCatalogScreen:
                     name: "SpeciesCatalogScreen"
@@ -69,42 +75,38 @@
 
             MDNavigationDrawer:
                 id: nav_drawer
+                swipe_edge_width: 0
                 ScrollView:
                     MDList:
                         ItemDrawer:
                             icon: "calendar-blank"
                             text: "Start"
                             on_press:
-                                screen_manager.current= "MainScreen"
-                                app.root.ids.toolbar.title = "Start"
+                                app.change_screen("MainScreen", "Start")
                                 nav_drawer.set_state("close")
                         ItemDrawer:
                             icon: "face"
                             text: "Your profile"
                             on_press:
-                                screen_manager.current =  "UserScreen"
-                                app.root.ids.toolbar.title = "Profil"
+                                app.change_screen("UserScreen", "Profil")
                                 nav_drawer.set_state("close")
                         ItemDrawer:
                             icon: "flower-tulip"
                             text: "My plants"
                             on_press:
-                                screen_manager.current = "MyPlantsScreen"
-                                app.root.ids.toolbar.title = "Moje roślinki"
+                                app.change_screen("MyPlantsScreen", "Moje roślinki")
                                 nav_drawer.set_state("close")
 
                         ItemDrawer:
                             icon: "flower-tulip-outline"
                             text: "Plants catalog"
                             on_press:
-                                screen_manager.current = "SpeciesCatalogScreen"
-                                app.root.ids.toolbar.title = "Gatunki roślinek"
+                                app.change_screen("SpeciesCatalogScreen", "Gatunki roślinek")
                                 nav_drawer.set_state("close")
 
                         ItemDrawer:
                             icon: "tools"
                             text: "Settings"
                             on_press:
-                                screen_manager.current = "SettingsScreen"
-                                app.root.ids.toolbar.title = "Ustawienia"
+                                app.change_screen("SettingsScreen", "Ustawienia")
                                 nav_drawer.set_state("close")

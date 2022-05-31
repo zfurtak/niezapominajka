@@ -3,11 +3,16 @@
     on_press:
         app.show_plant_profile_dialog(single_plant.text)
 
+<SinglePlantToWater>
+    id: single_plant_to_water
+    on_press:
+        app.show_plant_profile_dialog(single_plant_to_water.text)
+
 
 <PlantProfileDialog>:
     spacing: "12dp"
     size_hint_y: None
-    size: (200, 300)
+    size: (200, 350)
 
     Image:
         id: plant_photo
@@ -41,4 +46,9 @@
         text: "Notes"
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
 
+    MDIconButton:
+        id: watering_can_button
+        icon: "watering-can"
+        pos_hint: {"center_x": 0.9, "center_y": 0.1}
+        on_release: app.water_plant(plant_name.text)
 
