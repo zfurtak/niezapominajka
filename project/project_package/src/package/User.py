@@ -11,6 +11,7 @@ class User:
         self.nickname = nickname
         self.join_date = datetime.today()
         self.level = Level()
+        self.dark_mode = False
         self.list_of_achievements = []
         self.list_of_plants = []
         self.days_with_app = 0
@@ -21,20 +22,20 @@ class User:
     def set_reminder_time(self, time):
         self.reminder_time = time
 
-    def addAchievement(self, achievement):
+    def add_achievement(self, achievement):
         self.level.addAchievement(achievement)
         self.list_of_achievements.append(achievement.name)
 
-    def addPlant(self, plant):
+    def add_plant(self, plant):
         self.list_of_plants.append(plant)
 
-    def updateDays(self):
+    def update_days(self):
         self.days_with_app += 1
 
-    def deadPlant(self):
+    def dead_plant(self):
         self.days_without_dead_plant = 0
 
-    def updateDaysWithoutDeadPlant(self):
+    def update_days_without_dead_plant(self):
         self.days_without_dead_plant += 1
 
 

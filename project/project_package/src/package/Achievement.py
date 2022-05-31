@@ -1,4 +1,3 @@
-
 class Achievement:
 
     def __init__(self, name, points, description):
@@ -6,11 +5,11 @@ class Achievement:
         self.points = points
         self.description = description
 
-    def changeName(self, name):
+    def change_name(self, name):
         self.name = name
 
-    def changePoints(self, points):
+    def change_points(self, points):
         self.points = points
 
-    def changeDescription(self, description):
+    def change_description(self, description):
         self.description = description

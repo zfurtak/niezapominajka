@@ -1,87 +1,81 @@
 from datetime import datetime, timedelta
 from unittest import case
 
-def loadPlant(plantData, species):
+
+def load_plant(plant_data, species):
     sp = species[0]
 
     for s in species:
-        name = plantData[2]
-        if "Gatunek: " in plantData[2]:
+        name = plant_data[2]
+        if "Gatunek: " in plant_data[2]:
             name = name[9:]
         if s.name == name:
             sp = s
 
-    firstWater = datetime.strptime(plantData[3][:2] + '/' + plantData[3][3:5] + '/' + plantData[3][6:8], '%d/%m/%y')
-    lastWater = datetime.strptime(plantData[7][:2] + '/' + plantData[7][3:5] + '/' + plantData[7][6:8], '%d/%m/%y')
-    return Plant(plantData[1], sp, firstWater, plantData[4], plantData[5], plantData[6], lastWater, plantData[8])
+    first_water = datetime.strptime(plant_data[3][:2] + '/' + plant_data[3][3:5] + '/' + plant_data[3][6:8], '%d/%m/%y')
+    last_water = datetime.strptime(plant_data[7][:2] + '/' + plant_data[7][3:5] + '/' + plant_data[7][6:8], '%d/%m/%y')
+    return Plant(plant_data[1], sp, first_water, plant_data[4], plant_data[5], plant_data[6], last_water, plant_data[8])
 
 
 class Plant:
-    def __init__(self, name, species, firstWater=datetime.today(), color='red', room=None,
-                 notes="Brak", lastWater=datetime.today(), picture=None):
+    def __init__(self, name, species, first_water=datetime.today(), color='red', room=None,
+                 notes="Brak", last_water=datetime.today(), picture=None):
         self.name = name
         self.species = species
-        self.firstWater = firstWater
+        self.first_water = first_water
         self.color = color
         self.room = room
         self.notes = notes
-        self.lastWater = lastWater
+        self.last_water = last_water
         self.picture = picture
         # if picture is not None:
         #     self.picture = picture
         # else:
         #     self.picture = self.species.getPicture()
 
+    def days_endured(self):
+        return (datetime.today() - self.first_water).days
 
-    def daysEndured(self):
-        return (datetime.today() - self.firstWater).days
+    def water_now(self):
+        self.last_water = datetime.today()
 
-    def waterNow(self):
-        self.lastWater = datetime.today()
+    def actualize_last_water(self, lastWater: datetime):
+        self.last_water = datetime.strptime(lastWater, "%Y-%m-%d")
 
-    def actualizeLastWater(self, lastWater: datetime):
-        self.lastWater = datetime.strptime(lastWater, "%Y-%m-%d")
-
-    def changeName(self, name: str):
+    def change_name(self, name: str):
         self.name = name
 
-    def changeRoom(self, room):
+    def change_room(self, room):
         self.room = room
 
-    def nextWatering(self): #dałam tu str bo nie dzialalo inaczej
-        # print(self.lastWater, "+", timedelta(days=self.species.getDaysBetweenWatering()))
-        return self.lastWater + timedelta(days=self.species.getDaysBetweenWatering())
+    def next_watering(self): #dałam tu str bo nie dzialalo inaczej
+        return self.last_water + timedelta(days=self.species.getDaysBetweenWatering())
 
-    def changeColour(self, colour):
+    def change_colour(self, colour):
         self.colour = colour
 
     def changePicture(self, picture):
         self.picture = picture
 
     def stringFirstWater(self):
-        return self.firstWater.strftime('%Y-%m-%d')
+        return self.first_water.strftime('%Y-%m-%d')
 
     def stringLastWater(self):
-        return self.lastWater.strftime('%Y-%m-%d')
+        return self.last_water.strftime('%Y-%m-%d')
 
     def tillNextWater(self):
-        # print("sth")
-        nextW = self.nextWatering()
-        # print("->", nextW, "-", datetime.today())
+        nextW = self.next_watering()
         return (nextW - datetime.today()).days
 
-    def plantsToWater(self, plantlist):
-        # plantlist = sorted(plantlist, key=lambda x: x.tillNextWater)
+    def plants_to_water(self, plant_list):
         td = datetime.today()
-        plantlist.sort(key=lambda x: td - x.lastWater)
-        return plantlist
+        plant_list.sort(key=lambda x: td - x.last_water)
+        return plant_list
 
-    def plantsToWaterOnDay(self, day, plant_list):
-        # print("START")
-        plantsTowater = []
+    def plants_to_water_daily(self, day, plant_list):
+        plants_to_water = []
         for p in plant_list:
-            # print("*", p.tillNextWater())
-            if p.tillNextWater() == day % p.species.daysBetweenWatering:
-                plantsTowater.append(p)
-        return plantsTowater
+            if p.tillNextWater() == day % p.species.days_between_watering:
+                plants_to_water.append(p)
+        return plants_to_water
 
