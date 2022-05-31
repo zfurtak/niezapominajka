@@ -15,6 +15,20 @@ def loadPlant(plantData, species):
     lastWater = datetime.strptime(plantData[7][:2] + '/' + plantData[7][3:5] + '/' + plantData[7][6:8], '%d/%m/%y')
     return Plant(plantData[1], sp, firstWater, plantData[4], plantData[5], plantData[6], lastWater, plantData[8])
 
+def plantsToWaterOnDay(day, plant_list):
+    # print("START")
+    plantsTowater = []
+    for p in plant_list:
+        # print("*", p.name, p.tillNextWater())
+        if p.tillNextWater() == day % p.species.daysBetweenWatering:
+            plantsTowater.append(p)
+    return plantsTowater
+
+def plantsToWater(plantlist):
+    # plantlist = sorted(plantlist, key=lambda x: x.tillNextWater)
+    td = datetime.today()
+    plantlist.sort(key=lambda x: td - x.lastWater)
+    return plantlist
 
 class Plant:
     def __init__(self, name, species, firstWater=datetime.today(), color='red', room=None,
@@ -70,18 +84,7 @@ class Plant:
         # print("->", nextW, "-", datetime.today())
         return (nextW - datetime.today()).days
 
-    def plantsToWater(self, plantlist):
-        # plantlist = sorted(plantlist, key=lambda x: x.tillNextWater)
-        td = datetime.today()
-        plantlist.sort(key=lambda x: td - x.lastWater)
-        return plantlist
 
-    def plantsToWaterOnDay(self, day, plant_list):
-        # print("START")
-        plantsTowater = []
-        for p in plant_list:
-            # print("*", p.tillNextWater())
-            if p.tillNextWater() == day % p.species.daysBetweenWatering:
-                plantsTowater.append(p)
-        return plantsTowater
+
+
 
