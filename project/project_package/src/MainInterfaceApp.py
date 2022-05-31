@@ -10,6 +10,7 @@ from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import Species
 from project.project_package.src.package.Plant import Plant, load_plant
+from project.project_package.src.package.Plant import Plant, loadPlant, plantsToWater, plantsToWaterOnDay
 from project.project_package.src.database.database import Database
 from project.project_package.src.package.functions import without_whitespace
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog
@@ -84,7 +85,7 @@ class CreateAccountScreen(Screen):
             if without_whitespace(username) and without_whitespace(password):
                 if password == confirm_password:
                     print("ok")
-                    print(db.create_user(username, password, "GUI/images/test.jpg"))
+                    db.create_user(username, password, "GUI/images/test.jpg")
                     self.warning("")
                     return True
                 else:
@@ -160,7 +161,7 @@ class MainApp(MDApp):
             self.plants.append(load_plant(x, self.species))
 
         if len(self.plants) > 1:
-            self.plants[0].plants_to_water(self.plants)
+            plantsToWater(self.plants)
 
         plants_text = "You have: " + str(len(self.plants)) + " plant"
         if len(self.plants) > 1:
@@ -185,7 +186,7 @@ class MainApp(MDApp):
         self.root.ids.main_screen.ids.main_screen_toolbar.title = f'{data}'
         plants_to_water = []
         if len(self.plants) > 0:
-            plants_to_water = self.plants[0].plants_to_water_daily(days, self.plants)
+            plantsToWater = plantsToWaterOnDay(days, self.plants)
         self.root.ids.main_screen.ids.plants_to_water.clear_widgets()
         for p in plants_to_water:
             self.root.ids.main_screen.ids.plants_to_water.add_widget(
@@ -239,14 +240,16 @@ class MainApp(MDApp):
         self.add_plant_dialog.dismiss()
 
     def add_plant(self, plant_name, species_name, room, about_me):
+        if self.user.nickname == "":
+            return
+        if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 and len(room) <= 15:
 
         if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 and len(
                 room) <= 15:
             if room == '':
                 room = 'no room'
             data = datetime.today().strftime('%d/%m/%y')
-            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, "pink", room, about_me, data,
-                            "GUI/images/test.jpg")
+            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, "pink", room, about_me, data, "GUI/images/test.jpg")
             x = db.get_plant(plant_name, self.user.nickname)
             p = load_plant(x, self.species)
             self.plants.append(p)
@@ -254,15 +257,14 @@ class MainApp(MDApp):
             self.close_add_plant_dialog()
 
     def water_plant(self, plant_name):
-        # print("jestem")
         plant_name = plant_name[7:]
         for p in self.plants:
-            # print(p.name, plant_name, p.name == plant_name)
             if p.name == plant_name:
                 p.water_now()
                 data = datetime.today().strftime('%d/%m/%y')
                 db.water_plant(plant_name, data)
-                # print("sukces!")
+                self.prepere_list_of_plants_to_water(self.day)
+                return
 
     def other_day(self, way):
         self.day += way
@@ -277,6 +279,7 @@ class MainApp(MDApp):
         db.create_user(user_name, password, photo)
 
     def login(self, username, password):
+        print(db.get_users())
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             self.user.nickname = username
@@ -290,11 +293,16 @@ class MainApp(MDApp):
         self.root.ids.nav_drawer.swipe_edge_width = 0
         self.user.nickname = ""
         self.prepare_app_for_user()
+        self.theme_cls.theme_style = "Light"
         self.change_screen("WelcomeScreen", "Start")
+
+
 
     def create_account(self, username, password, confirm_password):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
-            self.change_screen("WelcomeScreen", "Start")
+            print("zmiana")
+            # self.change_screen("WelcomeScreen", "Start")
+            self.login(username, password)
 
     def change_screen(self, screen_name, title, direction='None', mode=""):
         screen_manager = self.root.ids.screen_manager
