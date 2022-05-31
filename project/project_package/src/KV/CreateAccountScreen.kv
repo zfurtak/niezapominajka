@@ -49,8 +49,8 @@
             pos_hint: {"center_x": 0.5, "center_y": 0.2}
             focus: True
             md_bg_color: app.theme_cls.primary_color
-            on_release: app.root.ids.create_account_screen.create_account(create_user_name_text_field.text, create_password_field.text, confirm_password_field.text)
-            on_release: app.root.ids.create_account_screen.warning("Użytkownik " + create_user_name_text_field.text + " istnieje")
+            on_release: app.create_account(create_user_name_text_field.text, create_password_field.text, confirm_password_field.text)
+#            on_release: app.root.ids.create_account_screen.warning("Użytkownik " + create_user_name_text_field.text + " istnieje")
 
         MDRoundFlatIconButton:
             id: comeback_to_login_button

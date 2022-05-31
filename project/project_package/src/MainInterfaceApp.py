@@ -101,10 +101,10 @@ class CreateAccountScreen(Screen):
             if without_whitespace(username) and without_whitespace(password):
                 if password == confirm_password:
                     print("ok")
-                    # db.create_user(username, password, "GUI/images/test.jpg")
+                    db.create_user(username, password, "GUI/images/test.jpg")
                     self.warning("")
                     print(db.get_usernames())
-                    # return "TRUE"
+                    return True
                 else:
                     self.warning("Hasła nie są takie same")
             else:
@@ -363,13 +363,10 @@ class MainApp(MDApp):
 
 
     def create_account(self, username, password, confirm_password):
-        self.root.ids.create_account_screen.create_account(username, password, confirm_password)
-        print("cos")
-        print(db.get_usernames())
-        self.login(username, password)
-        # if (username, ) in db.get_usernames():
-        #     # print("zmiana")
-        #     self.change_screen("WelcomeScreen", "Start")
+        if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
+            print("zmiana")
+            # self.change_screen("WelcomeScreen", "Start")
+            self.login(username, password)
 
 
     def change_screen(self, screen_name, title, direction='None', mode=""):
