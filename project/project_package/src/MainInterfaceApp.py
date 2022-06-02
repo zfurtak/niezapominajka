@@ -96,7 +96,8 @@ class MainApp(MDApp):
         for p in plants_to_water:
             self.root.ids.main_screen.ids.plants_to_water.add_widget(
                 SinglePlantToWater(
-                    text=p.name
+                    text=p[0].name,
+                    icon=p[1]
                 )
             )
 
@@ -189,18 +190,27 @@ class MainApp(MDApp):
             if p.name == plant_name:
                 p.water_now()
                 data = datetime.today().strftime('%d/%m/%y')
-                db.water_plant(plant_name, data)
+                db.water_plant(plant_name, data, self.user.nickname)
                 self.prepare_list_of_plants_to_water(self.day)
                 return
+
+    def water_all(self):
+        print("water them ALL!")
+        if self.day != 0:
+            return
+        plants_list = plants_to_water_daily(0, self.plants)
+        for p in plants_list:
+            self.water_plant(p[0].name)
+
 
     def other_day(self, way):
         self.day += way
         self.day = min(max(self.day, 0), 25)
-
+        self.root.ids.main_screen.change_day(self.day)
         self.prepare_list_of_plants_to_water(self.day)
 
     def db_insert_user(self, user_name, password, photo):
-        db.create_user(user_name, password, photo)
+        db.create_user(user_name, password, photo, datetime.today().strftime('%d/%m/%y'))
 
     def login(self, username, password):
         print(db.get_users())
@@ -226,8 +236,6 @@ class MainApp(MDApp):
 
     def create_account(self, username, password, confirm_password):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
-            print("zmiana")
-            # self.change_screen("WelcomeScreen", "Start")
             self.login(username, password)
 
     def change_screen(self, screen_name, title, direction='None', mode=""):

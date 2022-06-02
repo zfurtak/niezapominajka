@@ -1,5 +1,6 @@
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
-from kivymd.uix.list import OneLineListItem
+from kivymd.uix.list import OneLineListItem, OneLineIconListItem
 
 
 class PlantScreen(Screen):
@@ -15,7 +16,16 @@ class AddPlantScreen(Screen):
 
 
 class MainScreen(Screen):
-    pass
+    def change_day(self, day):
+        if day == 0:
+            self.ids.water_all_button.opacity = 1
+            self.ids.water_all_button.disabled = False
+            print("a teraz widać!")
+
+            return
+        self.ids.water_all_button.opacity = 0
+        self.ids.water_all_button.disabled = True
+        print("nie widać mnie!")
 
 
 class UserScreen(Screen):
@@ -38,5 +48,5 @@ class SinglePlant(OneLineListItem):
     pass
 
 
-class SinglePlantToWater(OneLineListItem):
-    pass
+class SinglePlantToWater(OneLineIconListItem):
+    icon = StringProperty()
