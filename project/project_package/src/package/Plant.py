@@ -4,7 +4,6 @@ from unittest import case
 
 def load_plant(plant_data, species):
     sp = species[0]
-    print(plant_data)
     for s in species:
         name = plant_data[2]
         if "Gatunek: " in plant_data[2]:
@@ -20,10 +19,19 @@ def load_plant(plant_data, species):
 def plants_to_water_daily(day, plant_list):
     plants_to_water = []
     for p in plant_list:
-        if p.tillNextWater() == day % p.species.days_between_watering:
+        if should_water(p, day):
             plants_to_water.append(p)
     sort_by_water_time(plants_to_water)
     return plants_to_water
+
+def should_water(plant, day):
+    p_day = plant.tillNextWater()
+    if p_day % plant.species.days_between_watering == day % plant.species.days_between_watering:
+        if day != 0 or datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) != plant.last_water:
+            return True
+    if p_day < 0 and day == 0:
+        return True
+    return False
 
 
 def sort_by_water_time(plant_list):
@@ -70,6 +78,7 @@ class Plant:
         self.room = room
 
     def next_watering(self):  # dałam tu str bo nie dzialalo inaczej
+        print(self.species.name, self.last_water, "+", timedelta(days=self.species.getDaysBetweenWatering()), "=", self.last_water + timedelta(days=self.species.getDaysBetweenWatering()))
         return self.last_water + timedelta(days=self.species.getDaysBetweenWatering())
 
 
@@ -84,4 +93,5 @@ class Plant:
 
     def tillNextWater(self):
         nextW = self.next_watering()
-        return (nextW - datetime.today()).days
+        print(nextW, "-", datetime.today().replace(hour=0, minute=0, second=0, microsecond=0), "=", (nextW - datetime.today()).days)
+        return (nextW - datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)).days
