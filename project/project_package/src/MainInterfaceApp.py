@@ -184,10 +184,7 @@ class MainApp(MDApp):
 
     def other_day(self, way):
         self.day += way
-        if self.day < 0:
-            self.day = 0
-        if self.day > 25:
-            self.day = 25
+        self.day = min(max(self.day, 0), 25)
 
         self.prepare_list_of_plants_to_water(self.day)
 
