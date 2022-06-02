@@ -58,11 +58,7 @@ class MainApp(MDApp):
             )
 
     def setup_profile(self):
-        self.root.ids.user_screen.ids.user_photo.source = self.user.photo
-        self.root.ids.user_screen.ids.user_name.text = self.user.nickname
-        self.root.ids.user_screen.ids.lvl.text = "Twój poziom:" + str(self.user.level.value)
-        self.root.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant) + " dni bez zabicia roślinki"
-        self.root.ids.user_screen.ids.plants_no.text = "Tyle masz roślinek: " + str(len(self.plants))
+        self.root.ids.user_screen.setup_profile(self.user, self.plants)
 
     def prepare_app_for_user(self):
         plants_ = db.get_users_plants(self.user.nickname)
@@ -73,6 +69,8 @@ class MainApp(MDApp):
         self.load_plants_catalog()
 
         self.prepare_list_of_plants_to_water(self.day)
+
+        self.setup_profile()
 
     def load_plants_catalog(self):
         self.root.ids.my_plants_screen.ids.plants_list.clear_widgets()
@@ -220,7 +218,6 @@ class MainApp(MDApp):
             self.user = User(username)
             self.user.nickname = username
             self.turn_on_proper_mode()
-            self.setup_profile()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
 

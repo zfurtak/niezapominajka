@@ -16,6 +16,7 @@ class WelcomeScreen(Screen):
                 self.warning("Nieprawidłowe hasło")
         else:
             self.warning("Brak użytkownika " + username)
+        return None
 
     def warning(self, text):
         self.ids.welcome_screen_warning.text = text
