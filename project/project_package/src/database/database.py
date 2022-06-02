@@ -7,6 +7,7 @@ class Database:
         self.cursor = self.con.cursor()
         self.create_users_table()
         self.create_plants_table()
+        self.create_species_table()
 
     def close_db_connection(self):
         self.con.close()
