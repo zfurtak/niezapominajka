@@ -22,13 +22,21 @@ def plants_to_water_daily(day, plant_list):
     for p in plant_list:
         if p.tillNextWater() == day % p.species.days_between_watering:
             plants_to_water.append(p)
+    sort_by_water_time(plants_to_water)
     return plants_to_water
 
 
-def plantsToWater(plant_list):
+def sort_by_water_time(plant_list):
     td = datetime.today()
     plant_list.sort(key=lambda x: td - x.last_water)
     return plant_list
+
+def delete_plant_from_list(plant_list, plant_name):
+    for p in range(len(plant_list)):
+        print(plant_list[p].name, plant_name, plant_list[p].name == plant_name)
+        if plant_list[p].name == plant_name:
+            plant_list.remove(plant_list[p])
+            return
 
 
 class Plant:

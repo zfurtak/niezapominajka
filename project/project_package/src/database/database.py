@@ -44,6 +44,10 @@ class Database:
             return None
         return password[-1]
 
+    def killed_plant(self, new_data, email):
+        update = self.cursor.execute("UPDATE users SET last_dead_plant = ? WHERE username=?", (new_data, email))
+        self.con.commit()
+
     def delete_user(self, userid):
         self.cursor.execute("DELETE FROM users WHERE id=?", (userid,))
         self.con.commit()
@@ -89,12 +93,12 @@ class Database:
         rooms = self.cursor.execute("SELECT DISTINCT room FROM plants WHERE email=?", (email,)).fetchall()
         return rooms
 
-    def delete_plants(self, id):
-        self.cursor.execute("DELETE FROM plants WHERE id=?", (id,))
+    def delete_plants(self, plant_name, email):
+        self.cursor.execute("DELETE FROM plants WHERE plant_name = ? AND email=?", (plant_name, email))
         self.con.commit()
 
-    def water_plant(self, plant_name, newData):
-        update = self.cursor.execute("UPDATE plants SET last_water = ? WHERE plant_name = ?", (newData, plant_name))
+    def water_plant(self, plant_name, new_data, email):
+        update = self.cursor.execute("UPDATE plants SET last_water = ? WHERE plant_name = ? AND email=?", (new_data, plant_name, email))
         self.con.commit()
 
     # all functionality for species

@@ -10,7 +10,8 @@ from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.Screens import SinglePlant, SinglePlantToWater, SingleSpecies
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import load_all_species
-from project.project_package.src.package.Plant import load_plant, plantsToWater, plants_to_water_daily
+from project.project_package.src.package.Plant import load_plant, sort_by_water_time, plants_to_water_daily, \
+    delete_plant_from_list
 from project.project_package.src.database.database import Database
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, DeletePlantDialog
 from project.project_package.src.package.Screens import PlantScreen, MyPlantsScreen, AddPlantScreen, \
@@ -69,9 +70,11 @@ class MainApp(MDApp):
         for x in plants_:
             self.plants.append(load_plant(x, self.species))
 
-        if len(self.plants) > 1:
-            plantsToWater(self.plants)
+        self.load_plants_catalog()
 
+        self.prepare_list_of_plants_to_water(self.day)
+
+    def load_plants_catalog(self):
         self.root.ids.my_plants_screen.ids.plants_list.clear_widgets()
 
         for p in self.plants:
@@ -80,8 +83,6 @@ class MainApp(MDApp):
                     text=p.name,
                 )
             )
-
-        self.prepare_list_of_plants_to_water(self.day)
 
     def prepare_list_of_plants_to_water(self, days):
         if days < 0:
@@ -136,7 +137,7 @@ class MainApp(MDApp):
     def show_delete_plant_dialog(self, plant_name):
         self.delete_plant_dialog = MDDialog(
             type="custom",
-            content_cls=DeletePlantDialog())
+            content_cls=DeletePlantDialog(plant_name[7:]))
         self.delete_plant_dialog.open()
 
     def show_add_plant_dialog(self, species_name):
@@ -152,9 +153,19 @@ class MainApp(MDApp):
     def close_add_plant_dialog(self):
         self.add_plant_dialog.dismiss()
 
-#TODO dokonczyc usuwanie
-    def delete_plant(self):
-        pass
+
+    def delete_plant(self, text, type):
+        if type == "joke":
+            self.delete_plant_dialog.content_cls.message()
+            return
+        plant_name = text[23:-1]
+        delete_plant_from_list(self.plants, plant_name)
+        if type == "dead":
+            data = datetime.today().strftime('%d/%m/%y')
+            db.killed_plant(data, self.user.nickname)
+        db.delete_plants(plant_name, self.user.nickname)
+        self.load_plants_catalog()
+        self.prepare_list_of_plants_to_water(0)
 
     def add_plant(self, plant_name, species_name, room, about_me):
         if self.user.nickname == "":
