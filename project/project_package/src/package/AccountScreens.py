@@ -10,11 +10,13 @@ class WelcomeScreen(Screen):
     def login(self, username, password):
         if (username,) in db.get_usernames():
             if db.get_users_password(username) == (password,):
+                self.warning("")
                 return True
             else:
                 self.warning("Nieprawidłowe hasło")
         else:
             self.warning("Brak użytkownika " + username)
+        return None
 
     def warning(self, text):
         self.ids.welcome_screen_warning.text = text

@@ -4,7 +4,6 @@ from unittest import case
 
 def load_plant(plant_data, species):
     sp = species[0]
-    print(plant_data)
     for s in species:
         name = plant_data[2]
         if "Gatunek: " in plant_data[2]:
@@ -20,20 +19,48 @@ def load_plant(plant_data, species):
 def plants_to_water_daily(day, plant_list):
     plants_to_water = []
     for p in plant_list:
-        if p.tillNextWater() == day % p.species.days_between_watering:
-            plants_to_water.append(p)
+        if should_water(p, day):
+            plants_to_water.append([p, choose_icon(p)])
+    sort_by_water_time(plants_to_water)
     return plants_to_water
 
 
-def plantsToWater(plant_list):
-    td = datetime.today()
-    plant_list.sort(key=lambda x: td - x.last_water)
+def should_water(plant, day):
+    p_day = plant.tillNextWater()
+    if p_day % plant.species.days_between_watering == day % plant.species.days_between_watering:
+        if day != 0 or datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) != plant.last_water:
+            return True
+    if p_day < 0 and day == 0:
+        return True
+    return False
+
+
+def choose_icon(plant):
+    days = plant.tillNextWater()
+    if days >= 0:
+        return ""
+    if abs(days // plant.species.days_between_watering) == 1:
+        return "water-alert"
+    else:
+        return "skull"
+
+
+def sort_by_water_time(plant_list):
+    td = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+    plant_list.sort(key=lambda x: td - x[0].last_water)
     return plant_list
+
+def delete_plant_from_list(plant_list, plant_name):
+    for p in range(len(plant_list)):
+        if plant_list[p].name == plant_name:
+            plant_list.remove(plant_list[p])
+            return
 
 
 class Plant:
-    def __init__(self, name, species, first_water=datetime.today(), room=None,
-                 notes="Brak", last_water=datetime.today(), picture=None):
+    def __init__(self, name, species, first_water=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0),
+                 room=None, notes="Brak",
+                 last_water=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0), picture=None):
         self.name = name
         self.species = species
         self.first_water = first_water
@@ -47,10 +74,10 @@ class Plant:
         #     self.picture = self.species.getPicture()
 
     def days_endured(self):
-        return (datetime.today() - self.first_water).days
+        return (datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - self.first_water).days
 
     def water_now(self):
-        self.last_water = datetime.today()
+        self.last_water = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
     def actualize_last_water(self, lastWater: datetime):
         self.last_water = datetime.strptime(lastWater, "%Y-%m-%d")
@@ -61,7 +88,7 @@ class Plant:
     def change_room(self, room):
         self.room = room
 
-    def next_watering(self):  # dałam tu str bo nie dzialalo inaczej
+    def next_watering(self):
         return self.last_water + timedelta(days=self.species.getDaysBetweenWatering())
 
 
@@ -76,4 +103,4 @@ class Plant:
 
     def tillNextWater(self):
         nextW = self.next_watering()
-        return (nextW - datetime.today()).days
+        return (nextW - datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)).days

@@ -10,7 +10,8 @@ from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.Screens import SinglePlant, SinglePlantToWater, SingleSpecies
 from project.project_package.src.package.User import User
 from project.project_package.src.package.Species import load_all_species
-from project.project_package.src.package.Plant import load_plant, plantsToWater, plants_to_water_daily
+from project.project_package.src.package.Plant import load_plant, sort_by_water_time, plants_to_water_daily, \
+    delete_plant_from_list
 from project.project_package.src.database.database import Database
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, DeletePlantDialog
 from project.project_package.src.package.Screens import PlantScreen, MyPlantsScreen, AddPlantScreen, \
@@ -57,11 +58,7 @@ class MainApp(MDApp):
             )
 
     def setup_profile(self):
-        self.root.ids.user_screen.ids.user_photo.source = self.user.photo
-        self.root.ids.user_screen.ids.user_name.text = self.user.nickname
-        self.root.ids.user_screen.ids.lvl.text = "Twój poziom:" + str(self.user.level.value)
-        self.root.ids.user_screen.ids.time_from_kill.text = str(self.user.days_without_dead_plant) + " dni bez zabicia roślinki"
-        self.root.ids.user_screen.ids.plants_no.text = "Tyle masz roślinek: " + str(len(self.plants))
+        self.root.ids.user_screen.setup_profile(self.user, self.plants)
 
     def prepare_app_for_user(self):
         plants_ = db.get_users_plants(self.user.nickname)
@@ -69,9 +66,13 @@ class MainApp(MDApp):
         for x in plants_:
             self.plants.append(load_plant(x, self.species))
 
-        if len(self.plants) > 1:
-            plantsToWater(self.plants)
+        self.load_plants_catalog()
 
+        self.prepare_list_of_plants_to_water(self.day)
+
+        self.setup_profile()
+
+    def load_plants_catalog(self):
         self.root.ids.my_plants_screen.ids.plants_list.clear_widgets()
 
         for p in self.plants:
@@ -80,8 +81,6 @@ class MainApp(MDApp):
                     text=p.name,
                 )
             )
-
-        self.prepare_list_of_plants_to_water(self.day)
 
     def prepare_list_of_plants_to_water(self, days):
         if days < 0:
@@ -95,7 +94,8 @@ class MainApp(MDApp):
         for p in plants_to_water:
             self.root.ids.main_screen.ids.plants_to_water.add_widget(
                 SinglePlantToWater(
-                    text=p.name
+                    text=p[0].name,
+                    icon=p[1]
                 )
             )
 
@@ -136,7 +136,7 @@ class MainApp(MDApp):
     def show_delete_plant_dialog(self, plant_name):
         self.delete_plant_dialog = MDDialog(
             type="custom",
-            content_cls=DeletePlantDialog())
+            content_cls=DeletePlantDialog(plant_name[7:]))
         self.delete_plant_dialog.open()
 
     def show_add_plant_dialog(self, species_name):
@@ -152,9 +152,19 @@ class MainApp(MDApp):
     def close_add_plant_dialog(self):
         self.add_plant_dialog.dismiss()
 
-#TODO dokonczyc usuwanie
-    def delete_plant(self):
-        pass
+
+    def delete_plant(self, text, type):
+        if type == "joke":
+            self.delete_plant_dialog.content_cls.message()
+            return
+        plant_name = text[23:-1]
+        delete_plant_from_list(self.plants, plant_name)
+        if type == "dead":
+            data = datetime.today().strftime('%d/%m/%y')
+            db.killed_plant(data, self.user.nickname)
+        db.delete_plants(plant_name, self.user.nickname)
+        self.load_plants_catalog()
+        self.prepare_list_of_plants_to_water(0)
 
     def add_plant(self, plant_name, species_name, room, about_me):
         if self.user.nickname == "":
@@ -178,18 +188,27 @@ class MainApp(MDApp):
             if p.name == plant_name:
                 p.water_now()
                 data = datetime.today().strftime('%d/%m/%y')
-                db.water_plant(plant_name, data)
+                db.water_plant(plant_name, data, self.user.nickname)
                 self.prepare_list_of_plants_to_water(self.day)
                 return
+
+    def water_all(self):
+        print("water them ALL!")
+        if self.day != 0:
+            return
+        plants_list = plants_to_water_daily(0, self.plants)
+        for p in plants_list:
+            self.water_plant(p[0].name)
+
 
     def other_day(self, way):
         self.day += way
         self.day = min(max(self.day, 0), 25)
-
+        self.root.ids.main_screen.change_day(self.day)
         self.prepare_list_of_plants_to_water(self.day)
 
     def db_insert_user(self, user_name, password, photo):
-        db.create_user(user_name, password, photo)
+        db.create_user(user_name, password, photo, datetime.today().strftime('%d/%m/%y'))
 
     def login(self, username, password):
         print(db.get_users())
@@ -199,7 +218,6 @@ class MainApp(MDApp):
             self.user = User(username)
             self.user.nickname = username
             self.turn_on_proper_mode()
-            self.setup_profile()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
 
@@ -215,8 +233,6 @@ class MainApp(MDApp):
 
     def create_account(self, username, password, confirm_password):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
-            print("zmiana")
-            # self.change_screen("WelcomeScreen", "Start")
             self.login(username, password)
 
     def change_screen(self, screen_name, title, direction='None', mode=""):

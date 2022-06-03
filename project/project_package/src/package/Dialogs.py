@@ -24,8 +24,19 @@ class AddPlantDialog(FloatLayout):
 
 
 class DeletePlantDialog(FloatLayout):
-    def __init__(self, **kwargs):
+    def __init__(self, species_name, **kwargs):
         super().__init__(**kwargs)
+        self.ids.plant_name.text = f'O nie!!\nCo się stało z {species_name}?'
+
+    def message(self):
+        self.ids.plant_name.theme_text_color = "Error"
+        self.ids.plant_name.text = "Nie śmieszne"
+        self.ids.delete1.opacity = 0
+        self.ids.delete1.disabled = True
+        self.ids.delete2.opacity = 0
+        self.ids.delete2.disabled = True
+        self.ids.delete3.opacity = 0
+        self.ids.delete3.disabled = True
 
 
 class PlantProfileDialog(FloatLayout):
