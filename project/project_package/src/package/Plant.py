@@ -6,8 +6,8 @@ def load_plant(plant_data, species):
     sp = species[0]
     for s in species:
         name = plant_data[2]
-        if "Gatunek: " in plant_data[2]:
-            name = name[9:]
+        # if "Gatunek: " in plant_data[2]:
+        #     name = name[9:]
         if s.name == name:
             sp = s
 

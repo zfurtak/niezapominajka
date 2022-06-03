@@ -1,9 +1,11 @@
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
 from kivy.properties import StringProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
@@ -42,6 +44,11 @@ class MainApp(MDApp):
         self.species = load_all_species(db.get_all_species())
         self.plants = []
         self.user = None
+        # self.file_manager = MDFileManager(
+        #     exit_manager=self.exit_manager,
+        #     select_path=self.select_path,
+        #     ext=[".jpg", ".png", ".jpeg"]
+        # )
 
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
@@ -186,20 +193,22 @@ class MainApp(MDApp):
         plant_name = plant_name[7:]
         for p in self.plants:
             if p.name == plant_name:
-                p.water_now()
-                data = datetime.today().strftime('%d/%m/%y')
-                db.water_plant(plant_name, data, self.user.nickname)
-                self.prepare_list_of_plants_to_water(self.day)
+                self.water(p)
                 return
+
+    def water(self, plant):
+        plant.water_now()
+        data = datetime.today().strftime('%d/%m/%y')
+        db.water_plant(plant.name, data, self.user.nickname)
+        self.prepare_list_of_plants_to_water(self.day)
 
     def water_all(self):
         print("water them ALL!")
         if self.day != 0:
             return
-        plants_list = plants_to_water_daily(0, self.plants)
+        plants_list = plants_to_water_daily(self.day, self.plants)
         for p in plants_list:
-            self.water_plant(p[0].name)
-
+            self.water(p[0])
 
     def other_day(self, way):
         self.day += way
@@ -216,7 +225,7 @@ class MainApp(MDApp):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             #TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = User(username)
-            self.user.nickname = username
+            # self.user.nickname = username
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
@@ -234,6 +243,18 @@ class MainApp(MDApp):
     def create_account(self, username, password, confirm_password):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
             self.login(username, password)
+
+    def change_photo(self, object_type, name):
+        if not self.manager:
+            self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
+            self.file_manager = MDFileManager(
+                exit_manager=self.exit_manager, select_path=self.select_path)
+            self.manager.add_widget(self.file_manager)
+            self.file_manager.show('/')
+        self.manager_open = True
+        self.manager.open()
+        # if object_type == "user":
+        pass
 
     def change_screen(self, screen_name, title, direction='None', mode=""):
         screen_manager = self.root.ids.screen_manager
@@ -265,4 +286,6 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
+    # email, plant_name, species, first_water, room, notes, last_water, picture
+    # db.create_plant("yola", "ppp", "Fikus", "20/05/2022", "", "notka", "20/05/2022", "GUI/images/fikus.jpg")
     MainApp().run()

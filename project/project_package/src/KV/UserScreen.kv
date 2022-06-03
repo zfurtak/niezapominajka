@@ -1,40 +1,43 @@
 #:import utils kivy.utils
 
 <UserScreen>:
-    BoxLayout:
+    MDFloatLayout:
         orientation: 'vertical'
-        MDLabel:
-            text: " "
-            halign: "center"
-            size_hint: (1, 0.1)
-
         Image:
             id: user_photo
             size_hint_y: .5
             size_hint_x: .6
-            pos_hint: {"center_x": 0.5, "top_y": 0.1}
+            pos_hint: {"center_x": 0.5, "center_y": 0.65}
             radius: [36, 36, 36, 36, ]
+
+        MDIconButton:
+            id: change_image_button
+            icon: "image-edit-outline"
+            pos_hint: {"center_x": 0.5, "center_y": 0.425}
+            md_bg_color: app.theme_cls.primary_color
+#            icon_size: dp(100)
+            on_press: app.change_photo("user", user_name.text)
 
         MDLabel:
             id: user_name
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
             size_hint: (0.8, 0.1)
 
         MDLabel:
             id: lvl
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            pos_hint: {"center_x": 0.5, "center_y": 0.25}
             size_hint: (0.8, 0.1)
 
         MDLabel:
             id: plants_no
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
             size_hint: (0.8, 0.1)
 
         MDLabel:
             id: time_from_kill
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
             size_hint: (0.8, 0.1)
