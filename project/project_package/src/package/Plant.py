@@ -15,6 +15,12 @@ def load_plant(plant_data, species):
     last_water = datetime.strptime(plant_data[6][:2] + '/' + plant_data[6][3:5] + '/' + plant_data[6][6:8], '%d/%m/%y')
     return Plant(plant_data[1], sp, first_water, plant_data[4], plant_data[5], last_water, plant_data[7])
 
+def get_plant(name, plant_list):
+    for p in plant_list:
+        print(p.name, name, p.name == name)
+        if p.name == name:
+            return p
+
 
 def plants_to_water_daily(day, plant_list):
     plants_to_water = []

@@ -38,6 +38,10 @@ class Database:
             return None
         return created_user[-1]
 
+    def change_username(self, id, username):
+        self.cursor.execute("UPDATE users SET username = ? WHERE id=?", (username, id))
+        self.con.commit()
+
     def get_users(self):
         users = self.cursor.execute("SELECT id, username, password FROM users").fetchall()
         return users
@@ -111,6 +115,11 @@ class Database:
 
     def water_plant(self, plant_name, new_data, email):
         update = self.cursor.execute("UPDATE plants SET last_water = ? WHERE plant_name = ? AND email=?", (new_data, plant_name, email))
+        self.con.commit()
+
+    def change_plant_image(self, plant_name, picture, email):
+        self.cursor.execute("UPDATE plants SET picture = ? WHERE plant_name = ? AND email=?",
+                            (picture, plant_name, email))
         self.con.commit()
 
     # all functionality for species

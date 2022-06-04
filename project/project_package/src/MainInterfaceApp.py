@@ -11,7 +11,7 @@ from project.project_package.src.package.Screens import SinglePlant, SinglePlant
 from project.project_package.src.package.User import User, load_user
 from project.project_package.src.package.Species import load_all_species
 from project.project_package.src.package.Plant import load_plant, sort_by_water_time, plants_to_water_daily, \
-    delete_plant_from_list
+    delete_plant_from_list, get_plant
 from project.project_package.src.database.database import Database
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, \
     DeletePlantDialog, ChangeImageDialog
@@ -20,7 +20,7 @@ from project.project_package.src.package.Screens import PlantScreen, MyPlantsScr
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
 import os
 
-from project.project_package.src.package.functions import save_user_image
+from project.project_package.src.package.functions import save_image
 
 db = Database()
 Window.size = (340, 630)
@@ -263,14 +263,19 @@ class MainApp(MDApp):
     def change_photo(self, object_type, name, path):
         if object_type == "user":
             dir_path = os.getcwd() + rf"\GUI\images\users\{self.user.nickname}.jpg"
-            save_user_image(path, dir_path)
+            save_image(path, dir_path)
             db.change_image(dir_path, self.user.nickname)
             self.user.photo = path
             self.root.ids.user_screen.setup_profile(self.user, self.plants)
             self.user.photo = dir_path
-        pass
+        if object_type == "plant":
+            dir_path = os.getcwd() + rf"\GUI\images\plants\{self.user.nickname}_{name}.jpg"
+            save_image(path, dir_path)
+            db.change_plant_image(name, dir_path, self.user.nickname)
+            plant = get_plant(name, self.plants)
+            plant.picture = path
 
-    def change_screen(self, screen_name, title, direction='None', mode=""):
+    def change_screen(self, screen_name, title):
         screen_manager = self.root.ids.screen_manager
         self.root.ids.toolbar.title = title
 
@@ -278,13 +283,9 @@ class MainApp(MDApp):
             self.day = 0
             self.prepare_list_of_plants_to_water(0)
 
-        if direction == 'None':
-            screen_manager.transition = NoTransition()
-            screen_manager.current = screen_name
-            return
-
-        screen_manager.transition = CardTransition(direction=direction, mode=mode)
+        screen_manager.transition = NoTransition()
         screen_manager.current = screen_name
+
 
     def change_mode(self, instance, value):
         if value:

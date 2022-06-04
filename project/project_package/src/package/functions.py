@@ -20,6 +20,6 @@ def without_whitespace(text):
     return True
 
 
-def save_user_image(image_path, dst_path):
+def save_image(image_path, dst_path):
     shutil.copy2(image_path, dst_path)
 
