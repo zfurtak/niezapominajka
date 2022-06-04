@@ -24,10 +24,12 @@ from project.project_package.src.package.functions import save_user_image
 
 db = Database()
 Window.size = (340, 630)
+PLANTS_MAX = 25
 
 
 class MyScreenManager(ScreenManager):
     pass
+    # def set_navigation_drawer(self, mode):
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -176,16 +178,20 @@ class MainApp(MDApp):
         plant_name = text[23:-1]
         delete_plant_from_list(self.plants, plant_name)
         if type == "dead":
-            data = datetime.today().strftime('%d/%m/%y')
-            db.killed_plant(data, self.user.nickname)
+            data = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+            self.user.last_dead_plant = data
+            db.killed_plant(data.strftime('%d/%m/%y'), self.user.nickname)
         db.delete_plants(plant_name, self.user.nickname)
+        print(db.get_plant(plant_name, self.user.nickname))
         self.load_plants_catalog()
+        self.root.ids.user_screen.update_after_delete(self.user, self.plants)
         self.prepare_list_of_plants_to_water(0)
 
     def add_plant(self, plant_name, species_name, room, about_me):
         if self.user.nickname == "":
             return
-
+        if len(self.plants) >= PLANTS_MAX:
+            return
         if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 and len(
                 room) <= 15:
             if room == '':
@@ -294,6 +300,4 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
-    # email, plant_name, species, first_water, room, notes, last_water, picture
-    # db.create_plant("yola", "ppp", "Fikus", "20/05/2022", "", "notka", "20/05/2022", "GUI/images/fikus.jpg")
     MainApp().run()

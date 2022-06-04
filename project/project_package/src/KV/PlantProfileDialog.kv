@@ -19,6 +19,7 @@
     MDLabel:
         id: plant_name
         text: "O nie!!\nCo się stało z ?"
+        halign: "center"
         pos_hint: {"center_x": 0.5, "center_y": 0.9}
         theme_text_color: "Primary"
 
@@ -28,7 +29,7 @@
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
         opacity: 1
         disabled: False
-        on_press: app.delete_plant(plant_name.text, "new_house"), app.delete_plant_dialog.dismiss()
+        on_press: app.delete_plant(plant_name.text, "new_house"), app.delete_plant_dialog.dismiss(), app.dialog.dismiss()
 
     MDRaisedButton:
         id: delete2
@@ -44,7 +45,7 @@
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
         opacity: 1
         disabled: False
-        on_press: app.delete_plant(plant_name.text, "dead"), app.delete_plant_dialog.dismiss()
+        on_press: app.delete_plant(plant_name.text, "dead"), app.delete_plant_dialog.dismiss(), app.dialog.dismiss()
 
 
 
