@@ -259,8 +259,9 @@ class MainApp(MDApp):
             dir_path = os.getcwd() + rf"\GUI\images\users\{self.user.nickname}.jpg"
             save_user_image(path, dir_path)
             db.change_image(dir_path, self.user.nickname)
-            self.user.photo = dir_path
+            self.user.photo = path
             self.root.ids.user_screen.setup_profile(self.user, self.plants)
+            self.user.photo = dir_path
         pass
 
     def change_screen(self, screen_name, title, direction='None', mode=""):

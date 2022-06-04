@@ -54,7 +54,7 @@ class User:
         self.last_dead_plant = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
     def get_days_without_dead_plant(self):
-         return (self.last_dead_plant - datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)).days
+         return (datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - self.last_dead_plant).days
 
     # def update_days_without_dead_plant(self):
     #     self.days_without_dead_plant += 1
