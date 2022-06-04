@@ -16,7 +16,7 @@
             pos_hint: {"center_x": 0.5, "center_y": 0.425}
             md_bg_color: app.theme_cls.primary_color
 #            icon_size: dp(100)
-            on_press: app.change_photo("user", user_name.text)
+            on_press: app.show_change_image_dialog("user", user_name.text)
 
         MDLabel:
             id: user_name
@@ -41,3 +41,29 @@
             halign: "center"
             pos_hint: {"center_x": 0.5, "center_y": 0.15}
             size_hint: (0.8, 0.1)
+
+
+<ChangeImageDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 100)
+
+    MDLabel:
+        id: question
+        text: "Chcesz zmienić zdjęcie?"
+        pos_hint: {"center_x": 0.5, "center_y": 1}
+        halign: "center"
+        font_size: 25
+
+    MDRaisedButton:
+        id: yes_button
+        text: "Oczy(wiście)!"
+        pos_hint: {"center_x": 0.25, "center_y": 0.4}
+        on_press: app.dialog.content_cls.file_manager_open(), app.dialog.dismiss()
+
+    MDRaisedButton:
+        id: no_button
+        text: "Nope"
+        pos_hint: {"center_x": 0.75, "center_y": 0.4}
+        on_press: app.dialog.dismiss()
+

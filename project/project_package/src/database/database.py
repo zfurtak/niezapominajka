@@ -56,6 +56,10 @@ class Database:
         update = self.cursor.execute("UPDATE users SET last_dead_plant = ? WHERE username=?", (new_data, email))
         self.con.commit()
 
+    def change_image(self, photo, email):
+        update = self.cursor.execute("UPDATE users SET photo_source = ? WHERE username=?", (photo, email))
+        self.con.commit()
+
     def delete_user(self, userid):
         self.cursor.execute("DELETE FROM users WHERE id=?", (userid,))
         self.con.commit()

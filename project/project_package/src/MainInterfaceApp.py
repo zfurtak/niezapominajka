@@ -10,12 +10,13 @@ from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.Screens import SinglePlant, SinglePlantToWater, SingleSpecies
-from project.project_package.src.package.User import User
+from project.project_package.src.package.User import User, load_user
 from project.project_package.src.package.Species import load_all_species
 from project.project_package.src.package.Plant import load_plant, sort_by_water_time, plants_to_water_daily, \
     delete_plant_from_list
 from project.project_package.src.database.database import Database
-from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, DeletePlantDialog
+from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, \
+    DeletePlantDialog, ChangeImageDialog
 from project.project_package.src.package.Screens import PlantScreen, MyPlantsScreen, AddPlantScreen, \
     MainScreen, UserScreen, SettingsScreen, SpeciesCatalogScreen, SingleSpecies, SinglePlant, SinglePlantToWater
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
@@ -152,6 +153,14 @@ class MainApp(MDApp):
             content_cls=AddPlantDialog(species_name))
         self.add_plant_dialog.open()
 
+    def show_change_image_dialog(self, object_type, name):
+        if self.dialog:
+            self.close_dialog()
+        self.dialog = MDDialog(
+            type="custom",
+            content_cls=ChangeImageDialog(object_type, name))
+        self.dialog.open()
+
     def close_dialog(self):
         self.dialog.dismiss(force=True)
         self.dialog = None
@@ -224,7 +233,7 @@ class MainApp(MDApp):
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             #TODO jakos tak tworzyc mądrze tego uzytkownika
-            self.user = User(username)
+            self.user = load_user(db.get_user(username))
             # self.user.nickname = username
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
@@ -244,16 +253,12 @@ class MainApp(MDApp):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
             self.login(username, password)
 
-    def change_photo(self, object_type, name):
-        if not self.manager:
-            self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
-            self.file_manager = MDFileManager(
-                exit_manager=self.exit_manager, select_path=self.select_path)
-            self.manager.add_widget(self.file_manager)
-            self.file_manager.show('/')
-        self.manager_open = True
-        self.manager.open()
-        # if object_type == "user":
+    def change_photo(self, object_type, name, path):
+        print(object_type, object_type == "user")
+        if object_type == "user":
+            db.change_image(path, self.user.nickname)
+            print(db.get_user(self.user.nickname))
+            self.root.ids.user_screen.setup_profile(self.user, self.plants)
         pass
 
     def change_screen(self, screen_name, title, direction='None', mode=""):

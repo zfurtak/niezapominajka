@@ -5,10 +5,14 @@ from .Achievement import Achievement
 from .Plant import Plant
 # id, username, password, join_date, last_dead_plant, dead_plants_cnt, dark_mode, photo_source
 #TODO trzeba dodać join_date, baza dla lvl
+# id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source
 
-# def load_user(user_data, user_lvl_data):
-#     user = User(user_data[1], join_date=user_data[3], level=user_lvl_data[x], dark_mode=user_data[6],
-#                 list_of_achievements=user_lvl_data.., last_dead_plant=user_data[4], photo=user_data[7], dead_plants=user_data[5])
+def load_user(user_data):
+    last_dead_plant = datetime.strptime(user_data[3], '%d/%m/%y')
+    user = User(user_data[1], dark_mode=user_data[5], last_dead_plant=last_dead_plant, photo=user_data[6],
+                dead_plants=user_data[4])
+    print(user_data[6])
+    return user
 
 class User:
 
