@@ -34,8 +34,8 @@ class UserScreen(Screen):
         self.ids.user_name.text = user.nickname
         self.ids.lvl.text = "Twój poziom:" + str(user.level.value)
         self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " dni bez zabicia roślinki"
-        # print(len(plants))
         self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
+        # self.ids
 
 
 class SettingsScreen(Screen):
@@ -47,10 +47,6 @@ class SpeciesCatalogScreen(Screen):
 
 
 class SingleSpecies(OneLineListItem):
-    pass
-
-
-class ChoosePhotoScreen(Screen):
     pass
 
 

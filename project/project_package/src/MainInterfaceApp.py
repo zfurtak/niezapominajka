@@ -1,11 +1,9 @@
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
 from kivy.properties import StringProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
@@ -20,6 +18,9 @@ from project.project_package.src.package.Dialogs import SpeciesProfileDialog, Pl
 from project.project_package.src.package.Screens import PlantScreen, MyPlantsScreen, AddPlantScreen, \
     MainScreen, UserScreen, SettingsScreen, SpeciesCatalogScreen, SingleSpecies, SinglePlant, SinglePlantToWater
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
+import os
+
+from project.project_package.src.package.functions import save_user_image
 
 db = Database()
 Window.size = (340, 630)
@@ -168,7 +169,6 @@ class MainApp(MDApp):
     def close_add_plant_dialog(self):
         self.add_plant_dialog.dismiss()
 
-
     def delete_plant(self, text, type):
         if type == "joke":
             self.delete_plant_dialog.content_cls.message()
@@ -191,7 +191,8 @@ class MainApp(MDApp):
             if room == '':
                 room = 'no room'
             data = datetime.today().strftime('%d/%m/%y')
-            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, room, about_me, data, "GUI/images/test.jpg")
+            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, room, about_me, data,
+                            "GUI/images/test.jpg")
             plant_data = db.get_plant(plant_name, self.user.nickname)
             p = load_plant(plant_data, self.species)
             self.plants.append(p)
@@ -232,7 +233,7 @@ class MainApp(MDApp):
         print(db.get_users())
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
-            #TODO jakos tak tworzyc mądrze tego uzytkownika
+            # TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = load_user(db.get_user(username))
             # self.user.nickname = username
             self.turn_on_proper_mode()
@@ -254,10 +255,11 @@ class MainApp(MDApp):
             self.login(username, password)
 
     def change_photo(self, object_type, name, path):
-        print(object_type, object_type == "user")
         if object_type == "user":
-            db.change_image(path, self.user.nickname)
-            print(db.get_user(self.user.nickname))
+            dir_path = os.getcwd() + rf"\GUI\images\users\{self.user.nickname}.jpg"
+            save_user_image(path, dir_path)
+            db.change_image(dir_path, self.user.nickname)
+            self.user.photo = dir_path
             self.root.ids.user_screen.setup_profile(self.user, self.plants)
         pass
 

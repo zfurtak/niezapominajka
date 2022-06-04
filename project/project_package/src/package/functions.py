@@ -1,4 +1,7 @@
 import string
+import glob
+import shutil
+import os
 
 """
     check whitespace
@@ -15,3 +18,8 @@ def without_whitespace(text):
         if i in string.whitespace:
             return False
     return True
+
+
+def save_user_image(image_path, dst_path):
+    shutil.copy2(image_path, dst_path)
+
