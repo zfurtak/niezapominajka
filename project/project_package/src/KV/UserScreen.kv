@@ -1,40 +1,69 @@
 #:import utils kivy.utils
 
 <UserScreen>:
-    BoxLayout:
+    MDFloatLayout:
         orientation: 'vertical'
-        MDLabel:
-            text: " "
-            halign: "center"
-            size_hint: (1, 0.1)
-
         Image:
             id: user_photo
             size_hint_y: .5
             size_hint_x: .6
-            pos_hint: {"center_x": 0.5, "top_y": 0.1}
+            pos_hint: {"center_x": 0.5, "center_y": 0.65}
             radius: [36, 36, 36, 36, ]
+
+        MDIconButton:
+            id: change_image_button
+            icon: "image-edit-outline"
+            pos_hint: {"center_x": 0.5, "center_y": 0.425}
+            md_bg_color: app.theme_cls.primary_color
+#            icon_size: dp(100)
+            on_press: app.show_change_image_dialog("user", user_name.text)
 
         MDLabel:
             id: user_name
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
             size_hint: (0.8, 0.1)
 
         MDLabel:
             id: lvl
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            pos_hint: {"center_x": 0.5, "center_y": 0.25}
             size_hint: (0.8, 0.1)
 
         MDLabel:
             id: plants_no
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
             size_hint: (0.8, 0.1)
 
         MDLabel:
             id: time_from_kill
             halign: "center"
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
             size_hint: (0.8, 0.1)
+
+
+<ChangeImageDialog>:
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 100)
+
+    MDLabel:
+        id: question
+        text: "Chcesz zmienić zdjęcie?"
+        pos_hint: {"center_x": 0.5, "center_y": 1}
+        halign: "center"
+        font_size: 25
+
+    MDRaisedButton:
+        id: yes_button
+        text: "Oczy(wiście)!"
+        pos_hint: {"center_x": 0.25, "center_y": 0.4}
+        on_press: app.dialog.content_cls.file_manager_open(), app.dialog.dismiss()
+
+    MDRaisedButton:
+        id: no_button
+        text: "Nope"
+        pos_hint: {"center_x": 0.75, "center_y": 0.4}
+        on_press: app.dialog.dismiss()
+

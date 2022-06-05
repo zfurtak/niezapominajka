@@ -8,22 +8,28 @@ from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
 from project.project_package.src.package.Screens import SinglePlant, SinglePlantToWater, SingleSpecies
-from project.project_package.src.package.User import User
+from project.project_package.src.package.User import User, load_user
 from project.project_package.src.package.Species import load_all_species
 from project.project_package.src.package.Plant import load_plant, sort_by_water_time, plants_to_water_daily, \
-    delete_plant_from_list
+    delete_plant_from_list, get_plant
 from project.project_package.src.database.database import Database
-from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, DeletePlantDialog
+from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, \
+    DeletePlantDialog, ChangeImageDialog
 from project.project_package.src.package.Screens import PlantScreen, MyPlantsScreen, AddPlantScreen, \
     MainScreen, UserScreen, SettingsScreen, SpeciesCatalogScreen, SingleSpecies, SinglePlant, SinglePlantToWater
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
+import os
+
+from project.project_package.src.package.functions import save_image
 
 db = Database()
 Window.size = (340, 630)
+PLANTS_MAX = 25
 
 
 class MyScreenManager(ScreenManager):
     pass
+    # def set_navigation_drawer(self, mode):
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -42,6 +48,11 @@ class MainApp(MDApp):
         self.species = load_all_species(db.get_all_species())
         self.plants = []
         self.user = None
+        # self.file_manager = MDFileManager(
+        #     exit_manager=self.exit_manager,
+        #     select_path=self.select_path,
+        #     ext=[".jpg", ".png", ".jpeg"]
+        # )
 
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
@@ -145,13 +156,20 @@ class MainApp(MDApp):
             content_cls=AddPlantDialog(species_name))
         self.add_plant_dialog.open()
 
+    def show_change_image_dialog(self, object_type, name):
+        if self.dialog:
+            self.close_dialog()
+        self.dialog = MDDialog(
+            type="custom",
+            content_cls=ChangeImageDialog(object_type, name))
+        self.dialog.open()
+
     def close_dialog(self):
         self.dialog.dismiss(force=True)
         self.dialog = None
 
     def close_add_plant_dialog(self):
         self.add_plant_dialog.dismiss()
-
 
     def delete_plant(self, text, type):
         if type == "joke":
@@ -160,22 +178,27 @@ class MainApp(MDApp):
         plant_name = text[23:-1]
         delete_plant_from_list(self.plants, plant_name)
         if type == "dead":
-            data = datetime.today().strftime('%d/%m/%y')
-            db.killed_plant(data, self.user.nickname)
+            data = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+            self.user.last_dead_plant = data
+            db.killed_plant(data.strftime('%d/%m/%y'), self.user.nickname)
         db.delete_plants(plant_name, self.user.nickname)
+        print(db.get_plant(plant_name, self.user.nickname))
         self.load_plants_catalog()
+        self.root.ids.user_screen.update_after_delete(self.user, self.plants)
         self.prepare_list_of_plants_to_water(0)
 
     def add_plant(self, plant_name, species_name, room, about_me):
         if self.user.nickname == "":
             return
-
+        if len(self.plants) >= PLANTS_MAX:
+            return
         if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 and len(
                 room) <= 15:
             if room == '':
                 room = 'no room'
             data = datetime.today().strftime('%d/%m/%y')
-            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, room, about_me, data, "GUI/images/test.jpg")
+            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, room, about_me, data,
+                            "GUI/images/test.jpg")
             plant_data = db.get_plant(plant_name, self.user.nickname)
             p = load_plant(plant_data, self.species)
             self.plants.append(p)
@@ -186,20 +209,22 @@ class MainApp(MDApp):
         plant_name = plant_name[7:]
         for p in self.plants:
             if p.name == plant_name:
-                p.water_now()
-                data = datetime.today().strftime('%d/%m/%y')
-                db.water_plant(plant_name, data, self.user.nickname)
-                self.prepare_list_of_plants_to_water(self.day)
+                self.water(p)
                 return
+
+    def water(self, plant):
+        plant.water_now()
+        data = datetime.today().strftime('%d/%m/%y')
+        db.water_plant(plant.name, data, self.user.nickname)
+        self.prepare_list_of_plants_to_water(self.day)
 
     def water_all(self):
         print("water them ALL!")
         if self.day != 0:
             return
-        plants_list = plants_to_water_daily(0, self.plants)
+        plants_list = plants_to_water_daily(self.day, self.plants)
         for p in plants_list:
-            self.water_plant(p[0].name)
-
+            self.water(p[0])
 
     def other_day(self, way):
         self.day += way
@@ -214,9 +239,9 @@ class MainApp(MDApp):
         print(db.get_users())
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
-            #TODO jakos tak tworzyc mądrze tego uzytkownika
-            self.user = User(username)
-            self.user.nickname = username
+            # TODO jakos tak tworzyc mądrze tego uzytkownika
+            self.user = load_user(db.get_user(username))
+            # self.user.nickname = username
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
@@ -235,7 +260,22 @@ class MainApp(MDApp):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
             self.login(username, password)
 
-    def change_screen(self, screen_name, title, direction='None', mode=""):
+    def change_photo(self, object_type, name, path):
+        if object_type == "user":
+            dir_path = os.getcwd() + rf"\GUI\images\users\{self.user.nickname}.jpg"
+            save_image(path, dir_path)
+            db.change_image(dir_path, self.user.nickname)
+            self.user.photo = path
+            self.root.ids.user_screen.setup_profile(self.user, self.plants)
+            self.user.photo = dir_path
+        if object_type == "plant":
+            dir_path = os.getcwd() + rf"\GUI\images\plants\{self.user.nickname}_{name}.jpg"
+            save_image(path, dir_path)
+            db.change_plant_image(name, dir_path, self.user.nickname)
+            plant = get_plant(name, self.plants)
+            plant.picture = path
+
+    def change_screen(self, screen_name, title):
         screen_manager = self.root.ids.screen_manager
         self.root.ids.toolbar.title = title
 
@@ -243,13 +283,9 @@ class MainApp(MDApp):
             self.day = 0
             self.prepare_list_of_plants_to_water(0)
 
-        if direction == 'None':
-            screen_manager.transition = NoTransition()
-            screen_manager.current = screen_name
-            return
-
-        screen_manager.transition = CardTransition(direction=direction, mode=mode)
+        screen_manager.transition = NoTransition()
         screen_manager.current = screen_name
+
 
     def change_mode(self, instance, value):
         if value:

@@ -19,6 +19,7 @@
     MDLabel:
         id: plant_name
         text: "O nie!!\nCo się stało z ?"
+        halign: "center"
         pos_hint: {"center_x": 0.5, "center_y": 0.9}
         theme_text_color: "Primary"
 
@@ -28,7 +29,7 @@
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
         opacity: 1
         disabled: False
-        on_press: app.delete_plant(plant_name.text, "new_house"), app.delete_plant_dialog.dismiss()
+        on_press: app.delete_plant(plant_name.text, "new_house"), app.delete_plant_dialog.dismiss(), app.dialog.dismiss()
 
     MDRaisedButton:
         id: delete2
@@ -44,7 +45,7 @@
         pos_hint: {"center_x": 0.5, "center_y": 0.1}
         opacity: 1
         disabled: False
-        on_press: app.delete_plant(plant_name.text, "dead"), app.delete_plant_dialog.dismiss()
+        on_press: app.delete_plant(plant_name.text, "dead"), app.delete_plant_dialog.dismiss(), app.dialog.dismiss()
 
 
 
@@ -59,6 +60,12 @@
         pos_hint: {"center_x": 0.8, "center_y": 0.9}
         size_hint_x: 0.4
         size_hint_y: 0.4
+    MDIconButton:
+        id: change_image_button
+        icon: "image-edit-outline"
+        pos_hint: {"center_x": 0.95, "center_y": 0.7}
+        md_bg_color: app.theme_cls.primary_color
+        on_press: app.show_change_image_dialog("plant", plant_name.text[7:])
 
     MDLabel:
         id: plant_name
@@ -96,4 +103,5 @@
         icon: "trash-can-outline"
         pos_hint: {"center_x": 0.9, "center_y": 0.3}
         on_release: app.show_delete_plant_dialog(plant_name.text)
+
 
