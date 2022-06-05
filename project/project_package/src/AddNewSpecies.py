@@ -13,6 +13,6 @@ if __name__ == '__main__':
     #                   "Oczyszczam powietrze i jestem raczej pozytywny", "GUI/images/fikus.jpg")
     # db.create_species("Sensevieria gwinejska", "Sensevieria trifasciata", 10, "Lubi pełne słońce", "Bardzo odporna na złe warunki",
     #                   "Mówią na mnie wężownica albo język teściowej", "GUI/images/sans.jpg")
-    # db.create_species("Storczyk falenopsis", "Phalaenopsis", 10, "Lubi światło, ale nie za mocno (wchodnie okno)",
+    # db.create_species("Storczyk falenopsis", "Phalaenopsis", 10, "Lubi światło, ale nie za mocno (wschodnie okno)",
     #                   "Najlepiej zamiast podlewania zanurzyć mnie w wodzie na 5 minut",
     #                   "Jestem gwiazdą wsród storczyków", "GUI/images/falenopsis.jpg")

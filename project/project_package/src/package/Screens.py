@@ -36,6 +36,7 @@ class UserScreen(Screen):
         self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " dni bez zabicia roślinki"
         print(len(plants))
         self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
+        # user.days_with_app =
 
 
 class SettingsScreen(Screen):

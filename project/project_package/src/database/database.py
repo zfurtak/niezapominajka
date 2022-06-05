@@ -16,23 +16,23 @@ class Database:
 
     def create_users_table(self):
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS users(id integer PRIMARY KEY AUTOINCREMENT, username varchar(15) NOT NULL, password varchar(50), last_dead_plant varchar(50), dead_plants_cnt integer, dark_mode integer, photo_source varchar(50))")
+            "CREATE TABLE IF NOT EXISTS users(id integer PRIMARY KEY AUTOINCREMENT, username varchar(15) NOT NULL, password varchar(50), last_dead_plant varchar(50), dead_plants_cnt integer, dark_mode integer, photo_source varchar(50), join_date varchar(50))")
         self.con.commit()
 
-    def create_user(self, username, password, photo_source, last_dead_plant, dead_plants_cnt=0, dark_mode=0):
+    def create_user(self, username, password, photo_source, last_dead_plant, join_date, dead_plants_cnt=0, dark_mode=0):
         self.cursor.execute(
-            "INSERT INTO users(username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source) VALUES(?, ?, ?, ?, ?, ?)",
-            (username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source))
+            "INSERT INTO users(username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date) VALUES(?, ?, ?, ?, ?, ?, ?)",
+            (username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date))
         self.con.commit()
 
         created_user = self.cursor.execute(
-            "SELECT id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source FROM users WHERE username = ? and password = ? and last_dead_plant = ? and dead_plants_cnt = ? and dark_mode = ? and photo_source=?",
-            (username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source)).fetchall()
+            "SELECT id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date FROM users WHERE username = ? and password = ? and last_dead_plant = ? and dead_plants_cnt = ? and dark_mode = ? and photo_source=? and join_date=?",
+            (username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date)).fetchall()
         return created_user[-1]
 
     def get_user(self, username):
         created_user = self.cursor.execute(
-            "SELECT id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source FROM users WHERE username = ?",
+            "SELECT id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source , join_date FROM users WHERE username = ?",
             (username, )).fetchall()
         if len(created_user) == 0:
             return None

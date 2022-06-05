@@ -34,7 +34,7 @@ class CreateAccountScreen(Screen):
                 if password == confirm_password:
                     print("ok")
                     db.create_user(username, password, str(datetime.today()),
-                                   "GUI/images/test.jpg")
+                                   "GUI/images/test.jpg", "lol")
                     self.warning("")
                     return True
                 else:
