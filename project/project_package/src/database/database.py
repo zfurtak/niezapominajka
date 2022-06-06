@@ -56,19 +56,23 @@ class Database:
             return None
         return password[-1]
 
-    def killed_plant(self, new_data, email):
-        update = self.cursor.execute("UPDATE users SET last_dead_plant = ? WHERE username=?", (new_data, email))
+    def killed_plant(self, new_data, name):
+        update = self.cursor.execute("UPDATE users SET last_dead_plant = ? WHERE username=?", (new_data, name))
         self.con.commit()
 
-    def change_image(self, photo, email):
-        update = self.cursor.execute("UPDATE users SET photo_source = ? WHERE username=?", (photo, email))
+    def change_image(self, photo, name):
+        update = self.cursor.execute("UPDATE users SET photo_source = ? WHERE username=?", (photo, name))
         self.con.commit()
 
     def delete_user(self, userid):
         self.cursor.execute("DELETE FROM users WHERE id=?", (userid,))
         self.con.commit()
 
-    # all functionality for plants
+    def change_dark_mode(self, name, dark_mode_value):
+        update = self.cursor.execute("UPDATE users SET dark_mode = ? WHERE username=?", (dark_mode_value, name))
+        self.con.commit()
+
+    # all functionalities for plants
 
     def create_plants_table(self):
         self.cursor.execute(

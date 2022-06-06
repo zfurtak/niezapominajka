@@ -73,9 +73,7 @@ class MainApp(MDApp):
             self.plants.append(load_plant(x, self.species))
 
         self.load_plants_catalog()
-
         self.prepare_list_of_plants_to_water(self.day)
-
         self.setup_profile()
 
     def load_plants_catalog(self):
@@ -241,7 +239,7 @@ class MainApp(MDApp):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             # TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = load_user(db.get_user(username))
-            # self.user.nickname = username
+            print("moj mode "+str(self.user.dark_mode))
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
@@ -291,13 +289,19 @@ class MainApp(MDApp):
         if value:
             self.theme_cls.theme_style = "Dark"
             self.user.dark_mode = 1
+            db.change_dark_mode(self.user.nickname, 1)
         else:
             self.theme_cls.theme_style = "Light"
             self.user.dark_mode = 0
+            db.change_dark_mode(self.user.nickname, 0)
 
     def turn_on_proper_mode(self):
         if self.user.dark_mode:
             self.theme_cls.theme_style = "Dark"
+            self.root.ids.settings_screen.ids.dark_mode_switch = True
+        else:
+            self.theme_cls.theme_style = "Light"
+            self.root.ids.settings_screen.ids.dark_mode_switch = False
 
 
 if __name__ == '__main__':
