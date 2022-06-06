@@ -204,6 +204,7 @@ class MainApp(MDApp):
             self.plants.append(p)
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
+            self.show_plant_profile_dialog(plant_name)
 
     def water_plant(self, plant_name):
         plant_name = plant_name[7:]
@@ -302,10 +303,10 @@ class MainApp(MDApp):
     def turn_on_proper_mode(self):
         if self.user.dark_mode:
             self.theme_cls.theme_style = "Dark"
-            self.root.ids.settings_screen.ids.dark_mode_switch = True
+            self.root.ids.settings_screen.ids.dark_mode_switch.active = True
         else:
             self.theme_cls.theme_style = "Light"
-            self.root.ids.settings_screen.ids.dark_mode_switch = False
+            self.root.ids.settings_screen.ids.dark_mode_switch.active = False
 
 
 if __name__ == '__main__':
