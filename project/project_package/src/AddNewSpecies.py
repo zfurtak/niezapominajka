@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 db = Database()
 
 if __name__ == '__main__':
-
+    pass
     # db.create_users_table()
     # db.create_plants_table()
     # db.create_plants_table()
@@ -21,5 +21,10 @@ if __name__ == '__main__':
     #                   "Najlepiej zamiast podlewania zanurzyć mnie w wodzie na 5 minut",
     #                   "Jestem gwiazdą wsród storczyków", "GUI/images/species/falenopsis.jpg")
 
-    db.create_user('test', 'test', photo_source='GUI/images/groot.jpg', last_dead_plant='2022-05-15',
-                   join_date=str(datetime.today()))
+    # db.create_user('test', 'test', photo_source='GUI/images/groot.jpg', last_dead_plant='2022-05-15',
+    #                join_date=str(datetime.today()))
+    #
+    # db.create_plant('zuzia', 'normalnie', 'Fikus', '14/04/22', 'kuchnia', 'nic', '31/05/22', '')
+    # db.create_plant('zuzia', '1234', 'Fikus', '14/04/22', 'kuchnia', 'nic', '29/05/22', '')
+    # db.create_plant('zuzia', '1234444', 'Fikus', '14/04/22', 'kuchnia', 'nic', '05/06/22', '')
+    # db.create_plant('zuzia', 'normalnie', 'Paproć', '14/04/22', 'kuchnia', 'nic', '03/06/22', '')
