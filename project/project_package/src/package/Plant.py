@@ -1,19 +1,20 @@
 from datetime import datetime, timedelta
 from unittest import case
+import os
 
 
 def load_plant(plant_data, species):
     sp = species[0]
     for s in species:
         name = plant_data[2]
-        # if "Gatunek: " in plant_data[2]:
-        #     name = name[9:]
+
         if s.name == name:
             sp = s
 
     first_water = datetime.strptime(plant_data[3][:2] + '/' + plant_data[3][3:5] + '/' + plant_data[3][6:8], '%d/%m/%y')
     last_water = datetime.strptime(plant_data[6][:2] + '/' + plant_data[6][3:5] + '/' + plant_data[6][6:8], '%d/%m/%y')
     return Plant(plant_data[1], sp, first_water, plant_data[4], plant_data[5], last_water, plant_data[7])
+
 
 def get_plant(name, plant_list):
     for p in plant_list:
@@ -56,9 +57,14 @@ def sort_by_water_time(plant_list):
     plant_list.sort(key=lambda x: td - x[0].last_water)
     return plant_list
 
+
 def delete_plant_from_list(plant_list, plant_name):
     for p in range(len(plant_list)):
         if plant_list[p].name == plant_name:
+            file = os.path.split(plant_list[p].picture)
+            if "species" != file[0][-7:]:
+                os.remove(plant_list[p].relative_path)
+                print("usuwam bo nie jest to zdj gatunku")
             plant_list.remove(plant_list[p])
             return
 
@@ -74,10 +80,8 @@ class Plant:
         self.notes = notes
         self.last_water = last_water
         self.picture = picture
-        # if picture is not None:
-        #     self.picture = picture
-        # else:
-        #     self.picture = self.species.getPicture()
+        self.relative_path = picture
+
 
     def days_endured(self):
         return (datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - self.first_water).days
@@ -96,7 +100,6 @@ class Plant:
 
     def next_watering(self):
         return self.last_water + timedelta(days=self.species.getDaysBetweenWatering())
-
 
     def changePicture(self, picture):
         self.picture = picture

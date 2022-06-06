@@ -32,7 +32,7 @@ class Database:
 
     def get_user(self, username):
         created_user = self.cursor.execute(
-            "SELECT id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source , join_date FROM users WHERE username = ?",
+            "SELECT id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date FROM users WHERE username = ?",
             (username, )).fetchall()
         if len(created_user) == 0:
             return None

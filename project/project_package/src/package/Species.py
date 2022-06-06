@@ -2,6 +2,7 @@
 def load_single_species(data):
     return Species(data[1], data[2], data[3], data[4], data[5], data[6], data[7])
 
+
 def load_all_species(array):
     species_array = []
     for i in array:

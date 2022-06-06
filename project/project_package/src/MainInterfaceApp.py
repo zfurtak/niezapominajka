@@ -7,20 +7,17 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
-from project.project_package.src.package.Screens import SinglePlant, SinglePlantToWater, SingleSpecies
 from project.project_package.src.package.User import User, load_user
 from project.project_package.src.package.Species import load_all_species
-from project.project_package.src.package.Plant import load_plant, sort_by_water_time, plants_to_water_daily, \
+from project.project_package.src.package.Plant import load_plant, plants_to_water_daily, \
     delete_plant_from_list, get_plant
 from project.project_package.src.database.database import Database
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, \
     DeletePlantDialog, ChangeImageDialog
-from project.project_package.src.package.Screens import PlantScreen, MyPlantsScreen, AddPlantScreen, \
-    MainScreen, UserScreen, SettingsScreen, SpeciesCatalogScreen, SingleSpecies, SinglePlant, SinglePlantToWater
-from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
+from project.project_package.src.package.Screens import SingleSpecies, SinglePlant, SinglePlantToWater
 import os
-
 from project.project_package.src.package.functions import save_image
+from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
 
 db = Database()
 Window.size = (340, 630)
@@ -29,7 +26,6 @@ PLANTS_MAX = 25
 
 class MyScreenManager(ScreenManager):
     pass
-    # def set_navigation_drawer(self, mode):
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -57,7 +53,6 @@ class MainApp(MDApp):
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
         Builder.load_file("KV/MainInterface.kv")
-
         return MyScreenManager()
 
     def on_start(self):
@@ -141,6 +136,7 @@ class MainApp(MDApp):
         if not self.dialog:
             self.dialog = MDDialog(
                 type="custom",
+
                 content_cls=PlantProfileDialog(plant_name, self.user.nickname))
         self.dialog.open()
 
@@ -178,11 +174,9 @@ class MainApp(MDApp):
         plant_name = text[23:-1]
         delete_plant_from_list(self.plants, plant_name)
         if type == "dead":
-            data = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-            self.user.last_dead_plant = data
-            db.killed_plant(data.strftime('%d/%m/%y'), self.user.nickname)
+            self.user.upgrade_last_dead_plant_date()
+
         db.delete_plants(plant_name, self.user.nickname)
-        print(db.get_plant(plant_name, self.user.nickname))
         self.load_plants_catalog()
         self.root.ids.user_screen.update_after_delete(self.user, self.plants)
         self.prepare_list_of_plants_to_water(0)
@@ -192,13 +186,19 @@ class MainApp(MDApp):
             return
         if len(self.plants) >= PLANTS_MAX:
             return
-        if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 and len(
-                room) <= 15:
+        if db.get_plant(plant_name, self.user.nickname) is None and plant_name != '' and len(plant_name) <= 15 \
+                and len(room) <= 15:
             if room == '':
-                room = 'no room'
+                room = 'Brak'
             data = datetime.today().strftime('%d/%m/%y')
-            db.create_plant(self.user.nickname, plant_name, species_name[9:], data, room, about_me, data,
-                            "GUI/images/test.jpg")
+
+            species_name = species_name[9:]
+            actual_species = None
+            for s in self.species:
+                if s.name == species_name:
+                    actual_species = s
+            db.create_plant(self.user.nickname, plant_name, species_name, data, room, about_me, data,
+                            actual_species.picture)
             plant_data = db.get_plant(plant_name, self.user.nickname)
             p = load_plant(plant_data, self.species)
             self.plants.append(p)
@@ -274,6 +274,7 @@ class MainApp(MDApp):
             db.change_plant_image(name, dir_path, self.user.nickname)
             plant = get_plant(name, self.plants)
             plant.picture = path
+            plant.relative_path = dir_path
 
     def change_screen(self, screen_name, title):
         screen_manager = self.root.ids.screen_manager
@@ -285,7 +286,6 @@ class MainApp(MDApp):
 
         screen_manager.transition = NoTransition()
         screen_manager.current = screen_name
-
 
     def change_mode(self, instance, value):
         if value:

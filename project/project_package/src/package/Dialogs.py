@@ -1,10 +1,9 @@
 from kivy.core.window import Window
-from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivymd.toast import toast
 from kivy.app import App
 from kivymd.uix.filemanager import MDFileManager
-
+from project.project_package.src.package.Plant import load_plant
 from project.project_package.src.database.database import Database
 
 db = Database()
@@ -37,6 +36,7 @@ class DeletePlantDialog(FloatLayout):
     def message(self):
         self.ids.plant_name.theme_text_color = "Error"
         self.ids.plant_name.text = "Nie śmieszne"
+        self.ids.plant_name.pos_hint = {"center_x": .5, "center_y": .7}
         self.ids.delete1.opacity = 0
         self.ids.delete1.disabled = True
         self.ids.delete2.opacity = 0
@@ -50,13 +50,15 @@ class PlantProfileDialog(FloatLayout):
         super().__init__(**kwargs)
         self.ids.plant_name.text = f'Jestem {plant_name}'
         plant = db.get_plant(plant_name, username)
+        # plant = load_plant(db.get_plant(plant_name, username)[1], self.species)
+
         if 'Gatunek: ' in plant[2]:
             self.ids.species.text = f'{plant[2]}'
         else:
             self.ids.species.text = f'Gatunek: {plant[2]}'
         print(plant)
         self.ids.room.text = f'Moje lokum: {plant[4]}'
-        self.ids.notes.text = f'Coś o mine: {plant[5]}'
+        self.ids.notes.text = f'Coś o mnie: {plant[5]}'
         self.ids.last_water.text = f'Nie piję od: {plant[6]}'
         self.ids.plant_photo.source = plant[7]
 
@@ -74,12 +76,10 @@ class ChangeImageDialog(FloatLayout):
             preview=True
         )
 
-
     def file_manager_open(self):
         self.file_manager.show('/')  # for computer
         # self.file_manager.show(primary_ext_storage)  # for mobile phone
         self.manager_open = True
-
 
     def select_path(self, path):
         '''It will be called when you click on the file name
