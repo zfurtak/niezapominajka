@@ -223,6 +223,7 @@ class MainApp(MDApp):
             self.root.ids.my_plants_screen.ids.plants_list.add_widget(SinglePlant(text=plant_name))
             self.close_add_plant_dialog()
             self.show_plant_profile_dialog(plant_name)
+            self.root.ids.user_screen.update_after_add(self.user, self.plants)
 
     def water_plant(self, plant_name):
         plant_name = plant_name[7:]

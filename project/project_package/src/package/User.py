@@ -10,14 +10,13 @@ db = Database()
 
 #id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date
 
+
 def load_user(user_data):
     last_dead_plant = datetime.strptime(user_data[3][:10], '%Y-%m-%d')
     join_date = datetime.strptime(user_data[7][:10], '%Y-%m-%d')
-    user = User(id=user_data[0], nickname=user_data[1], dark_mode=user_data[5], last_dead_plant=last_dead_plant,
+    return User(id=user_data[0], nickname=user_data[1], dark_mode=user_data[5], last_dead_plant=last_dead_plant,
                 photo=user_data[6],
                 dead_plants=user_data[4], join_date=join_date)
-
-    return user
 
 
 class User:

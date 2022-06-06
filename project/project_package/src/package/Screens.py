@@ -28,15 +28,18 @@ class UserScreen(Screen):
     def setup_profile(self, user, plants):
         self.ids.user_photo.source = user.photo
         self.ids.user_name.text = user.nickname
-        self.ids.lvl.text = "Twój poziom:" + str(user.level.value)
+        self.ids.lvl.text = "Twój poziom: " + str(user.level.value)
         self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " dni bez zabicia roślinki"
         self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
 
     def update_after_delete(self, user, plants):
-        self.ids.lvl.text = "Twój poziom:" + str(user.level.value)
+        self.ids.lvl.text = "Twój poziom: " + str(user.level.value)
         self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " dni bez zabicia roślinki"
         self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
-        # user.days_with_app =
+
+    def update_after_add(self, user, plants):
+        self.ids.lvl.text = "Twój poziom: " + str(user.level.value)
+        self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
 
 
 class SettingsScreen(Screen):
