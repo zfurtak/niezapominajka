@@ -1,3 +1,5 @@
+import webbrowser
+
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
@@ -258,18 +260,20 @@ class MainApp(MDApp):
         if self.root.ids.create_account_screen.create_account(username, password, confirm_password):
             self.login(username, password)
 
+    def support_event(self):
+        webbrowser.open('https://images.app.goo.gl/AAaDeaJZJWewHmVA9')
+
     def change_photo(self, object_type, name, path):
         if object_type == "user":
             dir_path = os.getcwd() + rf"\GUI\images\users\{self.user.nickname}.jpg"
             save_image(path, dir_path)
-            db.change_image(dir_path, self.user.nickname)
+            db.change_image(rf"GUI/images/users/{self.user.nickname}.jpg", self.user.nickname)
             self.user.photo = path
             self.root.ids.user_screen.setup_profile(self.user, self.plants)
-            self.user.photo = dir_path
         if object_type == "plant":
             dir_path = os.getcwd() + rf"\GUI\images\plants\{self.user.nickname}_{name}.jpg"
             save_image(path, dir_path)
-            db.change_plant_image(name, dir_path, self.user.nickname)
+            db.change_plant_image(name, rf"GUI/images/plants/{self.user.nickname}_{name}.jpg", self.user.nickname)
             plant = get_plant(name, self.plants)
             plant.picture = path
             plant.relative_path = dir_path
