@@ -3,3 +3,36 @@
         pos_hint:{"top": 0.9}
         MDList:
             id:species_list
+
+    MDIconButton:
+        id: report_new_species
+        icon: "help"
+        pos_hint: {"center_x": 0.8, "center_y": 0.1}
+        md_bg_color: app.theme_cls.primary_color
+        on_press: app.show_report_dialog()
+
+
+<SpeciesReportDialog>:
+    id: species_report_dialog
+    spacing: "12dp"
+    size_hint_y: None
+    size: (200, 150)
+
+    MDLabel:
+        id: info
+        text: "Nie ma twojego gatunku?\nDaj nam znać!!"
+        halign: "center"
+        pos_hint: {"center_x": 0.5, "center_y": 1}
+        theme_text_color: "Primary"
+
+    MDTextField:
+        id: user_input
+        hint_text: "Wpisz gatunek, którego brakuje"
+        pos_hint: {"center_x": .5, "center_y": 0.6}
+
+    MDRectangleFlatIconButton:
+        text: "Wyślij"
+        icon: "email"
+        pos_hint: {"center_x": .8, "center_y": .2}
+        on_release: app.dialog.dismiss(), app.send_report(user_input.text)
+

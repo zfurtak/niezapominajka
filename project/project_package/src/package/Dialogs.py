@@ -5,6 +5,10 @@ from kivy.app import App
 from kivymd.uix.filemanager import MDFileManager
 from project.project_package.src.package.Plant import load_plant
 from project.project_package.src.database.database import Database
+from datetime import datetime
+import os
+from pathlib import Path
+
 
 db = Database()
 
@@ -61,6 +65,11 @@ class PlantProfileDialog(FloatLayout):
         self.ids.notes.text = f'Coś o mnie: {plant[5]}'
         self.ids.last_water.text = f'Nie piję od: {plant[6]}'
         self.ids.plant_photo.source = plant[7]
+
+
+class SpeciesReportDialog(FloatLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class ChangeImageDialog(FloatLayout):

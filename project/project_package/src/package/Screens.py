@@ -3,10 +3,6 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.list import OneLineListItem, OneLineIconListItem
 
 
-class PlantScreen(Screen):
-    pass
-
-
 class MyPlantsScreen(Screen):
     pass
 

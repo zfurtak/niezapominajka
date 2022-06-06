@@ -15,9 +15,10 @@ from project.project_package.src.package.Plant import load_plant, plants_to_wate
     delete_plant_from_list, get_plant
 from project.project_package.src.database.database import Database
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, \
-    DeletePlantDialog, ChangeImageDialog
+    DeletePlantDialog, ChangeImageDialog, SpeciesReportDialog
 from project.project_package.src.package.Screens import SingleSpecies, SinglePlant, SinglePlantToWater
 import os
+from pathlib import Path
 from project.project_package.src.package.functions import save_image
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
 
@@ -160,6 +161,23 @@ class MainApp(MDApp):
             content_cls=ChangeImageDialog(object_type, name))
         self.dialog.open()
 
+    def show_report_dialog(self):
+        if self.dialog:
+            self.close_dialog()
+        self.dialog = MDDialog(
+            type="custom",
+            content_cls=SpeciesReportDialog())
+        self.dialog.open()
+
+    def send_report(self, new_species):
+        filename = "./reports/" + self.user.nickname + "_" + \
+                   datetime.today().strftime('%Y_%m_%d') + ".txt"
+        file = Path(filename)
+        file.touch(exist_ok=True)
+        file = open(filename, "w")
+        file.write(f'Noticed lack of species named: {new_species} by user: {self.user.nickname}')
+        file.close()
+
     def close_dialog(self):
         self.dialog.dismiss(force=True)
         self.dialog = None
@@ -241,7 +259,7 @@ class MainApp(MDApp):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             # TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = load_user(db.get_user(username))
-            print("moj mode "+str(self.user.dark_mode))
+            print("moj mode " + str(self.user.dark_mode))
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
