@@ -16,12 +16,10 @@ class MainScreen(Screen):
         if day == 0:
             self.ids.water_all_button.opacity = 1
             self.ids.water_all_button.disabled = False
-            print("a teraz widać!")
 
             return
         self.ids.water_all_button.opacity = 0
         self.ids.water_all_button.disabled = True
-        print("nie widać mnie!")
 
 
 class UserScreen(Screen):

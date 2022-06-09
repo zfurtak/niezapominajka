@@ -28,7 +28,6 @@ class WelcomeScreen(Screen):
 
 class CreateAccountScreen(Screen):
     def create_account(self, username, password, confirm_password):
-        print((username,), db.get_usernames(), (username,) in db.get_usernames())
         if (username,) not in db.get_usernames():
             if without_whitespace(username) and without_whitespace(password):
                 if password == confirm_password:

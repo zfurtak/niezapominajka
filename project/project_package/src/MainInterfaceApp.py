@@ -21,9 +21,12 @@ import os
 from pathlib import Path
 from project.project_package.src.package.functions import save_image
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
+import certifi
+import os
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 db = Database()
-Window.size = (340, 630)
+#Window.size = (340, 630)
 PLANTS_MAX = 25
 
 
@@ -239,7 +242,6 @@ class MainApp(MDApp):
         self.prepare_list_of_plants_to_water(self.day)
 
     def water_all(self):
-        print("water them ALL!")
         if self.day != 0:
             return
         plants_list = plants_to_water_daily(self.day, self.plants)
@@ -256,12 +258,10 @@ class MainApp(MDApp):
         db.create_user(user_name, password, photo, datetime.today().strftime('%d/%m/%y'))
 
     def login(self, username, password):
-        print(db.get_users())
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             # TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = load_user(db.get_user(username))
-            print("moj mode " + str(self.user.dark_mode))
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")

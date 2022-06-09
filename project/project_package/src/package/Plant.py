@@ -18,7 +18,6 @@ def load_plant(plant_data, species):
 
 def get_plant(name, plant_list):
     for p in plant_list:
-        print(p.name, name, p.name == name)
         if p.name == name:
             return p
 
@@ -64,7 +63,6 @@ def delete_plant_from_list(plant_list, plant_name):
             file = os.path.split(plant_list[p].picture)
             if "species" != file[0][-7:]:
                 os.remove(plant_list[p].relative_path)
-                print("usuwam bo nie jest to zdj gatunku")
             plant_list.remove(plant_list[p])
             return
 
