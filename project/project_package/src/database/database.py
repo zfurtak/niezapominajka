@@ -8,6 +8,7 @@ class Database:
         self.create_users_table()
         self.create_plants_table()
         self.create_species_table()
+        self.create_users_notification_table()
 
     def close_db_connection(self):
         self.con.close()
@@ -71,6 +72,32 @@ class Database:
     def change_dark_mode(self, name, dark_mode_value):
         update = self.cursor.execute("UPDATE users SET dark_mode = ? WHERE username=?", (dark_mode_value, name))
         self.con.commit()
+
+    #notifications
+
+    def create_users_notification_table(self):
+        self.cursor.execute(
+            "CREATE TABLE IF NOT EXISTS notifications(id integer PRIMARY KEY AUTOINCREMENT, username varchar(50), notification varchar(12) NOT NULL)")
+        self.con.commit()
+
+    def get_users_notification(self, username):
+        password = self.cursor.execute("SELECT notification FROM notifications where username = ?", (username,)).fetchall()
+        if not password:
+            return None
+        return password[-1]
+
+    def create_user_notification(self, username, notification):
+        self.cursor.execute(
+            "INSERT INTO notifications(username, notification) VALUES(?, ?)", (username, notification))
+        self.con.commit()
+
+    def set_users_notification(self, username, notification):
+        if self.get_users_notification(username) is None:
+            self.create_user_notification(username, notification)
+        else:
+            update = self.cursor.execute("UPDATE notifications SET notification = ? WHERE username=?", (notification, username))
+            self.con.commit()
+
 
     # all functionalities for plants
 
