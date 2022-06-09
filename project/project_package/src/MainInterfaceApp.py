@@ -1,5 +1,4 @@
 import webbrowser
-
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
@@ -21,12 +20,9 @@ import os
 from pathlib import Path
 from project.project_package.src.package.functions import save_image
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
-import certifi
-import os
-os.environ['SSL_CERT_FILE'] = certifi.where()
 
 db = Database()
-#Window.size = (340, 630)
+Window.size = (340, 630)
 PLANTS_MAX = 25
 
 
@@ -260,7 +256,6 @@ class MainApp(MDApp):
     def login(self, username, password):
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
-            # TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = load_user(db.get_user(username))
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
@@ -285,15 +280,15 @@ class MainApp(MDApp):
 
     def change_photo(self, object_type, name, path):
         if object_type == "user":
-            dir_path = os.getcwd() + rf"\GUI\images\users\{self.user.nickname}.jpg"
+            dir_path = os.getcwd() + rf"/images/users/{self.user.nickname}.jpg"
             save_image(path, dir_path)
-            db.change_image(rf"GUI/images/users/{self.user.nickname}.jpg", self.user.nickname)
+            db.change_image(rf"images/users/{self.user.nickname}.jpg", self.user.nickname)
             self.user.photo = path
             self.root.ids.user_screen.setup_profile(self.user, self.plants)
         if object_type == "plant":
-            dir_path = os.getcwd() + rf"\GUI\images\plants\{self.user.nickname}_{name}.jpg"
+            dir_path = os.getcwd() + rf"/images/plants/{self.user.nickname}_{name}.jpg"
             save_image(path, dir_path)
-            db.change_plant_image(name, rf"GUI/images/plants/{self.user.nickname}_{name}.jpg", self.user.nickname)
+            db.change_plant_image(name, rf"images/plants/{self.user.nickname}_{name}.jpg", self.user.nickname)
             plant = get_plant(name, self.plants)
             plant.picture = path
             plant.relative_path = dir_path
@@ -328,5 +323,5 @@ class MainApp(MDApp):
             self.root.ids.settings_screen.ids.dark_mode_switch.active = False
 
 
-# if __name__ == '__main__':
-#     MainApp().run()
+if __name__ == '__main__':
+    MainApp().run()

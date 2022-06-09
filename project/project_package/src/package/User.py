@@ -6,9 +6,6 @@ from .Plant import Plant
 from project.project_package.src.database.database import Database
 
 db = Database()
-# id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date
-
-#id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date
 
 
 def load_user(user_data):
@@ -23,7 +20,7 @@ class User:
     def __init__(self, id, nickname, join_date=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0),
                  level=Level(), dark_mode=0, list_of_achievements=None,
                  last_dead_plant=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0),
-                 photo="GUI/images/test.jpg", points=0, dead_plants=0):
+                 photo="images/users/default_avatar.png", points=0, dead_plants=0):
         if list_of_achievements is None:
             list_of_achievements = []
         self.id = id

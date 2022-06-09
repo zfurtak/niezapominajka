@@ -11,7 +11,6 @@ def load_all_species(array):
 
 
 class Species:
-
     def __init__(self, name, latinName,  days_between_watering, sun_preference,care_tips,  notes, picture):
         self.name = name
         self.latin_name = latinName

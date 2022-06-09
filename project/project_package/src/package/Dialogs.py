@@ -91,28 +91,15 @@ class ChangeImageDialog(FloatLayout):
         self.manager_open = True
 
     def select_path(self, path):
-        '''It will be called when you click on the file name
-        or the catalog selection button.
-
-        :type path: str;
-        :param path: path to the selected directory or file;
-        '''
-
         self.exit_manager()
         toast(path)
         App.get_running_app().change_photo(self.type, self.name, path)
 
-
     def exit_manager(self, *args):
-        '''Called when the user reaches the root of the directory tree.'''
-
         self.manager_open = False
         self.file_manager.close()
 
-
     def events(self, instance, keyboard, keycode, text, modifiers):
-        '''Called when buttons are pressed on the mobile device.'''
-
         if keyboard in (1001, 27):
             if self.manager_open:
                 self.file_manager.back()

@@ -31,7 +31,7 @@ class CreateAccountScreen(Screen):
         if (username,) not in db.get_usernames():
             if without_whitespace(username) and without_whitespace(password):
                 if password == confirm_password:
-                    db.create_user(username, password, "GUI/images/users/default_avatar.png", str(datetime.today()), str(datetime.today()))
+                    db.create_user(username, password, "images/users/default_avatar.png", str(datetime.today()), str(datetime.today()))
                     self.warning("")
                     return True
                 else:
