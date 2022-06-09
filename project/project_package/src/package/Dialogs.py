@@ -8,8 +8,6 @@ from project.project_package.src.database.database import Database
 from datetime import datetime
 import os
 from pathlib import Path
-from android.storage import primary_external_storage_path
-primary_ext_storage = primary_external_storage_path()
 
 
 db = Database()
@@ -62,6 +60,7 @@ class PlantProfileDialog(FloatLayout):
             self.ids.species.text = f'{plant[2]}'
         else:
             self.ids.species.text = f'Gatunek: {plant[2]}'
+        print(plant)
         self.ids.room.text = f'Moje lokum: {plant[4]}'
         self.ids.notes.text = f'Coś o mnie: {plant[5]}'
         self.ids.last_water.text = f'Nie piję od: {plant[6]}'
@@ -98,6 +97,7 @@ class ChangeImageDialog(FloatLayout):
         :type path: str;
         :param path: path to the selected directory or file;
         '''
+
         self.exit_manager()
         toast(path)
         App.get_running_app().change_photo(self.type, self.name, path)

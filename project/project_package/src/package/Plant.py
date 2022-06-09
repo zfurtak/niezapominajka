@@ -7,7 +7,6 @@ def load_plant(plant_data, species):
     sp = species[0]
     for s in species:
         name = plant_data[2]
-
         if s.name == name:
             sp = s
 

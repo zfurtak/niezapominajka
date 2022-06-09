@@ -328,5 +328,5 @@ class MainApp(MDApp):
             self.root.ids.settings_screen.ids.dark_mode_switch.active = False
 
 
-if __name__ == '__main__':
-    MainApp().run()
+# if __name__ == '__main__':
+#     MainApp().run()
