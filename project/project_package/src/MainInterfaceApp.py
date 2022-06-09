@@ -4,11 +4,13 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, CardTransition
 from kivymd.app import MDApp
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, Clock
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
+from plyer import notification
+
 from project.project_package.src.package.User import User, load_user
 from project.project_package.src.package.Species import load_all_species
 from project.project_package.src.package.Plant import load_plant, plants_to_water_daily, \
@@ -17,16 +19,13 @@ from project.project_package.src.database.database import Database
 from project.project_package.src.package.Dialogs import SpeciesProfileDialog, PlantProfileDialog, AddPlantDialog, \
     DeletePlantDialog, ChangeImageDialog, SpeciesReportDialog
 from project.project_package.src.package.Screens import SingleSpecies, SinglePlant, SinglePlantToWater
-import os
 from pathlib import Path
 from project.project_package.src.package.functions import save_image
 from project.project_package.src.package.AccountScreens import WelcomeScreen, CreateAccountScreen
-import certifi
 import os
-os.environ['SSL_CERT_FILE'] = certifi.where()
 
 db = Database()
-#Window.size = (340, 630)
+Window.size = (340, 630)
 PLANTS_MAX = 25
 
 
@@ -50,11 +49,6 @@ class MainApp(MDApp):
         self.species = load_all_species(db.get_all_species())
         self.plants = []
         self.user = None
-        # self.file_manager = MDFileManager(
-        #     exit_manager=self.exit_manager,
-        #     select_path=self.select_path,
-        #     ext=[".jpg", ".png", ".jpeg"]
-        # )
 
     def build(self):
         self.theme_cls.primary_palette = 'LightGreen'
@@ -116,6 +110,32 @@ class MainApp(MDApp):
 
     def get_time(self, instance, time):
         User.set_reminder_time(self.user, time)
+        self.user.set_reminder_time(time)
+        # print(type(time), time.strftime('%H:%M'))
+        db.set_users_notification(self.user.nickname, time.strftime('%H:%M'))
+        self.set_notification()
+
+    def set_notification(self):
+        print("set")
+        now = datetime.now()
+        time = self.user.reminder_time
+        x = (timedelta(hours=24) - (
+                    now - now.replace(hour=time.hour, minute=time.minute, second=0, microsecond=0))).total_seconds() % (
+                    24 * 3600)
+        print(x)
+        Clock.schedule_once(lambda x: self.notify_user(), x)
+
+    def notify_user(self):
+        now = datetime.now()
+        # if self.user.reminder_time.hour != now.hour or self.user.reminder_time.minute != now.minute:
+        #     return
+        print(self.user.reminder_time.hour != now.hour or self.user.reminder_time.minute != now.minute)
+        notification.notify(
+            title="Podlej kwiatki",
+            message='''Nie bądź jak Fifi Niezapominajka i pamiętaj o swoich roślinach''',
+            timeout=0
+        )
+        Clock.schedule_once(lambda x: self.notify_user(), 60 * 60 * 24)
 
     def show_alert_dialog(self, text_):
         if not self.dialog:
@@ -261,7 +281,8 @@ class MainApp(MDApp):
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
             # TODO jakos tak tworzyc mądrze tego uzytkownika
-            self.user = load_user(db.get_user(username))
+            self.user = load_user(db.get_user(username), db.get_users_notification(username))
+            self.set_notification()
             self.turn_on_proper_mode()
             self.prepare_app_for_user()
             self.change_screen("MainScreen", "Start")
@@ -328,5 +349,5 @@ class MainApp(MDApp):
             self.root.ids.settings_screen.ids.dark_mode_switch.active = False
 
 
-# if __name__ == '__main__':
-#     MainApp().run()
+if __name__ == '__main__':
+    MainApp().run()

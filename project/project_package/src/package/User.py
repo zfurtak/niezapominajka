@@ -11,12 +11,18 @@ db = Database()
 #id, username, password, last_dead_plant, dead_plants_cnt, dark_mode, photo_source, join_date
 
 
-def load_user(user_data):
+def load_user(user_data, notification):
     last_dead_plant = datetime.strptime(user_data[3][:10], '%Y-%m-%d')
     join_date = datetime.strptime(user_data[7][:10], '%Y-%m-%d')
-    return User(id=user_data[0], nickname=user_data[1], dark_mode=user_data[5], last_dead_plant=last_dead_plant,
+    print(notification)
+    if notification is None:
+        notification = ('12:00', )
+        db.create_user_notification(user_data[1], '12:00')
+    user = User(id=user_data[0], nickname=user_data[1], dark_mode=user_data[5], last_dead_plant=last_dead_plant,
                 photo=user_data[6],
                 dead_plants=user_data[4], join_date=join_date)
+    user.set_reminder_db_time(notification)
+    return user
 
 
 class User:
@@ -37,6 +43,10 @@ class User:
         self.dead_plants = dead_plants
         self.reminder_time = None
         self.photo = photo
+
+    def set_reminder_db_time(self, time):
+        d_time = datetime.strptime(time[0], '%H:%M').time()
+        self.reminder_time = d_time
 
     def set_reminder_time(self, time):
         self.reminder_time = time
