@@ -3,8 +3,9 @@ from datetime import datetime, timedelta
 db = Database()
 
 if __name__ == '__main__':
-    # pass
-
+    pass
+    #db.delete_user(1)
+    # print(db.get_users())
     db.create_species("Monstera dziurawa", "Monstera deliciosa", 7,
                       "Preferuje miejsca zacienione", "Nie należy przelewać, warto zraszać liście",
                       "Nie należę do słabych zawodników", "images/species/monstera_dziurawa.jpg")

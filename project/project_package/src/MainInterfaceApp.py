@@ -252,6 +252,7 @@ class MainApp(MDApp):
 
     def water(self, plant):
         plant.water_now()
+        self.user.earn_xp(len(self.plants))
         data = datetime.today().strftime('%d/%m/%y')
         db.water_plant(plant.name, data, self.user.nickname)
         self.prepare_list_of_plants_to_water(self.day)

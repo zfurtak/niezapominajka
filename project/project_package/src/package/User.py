@@ -17,14 +17,14 @@ def load_user(user_data, notification):
         db.create_user_notification(user_data[1], '12:00')
     user = User(id=user_data[0], nickname=user_data[1], dark_mode=user_data[5], last_dead_plant=last_dead_plant,
                 photo=user_data[6],
-                dead_plants=user_data[4], join_date=join_date)
+                dead_plants=user_data[4], join_date=join_date, points=user_data[8])
     user.set_reminder_db_time(notification)
     return user
 
 
 class User:
     def __init__(self, id, nickname, join_date=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0),
-                 level=Level(), dark_mode=0, list_of_achievements=None,
+                 dark_mode=0, list_of_achievements=None,
                  last_dead_plant=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0),
                  photo="images/users/default_avatar.png", points=0, dead_plants=0):
         if list_of_achievements is None:
@@ -32,11 +32,10 @@ class User:
         self.id = id
         self.nickname = nickname
         self.join_date = join_date
-        self.level = level
+        self.level = Level(points)
         self.dark_mode = dark_mode
         self.list_of_achievements = list_of_achievements
         self.last_dead_plant = last_dead_plant
-        self.points = points
         self.dead_plants = dead_plants
         self.reminder_time = None
         self.photo = photo
@@ -49,7 +48,7 @@ class User:
         self.reminder_time = time
 
     def add_achievement(self, achievement):
-        self.level.addAchievement(achievement)
+        self.level.add_achievement(achievement)
         self.list_of_achievements.append(achievement.name)
 
     def upgrade_last_dead_plant_date(self):
@@ -59,3 +58,11 @@ class User:
 
     def get_days_without_dead_plant(self):
         return (datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - self.last_dead_plant).days
+
+    def earn_xp(self, plants_no):
+        #wzór na level
+        points_earned = max(1, self.get_days_without_dead_plant()) * max(1, plants_no)
+        print(points_earned)
+        self.level.earn_points(points_earned)
+        db.upgrade_points(self.nickname, self.level.current_points)
+        self.level.check_points()
