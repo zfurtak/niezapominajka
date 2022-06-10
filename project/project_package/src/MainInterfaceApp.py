@@ -9,7 +9,6 @@ from kivymd.uix.list import OneLineIconListItem
 from datetime import datetime, timedelta
 from kivymd.uix.picker import MDTimePicker
 from plyer import notification
-
 from project.project_package.src.package.User import User, load_user
 from project.project_package.src.package.Species import load_all_species
 from project.project_package.src.package.Plant import load_plant, plants_to_water_daily, \
@@ -110,18 +109,15 @@ class MainApp(MDApp):
     def get_time(self, instance, time):
         User.set_reminder_time(self.user, time)
         self.user.set_reminder_time(time)
-        # print(type(time), time.strftime('%H:%M'))
         db.set_users_notification(self.user.nickname, time.strftime('%H:%M'))
         self.set_notification()
 
     def set_notification(self):
-        print("set")
         now = datetime.now()
         time = self.user.reminder_time
         x = (timedelta(hours=24) - (
                     now - now.replace(hour=time.hour, minute=time.minute, second=0, microsecond=0))).total_seconds() % (
                     24 * 3600)
-        print(x)
         Clock.schedule_once(lambda x: self.notify_user(), x)
 
     def notify_user(self):
@@ -279,7 +275,6 @@ class MainApp(MDApp):
     def login(self, username, password):
         if self.root.ids.welcome_screen.login(username, password):
             self.root.ids.nav_drawer.swipe_edge_width = 1
-            # TODO jakos tak tworzyc mądrze tego uzytkownika
             self.user = load_user(db.get_user(username), db.get_users_notification(username))
             self.set_notification()
             self.turn_on_proper_mode()
