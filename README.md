@@ -13,8 +13,7 @@ And there's nothing better than combining duty with pleasure, right?
 - Zuzanna Furtak - https://github.com/zfurtak
 - Jolanta Śliwa - https://github.com/tunczyk101
 
-The application was created in `Python` using `KivyMD`, `Kivy` and `SQLite`.
-It is meant to be used on a mobile phone.
+The application was created in `Python` using `KivyMD`, `Kivy`, `SQLite` and is meant to be used on a mobile phone.
 
 ## Features
 ### Account
