@@ -30,10 +30,12 @@ It is meant to be used on a mobile phone.
   - While adding a plant, you can set its name, location, notes and later also change its photo.
 - Watering plants
   - On the Start screen you can see a calendar card with plants, that have to be watered on this day.
+  - The calendar card can be changed to following days to check which plants will need watering then.
   - If you miss watering a plant, it stays on the start screen the following day with a special icon (water drop).
   - If your plant has not been watered for a whole cycle, the icon changes to a skull. _(e.g. if a ficus needs to be watered every 7 days and you are 8 days late with watering, the skull icon will show up)_
   - You can water all plants, which need it by clicking a water can icon on the bottom of the Start screen (the icon is visible only on the current day).
-  - Each plant can be also watered by clicking on its profile (from Start screen or My plants screen)
+  - Each plant can be also watered by clicking on its profile (from Start screen or My plants screen).
+  - If you water a plant too early (e.g. 2 days before the actual date) watering days are changed to the new schedule.
 
 
 ## Demo
