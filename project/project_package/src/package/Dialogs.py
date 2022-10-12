@@ -18,28 +18,28 @@ class SpeciesProfileDialog(FloatLayout):
         super().__init__(**kwargs)
         self.ids.species_name.text = species_name
         species = db.get_species(species_name)
-        self.ids.latin_species_name.text = f'Moje łacińskie imię:\n{species[2]}'
-        self.ids.watering_days.text = "Podlewaj mnie co: "+str(species[3])+" dni"
-        self.ids.sun.text = f'Preferencje słoneczne:\n{species[4]}'
-        self.ids.care_tips.text = f'Rady pielęgnacyjne:\n{species[5]}'
-        self.ids.notes.text = f'Dodatkowe notatki:\n{species[6]}'
+        self.ids.latin_species_name.text = f'My latin name:\n{species[2]}'
+        self.ids.watering_days.text = "Water me every: "+str(species[3])+" days"
+        self.ids.sun.text = f'Sun prefers:\n{species[4]}'
+        self.ids.care_tips.text = f'Tips:\n{species[5]}'
+        self.ids.notes.text = f'Notes:\n{species[6]}'
         self.ids.species_photo.source = species[7]
 
 
 class AddPlantDialog(FloatLayout):
     def __init__(self, species_name, **kwargs):
         super().__init__(**kwargs)
-        self.ids.species_name.text = f'Gatunek: {species_name}'
+        self.ids.species_name.text = f'Species: {species_name}'
 
 
 class DeletePlantDialog(FloatLayout):
     def __init__(self, species_name, **kwargs):
         super().__init__(**kwargs)
-        self.ids.plant_name.text = f'O nie!!\nCo się stało z {species_name}?'
+        self.ids.plant_name.text = f'O no!!\nWhat happened to {species_name}?'
 
     def message(self):
         self.ids.plant_name.theme_text_color = "Error"
-        self.ids.plant_name.text = "Nie śmieszne"
+        self.ids.plant_name.text = "Not funny"
         self.ids.plant_name.pos_hint = {"center_x": .5, "center_y": .7}
         self.ids.delete1.opacity = 0
         self.ids.delete1.disabled = True
@@ -52,18 +52,18 @@ class DeletePlantDialog(FloatLayout):
 class PlantProfileDialog(FloatLayout):
     def __init__(self, plant_name, username, **kwargs):
         super().__init__(**kwargs)
-        self.ids.plant_name.text = f'Jestem {plant_name}'
+        self.ids.plant_name.text = f'I am {plant_name}'
         plant = db.get_plant(plant_name, username)
         # plant = load_plant(db.get_plant(plant_name, username)[1], self.species)
 
-        if 'Gatunek: ' in plant[2]:
+        if 'Species: ' in plant[2]:
             self.ids.species.text = f'{plant[2]}'
         else:
-            self.ids.species.text = f'Gatunek: {plant[2]}'
+            self.ids.species.text = f'Species: {plant[2]}'
         print(plant)
-        self.ids.room.text = f'Moje lokum: {plant[4]}'
-        self.ids.notes.text = f'Coś o mnie: {plant[5]}'
-        self.ids.last_water.text = f'Nie piję od: {plant[6]}'
+        self.ids.room.text = f'My place: {plant[4]}'
+        self.ids.notes.text = f'Something about me: {plant[5]}'
+        self.ids.last_water.text = f"I've not drunk since: {plant[6]}"
         self.ids.plant_photo.source = plant[7]
 
 

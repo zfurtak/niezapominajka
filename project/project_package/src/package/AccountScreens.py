@@ -13,9 +13,9 @@ class WelcomeScreen(Screen):
                 self.warning("")
                 return True
             else:
-                self.warning("Nieprawidłowe hasło")
+                self.warning("Wrong password")
         else:
-            self.warning("Brak użytkownika " + username)
+            self.warning("User " + username + " not found")
         return None
 
     def warning(self, text):
@@ -35,11 +35,11 @@ class CreateAccountScreen(Screen):
                     self.warning("")
                     return True
                 else:
-                    self.warning("Hasła nie są takie same")
+                    self.warning("Passwords are different")
             else:
-                self.warning("Pozbądź się białych znaków")
+                self.warning("Get rid of white spaces")
         else:
-            self.warning("Użytkownik " + username + " istnieje")
+            self.warning("User " + username + " already exists")
         return False
 
     def warning(self, text):
@@ -50,16 +50,16 @@ class UserScreen(Screen):
     def setup_profile(self, user, plants):
         self.ids.user_photo.source = user.photo
         self.ids.user_name.text = user.nickname
-        self.ids.lvl.text = "Twój poziom:\n" + str(user.level.name)
+        self.ids.lvl.text = "Your level :\n" + str(user.level.name)
         self.ids.lvl_progress.value = user.level.get_progress()
-        self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " dni bez zabicia roślinki"
-        self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
+        self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " days without killing a plant"
+        self.ids.plants_no.text = "Number of plants yu have: " + str(len(plants))
 
     def update_after_delete(self, user, plants):
-        self.ids.lvl.text = "Twój poziom: " + str(user.level.value)
-        self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " dni bez zabicia roślinki"
-        self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
+        self.ids.lvl.text = "Your level: " + str(user.level.value)
+        self.ids.time_from_kill.text = str(user.get_days_without_dead_plant()) + " days without killing a plant"
+        self.ids.plants_no.text = "Number of plants yu have: " + str(len(plants))
 
     def update_after_add(self, user, plants):
-        self.ids.lvl.text = "Twój poziom: " + str(user.level.value)
-        self.ids.plants_no.text = "Tyle masz roślinek: " + str(len(plants))
+        self.ids.lvl.text = "Your level: " + str(user.level.value)
+        self.ids.plants_no.text = "Number of plants yu have: " + str(len(plants))

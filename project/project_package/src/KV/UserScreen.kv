@@ -56,14 +56,14 @@
 
     MDLabel:
         id: question
-        text: "Chcesz zmienić zdjęcie?"
+        text: "Do you want to chenge the photo?"
         pos_hint: {"center_x": 0.5, "center_y": 1}
         halign: "center"
         font_size: 25
 
     MDRaisedButton:
         id: yes_button
-        text: "Oczy(wiście)!"
+        text: "Of course!"
         pos_hint: {"center_x": 0.25, "center_y": 0.4}
         on_press: app.dialog.content_cls.file_manager_open(), app.dialog.dismiss()
 

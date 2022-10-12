@@ -9,7 +9,7 @@
             mode: 'rectangle'
             icon_left: 'account'
             size_hint: 0.5, None
-            hint_text: "Nazwa użytkownika"
+            hint_text: "Username"
             required: True
             helper_text_mode: "persistent"
             pos_hint: {"center_x": 0.5, "center_y": 0.3}
@@ -18,7 +18,7 @@
             id: password_field
             mode: 'rectangle'
             icon_left: "key-variant"
-            hint_text: "Hasło"
+            hint_text: "Password"
             size_hint: 0.5, None
             pos_hint: {"center_x": 0.5, "center_y": 0.2}
             helper_text_mode: "persistent"
@@ -27,7 +27,7 @@
 
         MDRoundFlatIconButton:
             id: login_button
-            text: "Login"
+            text: "Log in"
             icon: "login"
             pos_hint: {"center_x": 0.75, "center_y": 0.1}
             md_bg_color: app.theme_cls.primary_color
@@ -36,7 +36,7 @@
         MDRoundFlatIconButton:
             id: create_account_button
             icon: "account-plus"
-            text: "Nowe konto"
+            text: "New account"
             pos_hint: {"center_x": 0.25, "center_y": 0.1}
             md_bg_color: app.theme_cls.primary_color
             on_release: app.change_screen("CreateAccountScreen", "Stwórz profil")

@@ -20,18 +20,18 @@
 
     MDLabel:
         id: info
-        text: "Nie ma twojego gatunku?\nDaj nam znać!!"
+        text: "Didn't find your species?\nLet us know!!"
         halign: "center"
         pos_hint: {"center_x": 0.5, "center_y": 1}
         theme_text_color: "Primary"
 
     MDTextField:
         id: user_input
-        hint_text: "Wpisz gatunek, którego brakuje"
+        hint_text: "Enter species, which is missing"
         pos_hint: {"center_x": .5, "center_y": 0.6}
 
     MDRectangleFlatIconButton:
-        text: "Wyślij"
+        text: "Send"
         icon: "email"
         pos_hint: {"center_x": .8, "center_y": .2}
         on_release: app.dialog.dismiss(), app.send_report(user_input.text)

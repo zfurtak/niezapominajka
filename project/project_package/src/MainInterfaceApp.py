@@ -126,8 +126,8 @@ class MainApp(MDApp):
         #     return
         print(self.user.reminder_time.hour != now.hour or self.user.reminder_time.minute != now.minute)
         notification.notify(
-            title="Podlej kwiatki",
-            message='''Nie bądź jak Fifi Niezapominajka i pamiętaj o swoich roślinach''',
+            title="Water you plants!",
+            message='''Don't forget about these sweeties!''',
             timeout=0
         )
         Clock.schedule_once(lambda x: self.notify_user(), 60 * 60 * 24)

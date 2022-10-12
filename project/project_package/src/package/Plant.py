@@ -67,7 +67,7 @@ def delete_plant_from_list(plant_list, plant_name):
 
 class Plant:
     def __init__(self, name, species, first_water=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0),
-                 room=None, notes="Brak",
+                 room=None, notes="None",
                  last_water=datetime.today().replace(hour=0, minute=0, second=0, microsecond=0), picture=None):
         self.name = name
         self.species = species

@@ -14,7 +14,7 @@
             mode: 'rectangle'
             icon_left: 'account'
             size_hint: 0.5, None
-            hint_text: "Nazwa użytkownika"
+            hint_text: "Username"
             required: True
             helper_text_mode: "persistent"
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
@@ -23,7 +23,7 @@
             id: create_password_field
             mode: 'rectangle'
             icon_left: "key-variant"
-            hint_text: "Hasło"
+            hint_text: "Password"
             size_hint: 0.5, None
             pos_hint: {"center_x": 0.5, "center_y": 0.4}
             helper_text_mode: "persistent"
@@ -34,7 +34,7 @@
             id: confirm_password_field
             mode: 'rectangle'
             icon_left: "key-variant"
-            hint_text: "Potwierdź hasło"
+            hint_text: "Confirm password"
             size_hint: 0.5, None
             pos_hint: {"center_x": 0.5, "center_y": 0.3}
             helper_text_mode: "persistent"
@@ -44,7 +44,7 @@
         MDRoundFlatIconButton:
             id: add_account_button
             icon: "account-plus"
-            text: "Stwórz konto"
+            text: "Create an account"
             pos_hint: {"center_x": 0.5, "center_y": 0.2}
             focus: True
             md_bg_color: app.theme_cls.primary_color
@@ -54,7 +54,7 @@
         MDRoundFlatIconButton:
             id: comeback_to_login_button
             icon: "account-heart"
-            text: "Wróć do logowania"
+            text: "Back to login"
             pos_hint: {"center_x": 0.5, "center_y": 0.1}
             md_bg_color: app.theme_cls.primary_color
             on_release: app.change_screen("WelcomeScreen", "Start")

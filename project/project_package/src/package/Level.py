@@ -3,8 +3,8 @@ from .Achievement import Achievement
 
 class Level:
     lvl_points = [10, 20, 30, 40, 50, 60]
-    names = ["Nieklasyfikowany", "Amator zieleni", "Początkujący podlewacz", "Roślinny zapaleniec",
-             "Użytkownik konewki", "Dawca deszczu"]
+    names = ["Unclassified", "Green basic", "Plant beginner", "Eager to water",
+             "Water can specialist", "Rain giver"]
 
     def __init__(self, points_value=0):
         self.current_points = points_value
