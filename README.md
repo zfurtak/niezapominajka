@@ -17,25 +17,25 @@ The application was created in `Python` using `KivyMD`, `Kivy` and `SQLite`.
 It is meant to be used on a mobile phone.
 
 ## Features
-- Account
-  - Firstly you need to create an account, which is stored in a database.
-  - If you already have an account, ypu need to log in.
-  - You can change your profile photo and some preferencies like theme (light or dark) and hour of receiving notifications
-  - All of the preferiences are linked to your profile and saved.
-  - Level oints are got by watering your plants, to gain a level and a title e.g. plant begineer, water-can specialist
-  - Gaining level depends on the quantity of plants.
-- Adding plants
-  - To add a plant, you need to go to the Plant catalog and choose proper species.
-  - If your species is not there, you can send a form with its name to the support, by clicking on the question mark icon on the bottom of the screen.
-  - While adding a plant, you can set its name, location, notes and later also change its photo.
-- Watering plants
-  - On the Start screen you can see a calendar card with plants, that have to be watered on this day.
-  - The calendar card can be changed to following days to check which plants will need watering then.
-  - If you miss watering a plant, it stays on the start screen the following day with a special icon (water drop).
-  - If your plant has not been watered for a whole cycle, the icon changes to a skull. _(e.g. if a ficus needs to be watered every 7 days and you are 8 days late with watering, the skull icon will show up)_
-  - You can water all plants, which need it by clicking a water can icon on the bottom of the Start screen (the icon is visible only on the current day).
-  - Each plant can be also watered by clicking on its profile (from Start screen or My plants screen).
-  - If you water a plant too early (e.g. 2 days before the actual date) watering days are changed to the new schedule.
+### Account
+- Firstly you need to create an account, which is stored in a database.
+- If you already have an account, ypu need to log in.
+- You can change your profile photo and some preferencies like theme (light or dark) and hour of receiving notifications
+- All of the preferiences are linked to your profile and saved.
+- Level oints are got by watering your plants, to gain a level and a title e.g. plant begineer, water-can specialist
+- Gaining level depends on the quantity of plants.
+### Adding plants
+- To add a plant, you need to go to the Plant catalog and choose proper species.
+- If your species is not there, you can send a form with its name to the support, by clicking on the question mark icon on the bottom of the screen.
+- While adding a plant, you can set its name, location, notes and later also change its photo.
+### Watering plants
+- On the Start screen you can see a calendar card with plants, that have to be watered on this day.
+- The calendar card can be changed to following days to check which plants will need watering then.
+- If you miss watering a plant, it stays on the start screen the following day with a special icon (water drop).
+- If your plant has not been watered for a whole cycle, the icon changes to a skull. _(e.g. if a ficus needs to be watered every 7 days and you are 8 days late with watering, the skull icon will show up)_
+- You can water all plants, which need it by clicking a water can icon on the bottom of the Start screen (the icon is visible only on the current day).
+- Each plant can be also watered by clicking on its profile (from Start screen or My plants screen).
+- If you water a plant too early (e.g. 2 days before the actual date) watering days are changed to the new schedule.
 
 
 ## Demo
