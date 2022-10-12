@@ -38,6 +38,7 @@ The application was created in `Python` using `KivyMD`, `Kivy`, `SQLite` and is 
 
 
 ## Demo
+Below you can find a short gif showing demo of using the app with some of its functionalities:
 
 ![demo](https://user-images.githubusercontent.com/92310164/195376132-9077c015-f2e1-48c5-bfaf-cfb01394fa2f.gif)
 
