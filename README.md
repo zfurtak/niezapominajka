@@ -1,10 +1,10 @@
-# Niezapominajka
-W tym miejscu tworzy się historia... \
-Roślinki z całego świata mogą odetchnąć z ulgą...\
-Nie będzie już sytuacji, w której właściciel zapomni o podlewaniu... \
-A to wszystko dzięki naszej aplikacji... \
-Wychodzimy naprzeciw zapominalskim miłośnikom roślinek, tworząc aplikację, która pomaga zapamiętać kiedy podlewać roślinki. Mnogość funkcji oraz przyjazny interfejs powdują, że używanie jej będzie czystą przyjemnością.\
-A nie ma to jak łączyć przyjemne z pożytecznym, prawda?
+# Niezapominajka (Forget-me-not)
 
-![image](https://user-images.githubusercontent.com/92669642/160628721-fcd9f81c-1442-430f-89b7-e5315fc4afac.png)
+This is where history is made... \
+Plants from all over the world can breathe a sigh of relief...\
+There will no longer be a situation in which the owner forgets about watering... \
+And all this thanks to our application... \
+Many functions and the a user-friendly interface will make it a pleasure to use.
+And there's nothing better than combining duty with pleasure, right?
 
+![demo](https://user-images.githubusercontent.com/92310164/195376132-9077c015-f2e1-48c5-bfaf-cfb01394fa2f.gif)
